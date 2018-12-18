@@ -1,0 +1,259 @@
+# Aprendizaje por Diferencia Temporal
+
+Si tuviéramos que identificar una idea central y novedosa para el Reinforcement Learning, sin duda sería el aprendizaje por diferencia temporal (TD). El aprendizaje de TD es una combinación de ideas de métodos de Monte Carlo e ideas de programación dinámica (DP). Al igual que los métodos de Monte Carlo, los métodos de TD pueden aprender directamente de la experiencia en bruto sin un modelo de la dinámica del entorno. Al igual que DP, los métodos de TD actualizan las estimaciones basadas en parte en otras estimaciones aprendidas, sin esperar un resultado final (bootstrap). La relación entre los métodos TD, DP y Monte Carlo es un tema recurrente en la teoría del Reinforcement Learning; este capítulo es el comienzo de nuestra exploración del mismo. Antes de que terminemos, veremos que estas ideas y métodos se mezclan entre sí y pueden combinarse de muchas maneras. En particular, en el Capítulo 7 introducimos los algoritmos de $n$ pasos, que proporcionan un puente entre los métodos TD y Monte Carlo, y en el Capítulo 12 introducimos el algoritmo TD($\lambda$), que los une a la perfección.
+
+## Predicción
+
+Tanto los métodos de TD como los de Monte Carlo utilizan la experiencia para resolver el problema de la predicción. Dada una cierta experiencia siguiendo una política $\pi$, ambos métodos actualizan su estimación $V$ de $v_\pi$ para los estados no terminales $S_t$ que ocurren en esa experiencia. En términos generales, los métodos de Monte Carlo esperan hasta que se conozca el regreso después de la visita, y luego utilizan ese regreso como objetivo para $V(S_t)$. Un método sencillo de Monte Carlo para cada visita, adecuado para entornos no estacionarios, es el siguiente:$$V(S_t)\leftarrow V(S_t)+\alpha[G_t-V(S_t)]$$ donde $G_t$ es el retorno actual después del tiempo t, y $\alpha$ es un parámetro de tamaño de paso constante. Llamaremos a este método MC $\alpha$-constante. Mientras que los métodos de Monte Carlo deben esperar hasta el final del episodio para determinar el incremento a $V(S_t)$ (sólo entonces se conoce $G_t$), los métodos de TD sólo necesitan esperar hasta el siguiente paso de tiempo. En el momento $t + 1$ forman inmediatamente un objetivo y hacen una actualización útil utilizando la recompensa observada $R_{t+1}$ y la estimación $V(S_{t+1})$. El método más simple de TD hace la actualización: $$V(S_t)\leftarrow V(S_t)+\alpha[R_{t+1}+\gamma V(S_{t+1})- V(S_t)]$$ inmediatamente en la transición a $S_{t+1}$ y recibiendo $R_{t+1}$. En efecto, el objetivo de la actualización de Monte Carlo es $G_t$, mientras que el objetivo de la actualización de TD es $R_{t+1} + V (S_{t+1})$. Este método de TD se llama TD(0), o TD de un paso, porque es un caso especial de los métodos TD($\lambda$) y TD de $n$ pasos desarrollados en el Capítulo 12 y el Capítulo 7. El cuadro que figura a continuación muestra la versión completa de la forma TD(0).
+
+* Iniciamos la política $\pi$ a ser evaluada
+* Iniciamos $V(s)$ arbatrariamente.
+* Repetimos (Para cada episodio)
+    + Iniciamos $S$
+    + Repetimos (para cada paso del episodio):
+        - $A \leftarrow$ una acción dada por $\pi$ por $S$
+        - toma la acción $A$, observa $R$ y $S'$
+        - $V(S_t)\leftarrow V(S_t)+\alpha[R_{t+1}+\gamma V(S_{t+1})- V(S_t)]$
+        - $S\leftarrow S'$
+    + Hata el estado terminal $S$
+  
+Dado que TD(0) basa su actualización en parte en una estimación existente, decimos que se trata de un método de bootstrapping, como DP. Sabemos por el Capítulo 3 que
+
+$$\begin{equation} \label{eq1}
+\begin{split}
+v_\pi(s) & = E_\pi[G_t|S_t=s] \\
+ & = E_\pi[R_{t+1}+\gamma G_{t+1}|S_t=s]\\
+ & = E_\pi[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s]\\
+\end{split}
+\end{equation}$$
+
+A grandes rasgos, los métodos de Monte Carlo utilizan una estimación de $E_\pi[G_t|S_t=s]$ como objetivo, mientras que los métodos de DP utilizan una estimación de $E_\pi[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s]$ como objetivo. El objetivo de Monte Carlo es una estimación porque no se conoce el valor esperado en $E_\pi[G_t|S_t=s]$; se utiliza un rendimiento de muestra en lugar del rendimiento real esperado. El objetivo de la DP es una estimación no debido a los valores esperados, que se supone que son completamente proporcionados por un modelo del entorno, sino porque $v(S_{t+1})$ no se conoce y la estimación actual, $V(S_{t+1})$, es usado en su lugar. El objetivo de TD es una estimación por ambas razones: muestrea los valores esperados en $E_\pi[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s]$ y utiliza la estimación actual $V$ en lugar de la verdadera $v_\pi$. Así, los métodos de TD combinan el muestreo de Monte Carlo con el bootstrapping de DP. Como veremos, con cuidado e imaginación esto nos puede llevar mucho tiempo para obtener las ventajas de los métodos de Monte Carlo y DP.
+
+En la próxima imagen mostramos el resumen para calcular TD(0). La estimación del valor del nodo de estado en la parte superior del diagrama se actualiza sobre la base de la transición de una muestra de éste al estado inmediatamente posterior. Nos referimos a las actualizaciones de TD y Monte Carlo como actualizaciones de muestra porque implican mirar hacia delante a un estado sucesor de muestra (o par de acción-estado), usando el valor del sucesor y la recompensa a lo largo del camino para calcular un valor de respaldo, y luego actualizando el valor del estado original (o par de acción-estado) en consecuencia. Las actualizaciones de la muestra son un fechador de las actualizaciones esperadas de los métodos DP, ya que se basan en un único sucesor de la muestra y no en una distribución completa de todos los sucesores posibles. Las actualizaciones de las muestras difieren de las actualizaciones esperadas de los métodos DP en que se basan en un único sucesor de la muestra y no en una distribución completa de todos los sucesores posibles. 
+
+![\label{fig:"sd"}](~/Reinforcement-learning/td.png)
+
+Por último, tenga en cuenta que la cantidad entre paréntesis en la actualización de TD(0) es una especie de error, ya que mide la diferencia entre el valor estimado de $S_t$ y la mejor estimación $R_{t+1} + \gamma V (S_{t+1})$. Esta cantidad, llamada el error de TD, surge de varias formas a lo largo del Reinforcement Learning:$$\delta_t=R_{t+1}+\gamma V(S_{t+1})-V(S_t)$$ Note que el error de TD en cada momento es el error en la estimación hecha en ese momento. Debido a que el error de TD depende del siguiente estado y de la siguiente recompensa, en realidad no está disponible hasta un paso más adelante. Es decir, $\delta_t$ es el error en $V(S_t)$, disponible en el tiempo $t + 1$.  También tenga en cuenta que si la matriz $V$ no cambia durante el episodio (como no lo hace en los métodos de Monte Carlo), entonces el error de Monte Carlos puede ser escrito como la suma de errores TD:
+
+\begin{equation} 
+\begin{split}
+G_t-V(S_t) & = R_{t+1}+ \gamma G_{t+1}-V(S_{t+1})+\gamma V(S_{t+1}) \\
+ & = \delta_t+\gamma(G_{t+1}-V(S_{t+1})) \\
+ & = \delta_t + \gamma \delta_{t+1}+\gamma^2 (G_{t+2}-V(S_{t+2}))\\
+ & = \delta_t + \gamma \delta_{t+1}+\gamma^2\delta_{t+2}+...+\gamma^{T-t-1}\delta_{T-1}+\gamma^{T-t} (G_{T}-V(S_{T}))\\
+ & = \delta_t + \gamma \delta_{t+1}+\gamma^2\delta_{t+2}+...+\gamma^{T-t-1}\delta_{T-1}+\gamma^{T-t} (0-0))\\
+ & = \sum^{T-1}_{k=t}\gamma^{k-t}\delta_k
+ 
+\end{split}
+\end{equation}
+
+Esta identidad no es exacta si V se actualiza durante el episodio (como sucede en TD(0)), pero si el tamaño del paso es pequeño, puede que aún se mantenga de formna aproximada. Las generalizaciones de esta identidad juegan un papel importante en la teoría y los algoritmos del aprendizaje de la diferencia temporal.
+
+Ejemplo: Cada día que conduces a casa desde el trabajo, tratas de predecir por cuánto tiempo se necesita para llegar a casa. Cuando dejas tu lugar, anotas la hora, el día de la semana, el tiempo, y cualquier otra cosa que pueda ser relevante. Digamos que este viernes te vas exactamente a las 6 en punto, y  estimas que tardarás 30 minutos en llegar a casa. Cuando llegas a tu coche son las 6:05, y te das cuenta de que está empezando a llover. El trafico es a menudo más lento en la lluvia, por lo que se estima que tardaras 35 minutos. a partir de entonces, o un total de 40 minutos. Quince minutos más tarde has completado la parte de la carretera de su viaje a tiempo. Al salir a una carretera secundaria se reduce la estimación del viaje total a 35 minutos. Desafortunadamente, en este punto te quedas atascado detrás de un camión lento, y la carretera es demasiado estrecha para pasar. Terminas teniendo que seguir al camión hasta que giras en la calle lateral, ya son las 6:40. Tres minutos después estás en casa. La secuencia de estados, tiempos y predicciones es así como sigue:
+
+|                     State                     | Tiempo transcurrido | tiempo previsto para irse | tiempo total previsto |
+|:---------------------------------------------:|:-------------------:|:-------------------------:|:---------------------:|
+| saliendo de la oficina, el viernes a las 6:00 |          0          |             30            |           30          |
+| llegar al carro lloviendo                     |          5          |             35            |           40          |
+| saliendo de la carretera                      |          20         |             15            |           35          |
+| 2ª carretera, detrás del camión               |          30         |             10            |           40          |
+| entrando a la calle de la casa                |          40         |             3             |           43          |
+| llegar a casa                                 |          43         |             0             |           43          |
+
+
+Las recompensas en este ejemplo son los tiempos transcurridos en cada tramo del viaje. No estamos descontando ($\gamma$ = 1), y por lo tanto el retorno para cada estado es el tiempo real para salir de ese estado. El valor de cada estado es el tiempo que se espera que transcurra. La segunda columna de números da el valor estimado actual para cada estado encontrado.
+
+Una manera sencilla de ver el funcionamiento de los métodos de Monte Carlo es graficar el tiempo total previsto (la última columna) sobre la secuencia, como en la siguiente figura (izquierda). Las flechas muestran los cambios en las predicciones recomendadas por el método MC constante, para $\alpha$ = 1. Estos son exactamente los errores entre el valor estimado (tiempo previsto para ir) en cada estado y el retorno real (tiempo real para ir). Por ejemplo, cuando salió de la carretera pensó que sólo le tomaría 15 minutos más llegar a casa, pero de hecho le tomó 23 minutos. La primera ecuación del capitulo se aplica en este punto y determina un incremento en el tiempo estimado para salir de la carretera. El error, $G_t-V (S_t)$, en este momento es de ocho minutos. Supongamos que el tamaño del parametro de paso, $\alpha$, es $\frac{1}{2}$. Entonces el tiempo previsto para salir de la autopista se modificará al alza en cuatro minutos como resultado de esta experiencia. Este es probablemente un cambio demasiado grande en este caso; el camión fue probablemente sólo un golpe de suerte. En cualquier caso, el cambio sólo se puede hacer en línea, es decir, después de haber llegado a casa. Sólo en este momento se conoce alguna de las retornos reales.
+
+![\label{fig:"sd"}](~/Reinforcement-learning/td1.png)
+
+¿Es necesario esperar hasta que se conozca el resultado final antes de comenzar el aprendizaje? Suponga que otro día, al salir de su oficina, calcula que le llevará 30 minutos conducir hasta su casa, pero luego se queda atascado en un atasco de tráfico masivo. Veinticinco minutos después de salir de la oficina, usted todavía se encuentra en la carretera. Ahora usted estima que le tomará otros 25 minutos llegar a casa, para un total de 50 minutos. Mientras espera en el tráfico, ya sabe que su estimación inicial de 30 minutos era demasiado optimista. ¿Debe esperar hasta que llegue a casa antes de aumentar su estimación para el estado inicial? Según el enfoque de Monte Carlo, hay que hacerlo, porque todavía no se conoce el verdadero retorno. 
+
+De acuerdo con un enfoque de TD, por otro lado, usted aprendería inmediatamente, cambiando su estimación inicial de 30 minutos a 50 minutos. De hecho, cada estimación se desplazaría hacia la estimación que le sigue inmediatamente. Volviendo a nuestro primer día de conducción, la Figura anterior (derecha) muestra los cambios en las predicciones recomendadas por la regla de TD (estas son las modificaciones realizadas por la regla si $\alpha$= 1). Cada error es proporcional al cambio en el tiempo de la predicción, es decir, a las diferencias temporales en las predicciones. 
+
+Además de darle algo que hacer mientras espera en el tráfico, hay varias razones computacionales por las que es ventajoso aprender basado en sus predicciones actuales en lugar de esperar hasta la terminación cuando se sabe el retorno real. Discutiremos brevemente algunos de ellos en la siguiente sección.
+
+## Ventajas de los métodos de predicción de TD
+
+Los métodos de TD actualizan sus estimaciones basándose en parte en otras estimaciones. Aprenden una estimación a partir de una estimación. ¿Esto es algo bueno de hacer? ¿Qué ventajas tienen los métodos de TD sobre los métodos Monte Carlo y DP? Desarrollar y responder a estas preguntas se llevará el resto de este libro y mucho más. En esta sección anticipamos brevemente algunas de las respuestas.
+
+Obviamente, los métodos de TD tienen una ventaja sobre los métodos de DP en el sentido de que no requieren un modelo del entorno, de su recompensa y de las distribuciones de probabilidad del siguiente estado.
+
+La siguiente ventaja más obvia de los métodos de TD sobre los métodos de Monte Carlo es que se implementan naturalmente en línea, de forma totalmente incremental. Con los métodos Monte Carlo hay que esperar hasta el final de un episodio, porque sólo entonces se conoce el retorno, mientras que con los métodos TD sólo hay que esperar un paso de tiempo. Sorprendentemente, a menudo esto resulta ser una consideración crítica. Algunas aplicaciones tienen episodios muy largos, por lo que retrasar todo el aprendizaje hasta el final del episodio es demasiado lento. Otras aplicaciones son tareas continuas y no tienen ningún episodio. Por último, como hemos señalado en el capítulo anterior, algunos métodos de Monte Carlo deben ignorar o descartar los episodios en los que se llevan a cabo acciones experimentales, lo que puede ralentizar enormemente el aprendizaje. Los métodos de TD son mucho menos susceptibles a estos problemas porque aprenden de cada transición independientemente de las acciones subsiguientes que se tomen.  
+
+Pero, ¿son los métodos de TD sólidos? Ciertamente es conveniente aprender una estimación de la siguiente, sin esperar un resultado real, pero ¿podemos garantizar la convergencia hacia la respuesta correcta? Afortunadamente la respuesta es sí. Para cualquier política fija $\pi$, TD(0)  ha demostrado que converge a $v_\pi$, en la medida de un parámetro de tamaño de paso constante si es suficientemente pequeño, y con probabilidad 1 si el parámetro de tamaño de paso disminuye de acuerdo con las condiciones habituales de aproximación estocástica. La mayoría de las pruebas de convergencia se aplican sólo al caso basado en tablas del algoritmo presentado anteriormente, pero algunos también se aplican al caso de la aproximación general de la función lineal. Estos resultados se discuten en un contexto más general en el Capítulo 9.
+
+Si los métodos de TD y Monte Carlo convergen asintóticamente a las predicciones correctas, entonces la siguiente pregunta natural es: "¿Cuál es el primero?". En otras palabras, ¿qué método aprende más rápido? ¿Qué es lo que hace más eficiente el uso de datos limitados? En la actualidad, esta es una pregunta abierta en el sentido de que nadie ha sido capaz de demostrar matemáticamente que un método converge más rápido que el otro.
+De hecho, ni siquiera está claro cuál es la forma formal más apropiada de formular esta pregunta. En la práctica, sin embargo, se ha comprobado que los métodos de TD convergen más rápidamente que los métodos MC-$\alpha$ constante.
+
+## Calidad de TD(0)
+
+Suponga que sólo hay disponible una cantidad mínima de experiencia, digamos 10 episodios o 100 pasos temporales. En este caso, un enfoque común con los métodos de aprendizaje incremental es presentar la experiencia repetidamente hasta que el método converja. Dada una función de valor aproximado, $V$ , los incrementos especificados por $$V(S_t)\leftarrow V(S_t)+\alpha[G_t-V(S_t)]$$ y $$V(S_t)\leftarrow V(S_t)+\alpha[R_{t+1}+\gamma V(S_{t+1})- V(S_t)]$$ se calculan para cada paso de tiempo $t$ en el que se visita un estado no terminal, pero la función de valor se cambia sólo una vez, por la suma de todos los incrementos. A continuación, toda la experiencia disponible se procesa de nuevo con la nueva función de valor para producir un nuevo incremento global, y así sucesivamente, hasta que la función de valor converge. Llamamos a esto actualización por lotes porque las actualizaciones se realizan sólo después de procesar cada lote completo de datos de entrenamiento.
+
+En la actualiación por lotes, TD(0) converge de forma determinística a una respuesta única independiente del parámetro de paso, $\alpha$, siempre y cuando sea tomado lo suficientemente pequeño. los métodos MC-$\alpha$ constante convergen deterministicamente bajo las mismas condiciones, pero no a lo mismo. Entender estas dos respuestas nos ayudará a entender la diferencia entre los dos métodos. Bajo la actualización normal, los métodos no se mueven hasta el final de sus respectivas respuestas por lotes, pero en cierto sentido toman medidas en estas direcciones. Antes de tratar de entender las dos respuestas en general, para todas las tareas posibles, primero veamos algunos ejemplos.
+
+**Ejemplo: Random Walk.** 
+
+![\label{fig:"sd"}](~/Reinforcement-learning/rw.png)
+
+Un proceso de recompensa de Markov (MRP), es un proceso sin acciones. A menudo usaremos MRP cuando nos centramos en el problema de predicción, en el que no es necesario distinguir la dinámica debida al entorno de las debidas al agente. En este MRP, todos los episodios comienzan en el estado central. A menudo usaremos MRP cuando nos centramos en el problema de predicción, en el que no es necesario distinguir la dinámica debida al entorno de las acciones debidas al agente. En este MRP, todos los episodios comienzan en el estado central, C, luego se mueve a la izquierda o a la derecha de paso en paso, con igual probabilidad. Los episodios terminan en el extremo izquierdo o en el extremo derecho. Cuando un episodio termina a la derecha, se produce una recompensa de +1; todas las demás recompensas son cero. Debido a que esta tarea e discontinua, el verdadero valor de cada estado es la probabilidad de terminar a la derecha si comienza a partir de ese estado. Por lo tanto, el valor verdadero del estado central es $v_\pi$(C) = 0.5. Los verdaderos valores de todos los estados, de la A a la E, son $\frac{1}{6}$, $\frac{2}{6}$, $\frac{3}{6}$, $\frac{4}{6}$ y $\frac{5}{6}$.
+
+Las versiones de actualización por lotes de TD(0) y MC $\alpha$-constante se aplicaron de la siguiente manera al ejemplo de predicción de caminata aleatoria. Después de cada nuevo episodio, todos los episodios vistos hasta ahora se trataron como un lote. Fueron presentados repetidamente al algoritmo, ya sea TD(0) o MC $\alpha$-constante, con $\alpha$ lo suficienetemente pequeño para asegurar la convergencia. A continuación, se comparó la función de valor resultante con $v_\pi$, y el error cuadratico medio a través de los 5 estados (y a través de 100 repeticiones independientes de todo el experimento) fue graficado para obtener las curvas de aprendizaje mostradas en la siguiente figura. Nótese que el método de TD por lotes fue consistentemente mejor que el método Monte Carlo por lotes. 
+
+![\label{fig:"sd"}](~/Reinforcement-learning/mcvstd.png)
+
+En el entrenamientos por lotes, MC $\alpha-$constante converge hacia los valores, $V(s)$, que son promedios de muestra de los rendimientos reales experimentados después de visitar cada estado. Estas son estimaciones óptimas en el sentido de que minimizan el error  de los rendimientos reales en el conjunto de entrenamiento. En este sentido, es sorprendente que el método de TD por lotes haya sido capaz de funcionar mejor de acuerdo con la medida del error promedio que se muestra en la figura anterior. ¿Cómo es posible que el TD por lotes funcionara mejor que este método óptimo? La respuesta es que el método de Monte Carlo es óptimo sólo de forma limitada, y que TD es óptimo de una manera que es más relevante para predecir el retorno. Pero primero desarrollemos nuestra intuicion sobre los diferentes tipos de optimización a través de otro ejemplo.
+
+**Ejemplo:** Colóquese ahora en el papel de predictor de retornos para un proceso de recompensa Markov desconocido. Suponga que observa los siguientes ocho episodios:
+![\label{fig:"sd"}](~/Reinforcement-learning/ejem2.png)
+Esto significa que el primer episodio comenzó en el estado A, pasó a B con una recompensa de 0, y luego terminó en B con una recompensa de 0. Los otros siete episodios fueron aún más cortos, comenzando desde B y terminando inmediatamente. Dada esta serie de datos, ¿cuáles diría que son las predicciones óptimas, los mejores valores para las estimaciones $V$(A) y $V$(B)? Probablemente todo el mundo estaría de acuerdo en que el valor óptimo para $V$(B) es $\frac{3}{4}$ , porque seis de las ocho veces en el estado B el proceso terminó inmediatamente con un retorno de 1, y las otras dos veces en B el proceso terminó inmediatamente con un retorno de 0.
+
+Pero, ¿cuál es el valor óptimo para la estimación $V$(A) teniendo en cuenta estos datos? Aquí hay dos respuestas razonables. Una es observar que el 100% de las veces que el proceso estuvo en estado A pasó inmediatamente a B (con una recompensa de 0); y como ya hemos decidido que B tiene valor $\frac{3}{4}$, por lo tanto A debe tener valor $\frac{3}{4}$ también. Una forma de ver esta respuesta es que se basa en la primera modelización del proceso de Markov, en este caso como se muestra en la siguiente figura, y luego en el cálculo de las estimaciones correctas dadas por el modelo, que de hecho en este caso da $V$(A) = $\frac{3}{4}$. Esta es también la respuesta que da el lote TD(0).
+
+![\label{fig:"sd"}](~/Reinforcement-learning/bucle.png)
+La otra respuesta razonable es simplemente observar que hemos visto A una vez y el retorno que le siguió fue 0; por lo tanto estimamos $V$(A) como 0. Esta es la respuesta que los métodos de Monte Carlo dan. Note que también es la respuesta que da el error mínimo al cuadrado en los datos de entrenamiento. De hecho, no da ningún error en los datos. Pero aún así esperamos que la primera respuesta sea mejor. Si el proceso es Markov, esperamos que la primera respuesta produzca menos error en los datos futuros, aunque la respuesta de Monte Carlo es mejor en los datos existentes.
+
+El ejemplo anterior ilustra una diferencia general entre las estimaciones encontradas por los métodos TD(0) y Monte Carlo. Los métodos Monte Carlo por lotes siempre indican las estimaciones que minimizan el error cuadratico medio en el conjunto de entrenamiento, mientras que el lote TD(0) siempre contiene las estimaciones que serían exactamente correctas para el modelo de máxima verosimilitud del proceso de Markov. En general, la estimación por máxima verosimilitud den un parámetro es el valor del parámetro cuya probabilidad de generar los datos es más grande. En este caso, la estimación de la máxima verosimilitud es el modelo del proceso de Markov formado de manera obvia a partir de los episodios observados: la probabilidad de transición estimada de $i$ a $j$ es la fracción de transiciones observadas de $i$ que fueron a $j$, y la recompensa esperada asociada es la de las recompensas observadas en esas transiciones. Dado este modelo, podemos calcular la estimación de la función de valor que sería exactamente correcta si el modelo fuera exactamente correcto. Esto se denomina estimación de equivalencia por certeza porque equivale a suponer que la estimación del proceso subyacente se conocía con certeza en lugar de ser aproximada. En general, el lote TD(0) converge hacia la estimación de equivalencia por certeza. 
+
+Esto ayuda a explicar por qué los métodos de TD convergen más rápidamente que los métodos de Monte Carlo. En forma de lote, TD(0) es más rápido que los métodos de Monte Carlo porque calcula la verdadera estimación de equivalencia por certeza. Esto explica la ventaja de TD(0) que se muestra en los resultados del lote en la tarea de caminata aleatoria. La relación con la estimación de la equivalencia ppor certeza también puede explicar en parte la ventaja de la velocidad de los TD(0) no por lotes. Aunque los métodos nque no son por lotes no logran ni la equivalencia dpor certeza ni las estimaciones por reducción de  mínimos cuadrados, se puede entender que se mueven aproximadamente en estas direcciones. El TD(0) que no es por lotes puede ser más rápido que el MC $\alpha$-constante porque se está moviendo hacia una mejor estimación, a pesar de que no está llegando hasta el final. En la actualidad no se puede decir nada más denso sobre la relativa eficiencia de los métodos de TD en línea y Monte Carlo.
+
+## Sarsa: TD político con control 
+
+
+Pasamos ahora al uso de métodos de predicción de TD para el problema de control. Como de costumbre, seguimos el patrón de iteración de políticas generalizadas (GPI), sólo que esta vez utilizando métodos de TD para la parte de evaluación o predicción. Al igual que con los métodos de Monte Carlo, nos enfrentamos a la necesidad de negociar con la exploración y la explotación, y de nuevo los enfoques caen en dos clases principales: sobre políticas y sobre no políticas. En esta sección presentamos un método de control político de TD.
+
+El primer paso es aprender una función de valor-acción en lugar de una función de valor estado. En particular, para un método político debemos estimar $q_\pi(s, a)$ para el  actual comportamiento de la política $\pi$ y para todos los estados s y acciones a. Esto puede hacerse usando esencialmente el mismo método de TD descrito anteriormente para el aprendizaje de  $v_\pi$. Recordemos que un episodio consiste en una secuencia alterna de estados y pares de estados-acción
+
+![\label{fig:"sd"}](~/Reinforcement-learning/sarsa.png)
+
+En la sección anterior consideramos las transiciones de estado a estado y aprendimos los valores de los estados. Ahora consideramos las transiciones del par de acción-estado al par de acción-estado, y aprendemos los valores de los pares de acción-estado. Formalmente estos casos son idénticos: ambos son cadenas de Markov con un proceso de recompensa. Los teoremas que aseguran la convergencia de los valores de estado bajo TD(0) también se aplican al algoritmo correspondiente para los valores de acción:
+
+$$Q(S_t,A_t)=Q(S_t,A_t)+\alpha[R_{t+1}+\alpha Q(S_{t+1},A_{t+1})-Q(S_t,A_t)]$$
+
+Esta actualización se realiza después de cada transición desde una estado $S_t$ no terminal. Si $S_{t+1}$ es terminal, entonces $Q(S_{t+1},A_{t+1})$ es definido como cero. Esta regla usa cada elemento de un vector quintuple $(S_t, A_t, R, S_{t+1}, A_{t+1})$, que hacen una transición de un estado a otro. Este vector quíntuple da lugar al nombre de Sarsa para el algoritmo. El diagrama de respaldo de Sarsa es el que se muestra acontinuaciuón.  
+
+![\label{fig:"sd"}](~/Reinforcement-learning/sarsa1.png)
+
+Es sencillo diseñar un algoritmo de control de políticas basado en el método de predicción de Sarsa. Como en todos los métodos politicos, continuamente estimamos $q_\pi$ para el comportamiento de la política $\pi$, y al mismo tiempo cambiamos hacia la codicia con respecto a $q$. La forma general del algoritmo de control de Sarsa se da acontinuación.
+
+**Sarsa, para estimar $Q\approx q_{*}$**
+
+* Inicializamos $Q(s,a)$, para todo $s\in S$, $a\in A(s)$, arbitrariamente, y $Q$(estado terminal,$\cdotp$)=0
+
+* Repetimos (Para cada episodio):
+
+    - Iniciamos $S$ 
+    _ Escogemos $A$ a partir de $S$ usando una politica resultanten de $Q$ (por ejemplo $\epsilon$-codicioso)
+    - Repetimos (para cada episodio):
+        + Tomamos una acción $A$, observamos $R$, $S'$
+        + Escogemos $A'$ a partir $S'$ usando una politica resultanten de $Q$ (por ejemplo $\epsilon$-codicioso)
+        + $Q(S_t,A_t)=Q(S_t,A_t)+\alpha[R_{t+1}+\alpha Q(S_{t+1},A_{t+1})-Q(S_t,A_t)]$
+        + $S \leftarrow S',\quad A\leftarrow A'$
+    - Hasta que $S$ sea terminal
+
+Las propiedades de convergencia del algoritmo de Sarsa dependen de la naturaleza de la dependencia de la política proveniente de Q. Por ejemplo, se podrían utilizar políticas "codiciosas" o "blandas". Sarsa converge con probabilidad 1 hacia una política óptima y una función de valor-acción siempre y cuando todos los pares de acción-estado sean visitados un número mínimo de veces y la política converja en el límite de la política codiciosa.
+
+**Ejemplo:** En la siguiente figura se muestra una cuadrícula estándar, con estados de inicio y de meta, pero con una diferencia: hay un viento cruzado hacia arriba a través de la mitad de la cuadrícula. Las acciones son las cuatro estándar: arriba, abajo, derecha e izquierda, pero en la región media los siguientes estados resultantes se desplazan hacia arriba por un viento", cuya fuerza varía de una columna a otra. La fuerza del viento se indica debajo de cada columna, en número de celdas desplazadas hacia arriba. Por ejemplo, si usted está una celda a la derecha de la meta, entonces la acción a la izquierda le lleva a la celda justo encima de la meta. Tratemos esto como una tarea episódica no descontada, con recompensas constantes de 1 hasta que se alcance el estado de meta.
+
+![\label{fig:"sd"}](~/Reinforcement-learning/gridd22.png)
+El gráfico en la figura muestra el resultado de aplicar el algoritmo Sarsa $\epsilon$-codicioso a estsa prueba, con $\epsilon=1$, $\alpha=0.5$ y valores inicial $Q(s,a)=0$ para todos $s,a$. La pendiente creciente del gráfico muestra que el objetivo se alcanza cada vez más rápidamente con el paso del tiempo. En 8000 pasos de tiempo, la política codiciosa era desde hace mucho tiempo óptima (una trayectoria a partir de ella se muestra en el recuadro); Continuando la exploración $\epsilon$-codiciosa se mantuvo la duración media del episodio en unos 17 pasos, dos más que el mínimo de 15. Tenga en cuenta que los métodos de Monte Carlo no se pueden ser utilizados fácilmente en esta tarea porque la finalización no está garantizada para todas las políticas. Si alguna vez se encontrara una política que causara que el agente permaneciera en el mismo estado, entonces el siguiente episodio nunca terminaría. Los métodos de aprendizaje paso a paso como el de Sarsa no tienen este problema porque aprenden rápidamente durante el episodio que tales políticas son deficientes, y cambian a otra cosa.
+
+## Q-Learning: TD no político con control 
+
+Uno de los primeros avances en el aprendizaje de refuerzo fue el desarrollo de un algoritmo de control de TD no político conocido como Q-learning. Definido por:$$Q(S_t,A_t) \leftarrow Q(S_t,A_t)+ \alpha[R_{t+1}+\gamma max_{a}Q(S_{t+1},a)-Q(S_t,A_t)]$$
+
+En este caso, la función del valor de la acción aprendida, $Q$, se aproxima directamente a $q_*$, la función del valor de la acción óptima, independientemente de la política que se siga. Esto simplifica drásticamente el análisis del algoritmo y permite realizar pruebas de convergencia tempranas. La política todavía tiene un efecto en el sentido de que determina qué pares de acciones de estado se visitan y actualizan. Como observamos en el Capítulo 5, este es un requisito mínimo para que cualquier método garantice un comportamiento óptimo. Bajo este supuesto y una variante de las condiciones habituales de aproximación estocástica sobre la sucesión de los parámetros paso, se ha demostrado que $Q$ converge con probabilidad 1 a $q_*$.
+
+**Q-learning para estimar $\pi\approx \pi_*$**
+
+* Iniciamos $Q(s,a)$, para todo $s\in S$, $a\in A(s)$, arbitrariamente, y $Q$(estado terminal, $\cdotp$)=0
+* Repetimos (para cada episodio):
+    + Iniciamos $S$
+    + Repetimos (Para cada paso del episodio):
+        - Escogemos $A$ de $S$ usando la política obtenida mediante $Q$ (por ejemplo usando, $\epsilon$-codiciosos)
+        - Tomamos una acción $A$, Obervamos $R$, $S'$
+        - $Q(S_t,A_t) \leftarrow Q(S_t,A_t)+ \alpha[R_{t+1}+\gamma max_{a}Q(S_{t+1},a)-Q(S_t,A_t)]$
+        - $S\leftarrow S'$
+    + Hasta que $S$ sea un estrado terminal.
+
+¿Cuál es el diagrama de respaldo para Q-learning? La regla  actualiza un par acción-estado, por lo que el nodo superior, la raíz de la actualización, debe ser un nodo de acción pequeño y completo. La actualización es también de los nodos de acción, maximizando todas las acciones posibles en el siguiente estado. Por lo tanto, los nodos inferiores del diagrama de respaldo deben ser todos estos nodos de acción
+
+
+**Ejemplo:** Este ejemplo se compara Sarsa y $Q$-learning, destacando la diferencia entre los métodos políticos (Sarsa) y no políticos (Q-learning). Considere la cuadricula mostrado en la parte superior de la siguiente figura. Esta es una tarea estándar, episódica y no descontada, con estados de inicio y objetivo, y las acciones usuales que causan movimiento hacia arriba, hacia abajo, hacia la derecha y hacia la izquierda. La recompensa es de 1 en todas las transiciones, excepto en las de la región marcada como "El Acantilado". Al entrar en esta región se obtiene una recompensa de 100 y el agente regresa instantáneamente al comienzo.
+
+
+![\label{fig:"sd"}](~/Reinforcement-learning/ql.png)
+
+La parte inferior de la Figura anterior muestra el rendimiento de los métodos  Sarsa y Q-learning con la selección de acciones $\epsilon$-codiciosas, $\epsilon=0.1$ Después de una transición inicial, $Q$-learning aprende valores para la política óptima, lo que viaja a lo largo del borde del cruadro. Desafortunadamente, esto resulta en que ocasionalmente caiga sobre el cuadro debido a la "selección de acciones codiciosas". Sarsa, por su parte, tiene en cuenta la selección de acciones y aprende el camino más largo pero más seguro a través de la parte superior de la cuadricula. Aunque el $Q$-learning aprende realmente los valores de la política óptima, su rendimiento es peor que el de Sarsa, que aprende la política de los bordes. Por supuesto, si " se redujeran gradualmente, entonces ambos métodos convergerían asintóticamente hacia la política óptima.
+
+## Sarsa esparada
+
+Considere el algoritmo de aprendizaje que es igual que $Q$-learning, excepto que en lugar del máximo en los pares de estado-acción, utiliza el valor esperado, teniendo en cuenta la probabilidad de que cada acción se realice bajo la política actual. Es decir, considere el algoritmo con la regla de actualización:
+$\begin{equation}
+\begin{split}
+Q(S_t,A_t) & = Q(S_t,A_t)+\alpha[R_{t+1}+\gamma E[Q(S_{t+1},A_{t+1})|S_{t+1}]-Q(S_t,A_t)] \\
+ & = Q(S_t,A_t)+\alpha[R_{t+1}+\gamma \sum_a \pi(a|S_{t+1})Q(S_{t+1},a)-Q(S_t,A_t)]
+\end{split}
+\end{equation}$
+
+
+
+pero que por lo demás sigue el esquema del aprendizaje $Q$ learning. Dado el proximo estado, $S_{t+1}$, este algoritmo se mueve deterministicamnete en la misma direccion como Sarsa en esperanza, y por esto se llama *Esperanza de Sarsa*, el diagrama de respaldo se muestra en la siguiente figura
+
+![\label{fig:"sd"}](~/Reinforcement-learning/se.png)
+
+El algoritmo de Sarsa esperado, es mas complejo computacionalmente que Sarsa pero, en retorno, el elimina el sesgo ocacionado por la escogencia aleatoria de $A_{t+1}$, dada la misma cantidad de experiencia uno pudiera esperar que el desarrollo fuera ligeramente mejor que el de Sarsa, y en efecto generalmente lo es. La siguiente imagen muestra un resu men sobre los métodos aplicados al ejemplo anterior, en el cual se comparan el Sarsa esperado con Sarsa y $Q$-learning. El Sarsa Esperado tiene claramente la ventaja. Ademas, Sarsa esperado muestra una mejora significativa con respecto a Sarsa en una amplia gama de valores en el parámetro de paso. En el ejemplo anterior, las transiciones de estado son todas determinista y toda la aleatoriedad proviene de la política. En tales casos, Sarsa esperado puede fijar con seguridad $\alpha$= 1 sin sufrir ninguna degradación de la convergencia asintótica. mientras que Sarsa sólo puede tener un buen rendimiento a largo plazo con un pequeño valor de $\alpha$ , en el que el retorno a corto plazo es deficiente. En este y otros ejemplos hay una ventaja empírica consistente de la Sarsa esperado sobre el Sarsa.
+
+![\label{fig:"sd"}](~/Reinforcement-learning/esa.png)
+
+En estos resultados, Sarsa esperada fue usado como un método político, pero en general podría utilizar una política diferente a la política objetivo $\pi$ para generar comportamiento, en cuyo caso se convierte en un algoritmo no política. Por ejemplo, supongamos que $\pi$ es la política codiciosa mientras que el comportamiento es más exploratorio; entonces Sarsa esperado es exactamente Q-learning. En este sentido, Sarsa esperado absorbe y generaliza el $Q$-learning a la vez que mejora de forma fiable con respecto a Sarsa. Excepto por el pequeño costo computacional adicional, Sarsa esperado puede dominar completamente los otros dos algoritmos de control de TD más conocidos.
+
+## Sesgo de maximización y doble aprendizaje
+
+Todos los algoritmos de control que hemos discutido hasta ahora involucran la maximización en la construcción de sus políticas de objetivos. Por ejemplo, en $Q$-learning la política de objetivos es la política codiciosa dados los valores de acción actuales, que se definida con un máximo, y en Sarsa la política es a menudo $\epsilon$-codiciosa, lo que también implica una operación de maximización. En estos algoritmos, se utiliza implícitamente un valor máximo sobreestimado como estimación del valor máximo, lo que puede dar lugar a un sesgo positivo del agente. Para ver por qué, considere un solo estado s donde hay muchas acciones a cuyos valores verdaderos, $q(s,a)$, son todos cero pero cuyos valores estimados, $Q(s, a)$, son inciertos y por lo tanto distribuidos algunos por encima y otros por debajo de cero. El máximo de los valores reales es cero, pero el máximo de las estimaciones es positivo, un sesgo positivo. A esto lo llamamos sesgo de maximización.
+
+**Ejemplo de sesgo de maximización:**
+
+El pequeño MDP que se muestra en la proxima figura proporciona un ejemplo simple de cómo el sesgo de maximización puede dañar el rendimiento de los algoritmos de control de TD. El MDP tiene dos estados no terminales A y B. Los episodios siempre comienzan en A con la posibilidad de elegir entre dos acciones, izquierda y derecha. La acción correcta pasa inmediatamente al estado terminal con una recompensa y un retorno de cero. La acción izquierda pasa a B, también con una recompensa de cero, de la cual hay muchas acciones posibles, todas las cuales causan la terminación inmediata con una recompensa extraída de una distribución normal con una media de $-0.1$ y una varianza de $1$. Por lo tanto, el retorno esperado para cualquier trayectoria que comience con izquierda es de $-0.1$, y por lo tanto, llevarla a la izquierda en el estado A es siempre un error. Sin embargo, nuestros métodos de control pueden favorecer a la izquierda debido al sesgo de maximización que hace que B parezca tener un valor positivo. La Figura anterior muestra que el $Q$-learning con "selección de acciones $\epsilon$-codiciosas" aprende inicialmente a favorecer fuertemente de la acción de la izquierda en este ejemplo. Incluso asintoticamente, el $Q$-learning realiza la acción de la izquierda un 5% más a menudo de lo que es óptimo en nuestros ajustes de parámetros ($\epsilon = 0.1$, $\alpha= 0.1$, $\gamma = 1$).
+
+![\label{fig:"sd"}](~/Reinforcement-learning/ejemsa.png)
+
+¿Existen algoritmos que eviten el sesgo de maximización? Para empezar, consideremos un caso de bandido en el que tenemos estimaciones ruidosas del valor de cada una de las acciones, obtenidas como muestra de los promedios de las recompensas recibidas en todos los juegos con cada acción. Como hemos discutido anteriormente, habrá un sesgo de maximización positivo si utilizamos el máximo de las estimaciones como una estimación del máximo de los valores reales. Una forma de ver el problema se debe al uso de las mismas muestras (jugadas) tanto para determinar la maximización y para estimar su valor. Supongamos que dividimos las jugadas en dos grupos y las usamos para aprender dos estimaciones independientes, llámelos $Q_1(a)$ y $Q_2(a)$, cada uno una estima el valor verdadero $q(a)$, para todos $a \in A$. Nosotros podriamos usar una estimación, por ejemplo $Q_1(a)$, para determinar la acción maximizadora $A^*=argmax_aQ_1(a)$ y el otro termino $Q_2$, para proporcionar la estimación de su valor, $Q_2(A^*)=Q_2(argmax_aQ_1(a))$. Esta estimación será entonces imparcial en el sentido de que $E[Q_2(A^*)]=q(A^*)$. También podemos repetir el proceso con el papel de las dos estimaciones a la inversa para obtener una segunda estimación imparcial $Q_1(argmax_aQ_2(a))$. Esta es la idea del doble aprendizaje. Tengamos en cuenta que aunque aprendemos dos estimaciones, sólo se actualiza una estimación en cada juego, el aprendizaje doble duplica los requisitos de memoria, pero no aumenta la cantidad de cálculo por paso. La idea del doble aprendizaje se extiende naturalmente a los algoritmos para MDPs completos. Por ejemplo, el algoritmo de doble aprendizaje análogo al $Q$-learning, llamado Doble $Q$-learning, divide los pasos de tiempo en dos, quizás tirando una moneda en cada paso. Si la moneda sale cara, la actualización es$$Q_1(S_t,A_t)\leftarrow Q_1(S_t,A_t) + \alpha[R_{t+1}+\gamma Q_2(S_{t+1},argmax_aQ_1(S_{t+1},a)-Q_1(S_{t},A_t))]$$
+
+Si la moneda sale cruz, entonces la misma actualización se hace con $Q_1$ y $Q_2$ conmutado, de modo que Q2 se actualiza. Las dos funciones de valor aproximado se tratan de forma completamente simétrica. La política del comportamiento puede utilizar ambas estimaciones de valor de la acción. Por ejemplo, una "política $\epsilon$-codiciosa para el Doble $Q$-learning podría basarse sobre la media (o la suma) de las dos estimaciones del valor de la acción. Un algoritmo completo para el Double Q-learning se da a continuación. Este es el algoritmo utilizado para producir los resultados de la Figura anterior. En ese ejemplo, El doble aprendizaje parece eliminar el daño causado por el sesgo de maximización. Por supuesto que también hay dobles versiones de Sarsa y sarsa esperado.
+
+**Doble $Q$-Learning**
+
+* Iniciamos $Q_1(s,a)$ y $Q_2(s,a)$, para todo $s\in S$, $a\in A(s)$, arbitrariamente.
+* Iniciamos $Q_1($estado terminal,$\cdot)=Q_1($estado terminal,$\cdot)=0$
+* Repetimos (para cada episodio):
+    + Iniciamos $S$
+    + Repetimos (para cada paso del episodio)
+        - Escogemos $A$ desde $S$ usando una política obtenida a partir $Q_1$ y $Q_2$
+        - Tomamos lam acción $A$, observamos $R$, $S'$
+        - Con probabilidad 0.5$$Q_1(S_t,A_t)\leftarrow Q_1(S_t,A_t) + \alpha[R_{t+1}+\gamma Q_2(S_{t+1},argmax_aQ_1(S_{t+1},a)-Q_1(S_{t},A_t))]$$
+        - Sino
+        $$Q_2(S_t,A_t)\leftarrow Q_2(S_t,A_t) + \alpha[R_{t+1}+\gamma Q_1(S_{t+1},argmax_aQ_2(S_{t+1},a)-Q_2(S_{t},A_t))]$$
+        - $S\leftarrow S'$
+    + Hasta que $S$ sea terminal.
+
+## Juegos, afterstates y otros casos especiales
+
+En este libro tratamos de presentar un enfoque uniforme para una amplia clase de tareas, pero por supuesto siempre hay tareas excepcionales que son mejor tratadas de una manera especializada. Por ejemplo, nuestro enfoque general implica el aprendizaje de una función de valor-acción, pero en el Capítulo 1 presentamos un método de TD para aprender a jugar al tic-tac-tac-toe que aprendió algo mucho más parecido a una función de valor de estado. Si miramos de cerca ese ejemplo, se hace evidente que la función aprendida no tiene ni una función de valor-acción ni una función de valor de estado en el sentido usual. Una función convencional de valor estado evalúa los estados en los que el agente tiene la opción de seleccionar una acción, pero la función de valor estado utilizada en tic-tac-toe evalúa las posiciones del tablero después de que el agente haya hecho su movimiento. Llamemos a estos estados subsiguientes, y a las funciones de valor por encima de estas, funciones de valor de estado afterstate. Los estados posteriores son útiles cuando tenemos conocimiento de una parte inicial de la dinámica del entorno, pero no necesariamente de la dinámica completa. Por ejemplo, en los juegos normalmente conocemos los efectos inmediatos de nuestros movimientos. Sabemos para cada posible jugada de ajedrez cuál será la posición resultante, pero no cómo responderá nuestro oponente. Las funciones de valor afterstate son una forma natural de aprovechar este tipo de conocimiento y, por lo tanto, producir un aprendizaje más eficiente.
+
+La razón por la que es más eficiente diseñar algoritmos en términos afterstate es evidente en el ejemplo del tic-tac-toe. Una función convencional de valor de acción trazaría un mapa desde las posiciones y movimientos hasta una estimación del valor. Pero muchos pares de posición producen la misma posición resultante, como en este ejemplo:
+
+
+![\label{fig:"sd"}](~/Reinforcement-learning/tict.png)
+
+En tales casos las posición son diferentes pero producen la misma posición posterior, y por lo tanto deben tener el mismo valor. Una función convencional de valor acción tendría que evaluar por separado ambos pares, mientras que una función de valor afterstate evaluaría inmediatamente ambos por igual. Cualquier aprendizaje sobre la posición mover par a la izquierda se transferiría inmediatamente al par a la derecha.
+
+Los afterstate surgen en muchas tareas, no sólo en los juegos. Por ejemplo, en las tareas en cola hay acciones tales como asignar clientes a los servidores, rechazar clientes o descartar información. En tales casos, las acciones se niegan en términos de sus efectos inmediatos, que son completamente conocidos.
+
+Es imposible describir todos los tipos posibles de problemas especializados y los correspondientes problemas especializados y sus algoritmos de aprendizaje. Sin embargo, los principios desarrollados en este libro deben aplicarse ampliamente. Por ejemplo, los métodos afterstate se siguen describiendo adecuadamente en términos de la iteración generalizada de políticas, con una política y (afterstate) interactuando esencialmente de la misma manera. En muchos casos uno todavía se enfrentará a la elección entre métodos de políticos y métodos no políticos para gestionar la necesidad de una exploración persistente.
+
+
+
+
+
+

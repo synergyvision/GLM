@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Reinforcement Learning</title>
+  <meta name="description" content="Reinforcement Learning">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Reinforcement Learning" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://synergy.vision/Reinforcement-learning/" />
+  <meta property="og:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+  
+  <meta name="github-repo" content="synergyvision/Reinforcement-learning/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Reinforcement Learning" />
+  
+  
+  <meta name="twitter:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+
+<meta name="author" content="Synergy Vision">
+
+
+<meta name="date" content="2018-12-05">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="introduccion.html">
+<link rel="next" href="procesos-de-decision-de-markov-finitos.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+
+<link rel="stylesheet" href="css\style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><img src="images/logovision-black.png" width="160"></img></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#por-que-leer-este-libro"><i class="fa fa-check"></i>¿Por qué leer este libro?</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#informacion-sobre-los-programas-y-convenciones"><i class="fa fa-check"></i>Información sobre los programas y convenciones</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practicas-interactivas-con-r"><i class="fa fa-check"></i>Prácticas interactivas con R</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#agradecimientos"><i class="fa fa-check"></i>Agradecimientos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="acerca-del-autor.html"><a href="acerca-del-autor.html"><i class="fa fa-check"></i>Acerca del Autor</a></li>
+<li class="chapter" data-level="1" data-path="introduccion.html"><a href="introduccion.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduccion.html"><a href="introduccion.html#reinforcement-learning"><i class="fa fa-check"></i><b>1.1</b> Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.2" data-path="introduccion.html"><a href="introduccion.html#ejemplos"><i class="fa fa-check"></i><b>1.2</b> Ejemplos</a></li>
+<li class="chapter" data-level="1.3" data-path="introduccion.html"><a href="introduccion.html#elementos-del-reinforcement-learning"><i class="fa fa-check"></i><b>1.3</b> Elementos del Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.4" data-path="introduccion.html"><a href="introduccion.html#limitaciones-y-alcance"><i class="fa fa-check"></i><b>1.4</b> Limitaciones y alcance</a></li>
+<li class="chapter" data-level="1.5" data-path="introduccion.html"><a href="introduccion.html#un-ejemplo-clasico-tres-en-linea."><i class="fa fa-check"></i><b>1.5</b> Un ejemplo clásico: tres en linea.</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html"><i class="fa fa-check"></i><b>2</b> Bandido multibrazo</a><ul>
+<li class="chapter" data-level="2.1" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#un-problema-de-bandido-k-brasos"><i class="fa fa-check"></i><b>2.1</b> Un problema de bandido k-brasos</a></li>
+<li class="chapter" data-level="2.2" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#metodos-de-accion-valor"><i class="fa fa-check"></i><b>2.2</b> Métodos de acción valor</a></li>
+<li class="chapter" data-level="2.3" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#pruebas-sobre-el-problema-del-bandido-de-10-brasos"><i class="fa fa-check"></i><b>2.3</b> Pruebas sobre el problema del bandido de 10 brasos</a></li>
+<li class="chapter" data-level="2.4" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#aplicacion-progresiva"><i class="fa fa-check"></i><b>2.4</b> Aplicación progresiva</a></li>
+<li class="chapter" data-level="2.5" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#problemas-no-estacionarios"><i class="fa fa-check"></i><b>2.5</b> Problemas no estacionarios</a></li>
+<li class="chapter" data-level="2.6" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#optimos-valores-iniciales"><i class="fa fa-check"></i><b>2.6</b> óptimos valores iniciales</a></li>
+<li class="chapter" data-level="2.7" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#cota-superior-de-confianza-en-la-seleccion-de-acciones-csc"><i class="fa fa-check"></i><b>2.7</b> Cota superior de confianza en la selección de acciones (CSC)</a></li>
+<li class="chapter" data-level="2.8" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#algoritmo-del-gradiente"><i class="fa fa-check"></i><b>2.8</b> Algoritmo del gradiente</a></li>
+<li class="chapter" data-level="2.9" data-path="bandido-multibrazo.html"><a href="bandido-multibrazo.html#investigacion-asociativa"><i class="fa fa-check"></i><b>2.9</b> Investigación asociativa</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html"><i class="fa fa-check"></i><b>3</b> Procesos de decision de Markov finitos</a><ul>
+<li class="chapter" data-level="3.1" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#el-agente-un-interface-del-entorno"><i class="fa fa-check"></i><b>3.1</b> El agente, Un interface del entorno</a></li>
+<li class="chapter" data-level="3.2" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#metas-y-recompensas."><i class="fa fa-check"></i><b>3.2</b> Metas y recompensas.</a></li>
+<li class="chapter" data-level="3.3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#retornos-y-episodios"><i class="fa fa-check"></i><b>3.3</b> Retornos y episodios</a></li>
+<li class="chapter" data-level="3.4" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#notacion-unificada-tanto-para-tareas-episodicas-y-continuas."><i class="fa fa-check"></i><b>3.4</b> Notación unificada tanto para tareas episodicas y continuas.</a></li>
+<li class="chapter" data-level="3.5" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#politicas-y-funciones-de-valor"><i class="fa fa-check"></i><b>3.5</b> Políticas y funciones de valor</a></li>
+<li class="chapter" data-level="3.6" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#funciones-de-valor-y-politicas-optimas"><i class="fa fa-check"></i><b>3.6</b> Funciones de valor y políticas optimas</a></li>
+<li class="chapter" data-level="3.7" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#optimalidad-y-aproximacion"><i class="fa fa-check"></i><b>3.7</b> Optimalidad y aproximación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html"><i class="fa fa-check"></i><b>4</b> Programación dinámica</a><ul>
+<li class="chapter" data-level="4.1" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#politicas-evaluadas-prediccion"><i class="fa fa-check"></i><b>4.1</b> Políticas evaluadas (Predicción)</a></li>
+<li class="chapter" data-level="4.2" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#mejora-de-las-politicas"><i class="fa fa-check"></i><b>4.2</b> Mejora de las políticas</a></li>
+<li class="chapter" data-level="4.3" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-politicas"><i class="fa fa-check"></i><b>4.3</b> Iteración de políticas</a></li>
+<li class="chapter" data-level="4.4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-valores"><i class="fa fa-check"></i><b>4.4</b> Iteración de valores</a></li>
+<li class="chapter" data-level="4.5" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#programacion-dinamica-asincronica."><i class="fa fa-check"></i><b>4.5</b> Programación dinámica asincrónica.</a></li>
+<li class="chapter" data-level="4.6" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-generalizada-de-politicas"><i class="fa fa-check"></i><b>4.6</b> Iteración generalizada de políticas</a></li>
+<li class="chapter" data-level="4.7" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#eficiencia-de-la-programacion-dinamica"><i class="fa fa-check"></i><b>4.7</b> Eficiencia de la programación dinámica</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html"><i class="fa fa-check"></i><b>5</b> Métodos de Montecarlo</a><ul>
+<li class="chapter" data-level="5.1" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#prediccion-con-monte-carlo"><i class="fa fa-check"></i><b>5.1</b> Predicción con Monte Carlo</a></li>
+<li class="chapter" data-level="5.2" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#estimacion-de-monte-carlo-de-los-valores-de-accion"><i class="fa fa-check"></i><b>5.2</b> Estimación de Monte Carlo de los Valores de Acción</a></li>
+<li class="chapter" data-level="5.3" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control"><i class="fa fa-check"></i><b>5.3</b> Métodos de Monte Carlo con control</a></li>
+<li class="chapter" data-level="5.4" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control-sin-iniciar-exploracion"><i class="fa fa-check"></i><b>5.4</b> Métodos de Monte Carlo con control sin iniciar exploración</a></li>
+<li class="chapter" data-level="5.5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#predicciones-no-politicas-via-muestreos-de-importancia."><i class="fa fa-check"></i><b>5.5</b> Predicciones no políticas via muestreos de importancia.</a></li>
+<li class="chapter" data-level="5.6" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#implementacion-incremental"><i class="fa fa-check"></i><b>5.6</b> Implementación incremental</a></li>
+<li class="chapter" data-level="5.7" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#monte-carlo-no-politico-con-control"><i class="fa fa-check"></i><b>5.7</b> Monte Carlo no político con control</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html"><i class="fa fa-check"></i><b>6</b> Aprendizaje por Diferencia Temporal</a><ul>
+<li class="chapter" data-level="6.1" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#prediccion"><i class="fa fa-check"></i><b>6.1</b> Predicción</a></li>
+<li class="chapter" data-level="6.2" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#ventajas-de-los-metodos-de-prediccion-de-td"><i class="fa fa-check"></i><b>6.2</b> Ventajas de los métodos de predicción de TD</a></li>
+<li class="chapter" data-level="6.3" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#calidad-de-td0"><i class="fa fa-check"></i><b>6.3</b> Calidad de TD(0)</a></li>
+<li class="chapter" data-level="6.4" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-td-politico-con-control"><i class="fa fa-check"></i><b>6.4</b> Sarsa: TD político con control</a></li>
+<li class="chapter" data-level="6.5" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#q-learning-td-no-politico-con-control"><i class="fa fa-check"></i><b>6.5</b> Q-Learning: TD no político con control</a></li>
+<li class="chapter" data-level="6.6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-esparada"><i class="fa fa-check"></i><b>6.6</b> Sarsa esparada</a></li>
+<li class="chapter" data-level="6.7" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sesgo-de-maximizacion-y-doble-aprendizaje"><i class="fa fa-check"></i><b>6.7</b> Sesgo de maximización y doble aprendizaje</a></li>
+<li class="chapter" data-level="6.8" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#juegos-afterstates-y-otros-casos-especiales"><i class="fa fa-check"></i><b>6.8</b> Juegos, afterstates y otros casos especiales</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html"><i class="fa fa-check"></i><b>7</b> Bootstrapping en <span class="math inline">\(n\)</span>-pasos</a><ul>
+<li class="chapter" data-level="7.1" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html#prediccion-de-td-en-n-pasos"><i class="fa fa-check"></i><b>7.1</b> Predicción de TD en <span class="math inline">\(n\)</span> pasos</a></li>
+</ul></li>
+<li class="appendix"><span><b>Apéndice</b></span></li>
+<li class="chapter" data-level="A" data-path="software-tools.html"><a href="software-tools.html"><i class="fa fa-check"></i><b>A</b> Software Tools</a><ul>
+<li class="chapter" data-level="A.1" data-path="software-tools.html"><a href="software-tools.html#r-and-r-packages"><i class="fa fa-check"></i><b>A.1</b> R and R packages</a></li>
+<li class="chapter" data-level="A.2" data-path="software-tools.html"><a href="software-tools.html#pandoc"><i class="fa fa-check"></i><b>A.2</b> Pandoc</a></li>
+<li class="chapter" data-level="A.3" data-path="software-tools.html"><a href="software-tools.html#latex"><i class="fa fa-check"></i><b>A.3</b> LaTeX</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Reinforcement Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bandido-multibrazo" class="section level1">
+<h1><span class="header-section-number">Capítulo 2</span> Bandido multibrazo</h1>
+<p>La más importante característica que distingue al Reinforcement Learning es que usa información de entrenamiento que evalua las acciones tomadas en vez de tomar la información de las acciones correctas. Esto implica la necesidad de explorar las acciones a tomar en el entorno, para encontar algún buen comportamiento. En este capítulo abordaremos un problema relativamente sencillo del Reinforcement Learning, el no asociativo. Aquí estudiaremos una simple versión del problema del bandido multibrazo, este problema introduce un número de métodos de aprendizaje que serán extendidos en los siguientes capítulos.</p>
+<div id="un-problema-de-bandido-k-brasos" class="section level2">
+<h2><span class="header-section-number">2.1</span> Un problema de bandido k-brasos</h2>
+<p>Consideremos el siguiente problema de aprendizaje. Usted se enfrenta repetidamente a una elección entre k diferentes opciones, o acciones. Despues de tomar una decisión recibira una recompensa que depende de la accion tomada (la recompensa no es fija, es decir, sigue una ley de probabilidad para cada de decisión), el objetivo es maximizar las ganancias recibidas despues de <span class="math inline">\(n\)</span> repeticiones.</p>
+<p>Esta es la forma original del problema del bandido k-brasos, o tambien conocido como máquina tragamonedas, cada acción seleccionada es como un juego de una maquina tragamonedas</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/monedas.jpg" alt="Serie de maquinas tragamonedas" />
+<p class="caption">Serie de maquinas tragamonedas</p>
+</div>
+<p>En este problema, cada una de las k acciones tiene una esperanza o ganancia media dado que la acción es seleccionada; a esto lo llamaremos el valor de la acción. Denotaremos la accion seleccionada en el paso <span class="math inline">\(t\)</span> como <span class="math inline">\(A_t\)</span>, y su respectiva recompensa como <span class="math inline">\(R_t\)</span>. El valor de una acción arbitraria <span class="math inline">\(a\)</span>, sera denotada por <span class="math inline">\(q_*(a)\)</span>, es la esperanza de las ganancias dado que se selecciono la accion <span class="math inline">\(a\)</span>: <span class="math display">\[q_*(a) \doteq E[R_t|A_t=a]\]</span></p>
+<p>Si conocieramos el valor de cada acción, entonces este problema fuera trivial, pues siempre escogieramos la acción con mayor valor. Supondremos que no las conocemos con presición, aunque podriamos estimarlas. Denotaremos el valor estimado de la accion <span class="math inline">\(a\)</span> en el tiempo <span class="math inline">\(t\)</span> como <span class="math inline">\(Q_t(a)\)</span>. Por supuesto, queremos que <span class="math inline">\(Q_t(a)\)</span> sea cercano a <span class="math inline">\(q_*(a)\)</span>. Si nos mantenemos estimando las acciones a lo largo de tiempo en cierto momento obtendremos una acción con mayor valor, a estas acciones se les conoce como las acciones ambiciosas. Cuando se selecciona una de estas acciones decimos que estamos explotando el conocimiento actual del sistema. Si en vez de esto seleccionamos una de las acciones no codiciosas decimos que estamos explorando el sistema, esto le hacemos para mejorar la estimacion de las acciones no codiciosas. En general, no sabemos si de verdad la accion codiciosa es la correcta, pues proviene de una estimación, esto implica que la exploracion sea tan importante. Debemos destacar que el balance entre exploracion y explotacion depende de lo sofisticado del problema, y no nos enfocaremos en este libro en este tema.</p>
+</div>
+<div id="metodos-de-accion-valor" class="section level2">
+<h2><span class="header-section-number">2.2</span> Métodos de acción valor</h2>
+<p>Iniciaremos esta seccion con algunos métodos para estimar los valores de las acciones y usar estas para tomar decisiones, recordemos que el verdadero valor de la acción es el valor medio de las recompensas cuando la acción es seleccionada. Una forma natural de estimar esto es con: <span class="math display">\[Q_t(a)\doteq \frac{\textrm{suma de las ganancias cuando las acciones son } a \textrm{ hasta el tiempo } t}{\textrm{ numero de veces que se tomo la accion }a\textrm{ hasta el tiempo t}}=\frac{\sum_{i=1}^{t}R_i.1_{A_i=a}}{\sum_{i=1}^{t}1_{A_i=a}}\]</span></p>
+<p>Este técnica para aproximar <span class="math inline">\(q_*(a)\)</span> es la mas sencilla de todas, sabemos que converge al valor real por la ley fuerte de los grandes números. Obviamente esta no es la única ni la mas sencilla forma de estimar el valor verdadero de la acción <span class="math inline">\(a\)</span> pero es la mas simple de programar.</p>
+<p>La regla mas simple para escoger la mejor accion es seleccionar la acción con mayor valor estimado, pero esto en realidad sería una decisión codiciosa y ya hablamos de las posibles desventajas de seleccionar siempre estas acciones. Esta regla se puede escribor como: <span class="math display">\[A_t\doteq argmax_a \quad Q_t(a)\]</span></p>
+<p>Una forma de evitar la explotación del conocimiento de forma tan enfática es escoger un porcentaje <span class="math inline">\(\epsilon\)</span> de acciones no codiciosas y el resto de la casos escoger las acciones codiciosas, esto nos ayuda a adaptarnos a cabios paulatinos del sistema, llamaremos a esta regla de escogencia como <span class="math inline">\(\epsilon\)</span>-codicioso. Esta regla implica que la probabilidad de escoger la acción óptima luego de haber estimado los valores de las acciones es <span class="math inline">\(1-\epsilon\)</span></p>
+</div>
+<div id="pruebas-sobre-el-problema-del-bandido-de-10-brasos" class="section level2">
+<h2><span class="header-section-number">2.3</span> Pruebas sobre el problema del bandido de 10 brasos</h2>
+<p>Supongamos que tenemos un problema de 10 acciones posibles, las recompensas que otorga cada accion son estocásticas y siguen una ley de probabilidad normal con varianza 1, para escoger la media de cada recompensa simplemente generamos un valor aleatorio normal estandar y varianza siempre 1. Como se ve en la siguiente figura:</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/codi.png" alt="Serie de maquinas tragamonedas" />
+<p class="caption">Serie de maquinas tragamonedas</p>
+</div>
+<p>Ahora ejucatermos tres reglas de seleccion, codicioso, 0.1-codicioso, 0.01-codisioso, obteniendo la segunda grafica de la imagen anterior.</p>
+<p>Esto muestra que debe haber un equilíbrio entre explotación y explración</p>
+</div>
+<div id="aplicacion-progresiva" class="section level2">
+<h2><span class="header-section-number">2.4</span> Aplicación progresiva</h2>
+<p>Al hablar de costos computacionales el hacer un promedio luego de millones de ejecucuiones puede ocupar mucho espacio en memoria, es decir, un cálculo tan sencillo como <span class="math inline">\(Q_n=\frac{R_1+R_2+...+R_n}{n}\)</span> puede tardar mucho tiempo. Este problema puede ser fácilmente resuelto con la siguiente manipulación algebraica.<span class="math display">\[\begin{align}
+ Q_{n+1} &amp;= \frac{1}{n}\sum_{i=1}^{n}R_{i} = \frac{1}{n}(R_n+\sum_{i=1}^{n-1}R_{i})=\frac{1}{n}(R_n+(n-1)\frac{1}{n-1}\sum_{i=1}^{n-1}R_{i}) \\
+  &amp;= \frac{1}{n}(R_n+(n-1)Q_n)=\frac{1}{n}(R_n+(nQ_n-Q_n)) \\
+  &amp;= Q_n+\frac{1}{n}(R_n-Q_n)
+\end{align}\]</span></p>
+<p>Así basta simplemente con guardar la estimación anterior, la última recompensa y el valor de la ejecución actual. De esta forma un algoritmo para estimar los valores de las acciones de una forma relativamente óptima sería:</p>
+<ul>
+<li>iniciamos, para <span class="math inline">\(a \in \{ 1,2...,k\}\)</span></li>
+<li><span class="math inline">\(Q(a) = 0\)</span></li>
+<li><p><span class="math inline">\(N(a) = 0\)</span></p></li>
+<li>Repetimos por siempre</li>
+<li><p><span class="math display">\[A = \left\{
+\begin{array}{c l}
+ argmax_a\quad Q(a) \qquad \textrm{con probabilidad }1-\epsilon \\
+ \textrm{Una accion aleatoria } a\textrm{ con probabilidad }\epsilon \\
+\end{array}
+\right.\]</span></p></li>
+<li><span class="math display">\[R=bandit(A)\]</span></li>
+<li><span class="math display">\[N(A)=N(A)+1\]</span></li>
+<li><p><span class="math display">\[Q(A)=Q(A)+\frac{1}{N(A)}[R-Q(A)]\]</span></p></li>
+</ul>
+<p>En general la regla es de le forma “Nueva est. = Vieja est. + parámetro[Recompensa - Vieja est.]”</p>
+</div>
+<div id="problemas-no-estacionarios" class="section level2">
+<h2><span class="header-section-number">2.5</span> Problemas no estacionarios</h2>
+<p>En general estos métodos que se basan en promedios son adecuados para problemas estacionarios, es decir, cuando las probabilidades de las recompensas no varian con respecto al tiempo. Pero muy frecuentemente los problemas a los que nos enfrentamos son no estacionarios. En tales casos, tiene sentido dar más peso a las recompensas recientes que a las recompensas pasadas. Una forma de hacer este ajuste y la mas popular es ajustar el parametro de paso, escogiendolo de forma adecuada <span class="math inline">\(\alpha \in (0,1]\)</span>, de la siguiente forma:<span class="math display">\[\begin{align}
+ Q_{n+1} &amp;= Q_n+\alpha(R_n-Q_n)\\
+ &amp;= \alpha R_n+(1-\alpha)Q_n\\
+ &amp;=\alpha R_n+(1-\alpha)[\alpha R_{n-1}+(1-\alpha)Q_{n-1}] \\
+&amp;= \alpha R_n+(1-\alpha)\alpha R_{n-1}+(1-\alpha)^{2}Q_{n-1} \\
+  &amp;= (1-\alpha)^{n}Q_{1}+\sum_{i=1}^n\alpha(1-\alpha)^{n-i}R_i
+\end{align}\]</span></p>
+<p>Nos damos cuenta que el término <span class="math inline">\(\alpha(1-\alpha)^{n-i}\)</span> hace que las recompensas tiendan a cero luego de muchos pasos, es decir, <span class="math inline">\(R_i\)</span> decrece exponencialmente.</p>
+<p>Algunas veces es conveniente variar el parametro de paso, a medida que aumenta el <span class="math inline">\(n\)</span>. Sea <span class="math inline">\(\alpha_n(a)\)</span> el parámetro de paso usado cuando se selecciona por <span class="math inline">\(n\)</span>-esima vez la acción <span class="math inline">\(a\)</span>. Si escogemos simplemente <span class="math inline">\(\alpha_n(a)=\frac{1}{n}\)</span> obtenemos el método de los promedios, lo cual nos garantiza la convergencia verdadera por la ley fuerte de los grandes números, pero no cualquier escogencia nos asegura la convergencia. Es bien conocido por el area de la aproximacion estocástica que las condiciones para que halla convergencia con probabilidad 1 son:<span class="math display">\[\sum_{i=1}^n\alpha_n(a)=\infty \quad \textrm{y}\quad\sum_{i=1}^n\alpha_n^2(a) &lt; \infty\]</span>La primera condición se requiere para garantizar que los pasos sean lo suficientemente grandes como para eventualmente superar cualquier condición inicial o fluctuaciones aleatorias. La segunda condición garantiza que eventualmente los pasos son lo suficientemente pequeños como para asegurar la convergencia.</p>
+<p>Notemos que estas condiciones se cumplen para el caso en que <span class="math inline">\(a_n(a)=\frac{1}{n}\)</span>, para el caso en que <span class="math inline">\(a_n(a)\)</span> es una constante se cumple la primera condición, pero la segunda no, esto implica que la convergencia nunca ocurre completamente y continua variando en respuesta a nuevas ganancias recibidas. Como ya hemos mencionado, los problemas no estacinarios son los que nos interesan, por lo que mantener que el algoritmo sea sensible a estas variaciones de las recompensas es fundamental. En general las condiciones anteriores son teóricas y se usan en investigaciones, el cual no será el enfoque de este libro.</p>
+</div>
+<div id="optimos-valores-iniciales" class="section level2">
+<h2><span class="header-section-number">2.6</span> óptimos valores iniciales</h2>
+<p>En todo los métodos que hemos discutido, en parte, todos ellos dependen del valor inicial de la estimación, en estadística esto significa que los métodos son sesgados. Para el caso en que usamos promedios para la estimación el sesgo desaparece una vez todos los casos han sido seleccionados, pero en los métodos con constante <span class="math inline">\(\alpha\)</span> el sesgo disminuye en el transcurso del tiempo pero no desaparece. La desventaja es que la escogencia de las condiciones iniciales se convierte en la decisión particular del usuario de un conjunto de parametros iniciales, así sea ponerlas todas en cero. La parte positiva es que con la ayuda de la experiencia podemos proponer buenos valores iniciales para la estimación.</p>
+<p>Usar de forma inteligente valores iniciales puede fomentar la exploración, supongamos que tenemos un problema de bandido 10 brazos, donde las recompensas provienen de una normal estandar, si escogemos como valores iniciales 5 en vez de 0 como es lo usal, estaremos sobre-estimando las ganancias, por lo cual aseguraremos que el agente pase por todas las acciones posibles en un trancurso de tiempo rápido. En la siguiente figura vemos esta comparación.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/optimas.png" alt="Comparacion al escoger valores iniciales optimos y realistas" />
+<p class="caption">Comparacion al escoger valores iniciales optimos y realistas</p>
+</div>
+<p>Estas técnicas que se basan en estimular la exploración serán llamadas métodos de valores iniciales optimistas. Este truco puede ser ideal para fomentar la exploración en problemas estacionarios, pero esta lejos de ser realmente util en problemas no estacionarios pues ellos van cambiando su comportamiento y una estimacion previa puede no ser de utilidad en el trancurso del tiempo. De hecho, es poco probable que cualquier método que se centre en las condiciones iniciales de manera especial ayude en el caso general no estacionario. El inicio ocurre sólo una vez, y por lo tanto no debemos enfocarnos demasiado en él. Esta crítica se aplica también a los métodos de promedios, que también tratan el comienzo del tiempo como un evento especial, promediando todas las recompensas subsiguientes con igual peso. Sin embargo, todos estos métodos son muy simples, sin embargo uno de ellos, o una simple combinación de ellos, es a menudo adecuado en la práctica.</p>
+</div>
+<div id="cota-superior-de-confianza-en-la-seleccion-de-acciones-csc" class="section level2">
+<h2><span class="header-section-number">2.7</span> Cota superior de confianza en la selección de acciones (CSC)</h2>
+<p>La exploración es necesaria debido a que siempre hay incertidumbre acerca de las estimaciones de los valores de las acciones. Las acciones codiciosas pueden ser mejores en el tiempo actual pero puede ocultar la mejora de otras acciones en problemas no estacionarios, es por esto que metodos <span class="math inline">\(\epsilon\)</span>-codiciosos, sacan a la luz acciones que hn permanecido acultas pero que pudieran ser más productivas en ese momento, pero este método no discrimina entre las acciones no codiciosas. Seria mejor seleccionar entre las acciones no codiciosas las que tengan mas potencial de ser óptimas, teniendo en cuenta la maximización de sus acciones y la incertidumbre sobre las mismas. Una forma efectiva de hacer esto es seleccionar la acción no codiciosa, con la siguiente regla:<span class="math display">\[A_t=argmax\bigg{[}Q_{t}(a)+\sqrt[c]{\frac{ln(t)}{N()}}\bigg{]}\]</span> donde <span class="math inline">\(ln(t)\)</span> denota el logaritmo neperiano evaluado en <span class="math inline">\(t\)</span>, <span class="math inline">\(N_t(a)\)</span> denota el número de veces que la acción <span class="math inline">\(a\)</span> ha sido seleccionada hasta el paso <span class="math inline">\(t\)</span> y el número <span class="math inline">\(c &gt; 0\)</span> controla grado de exploración.</p>
+<p>La idea de esta selección es que el término de la raiz sea una medida de incertidumbre o varianza en la estimación del valor. Por lo que la cantidad que se esta maximizando es una especie cota superior sobre el posible valor real de la acción <span class="math inline">\(a\)</span>, donde <span class="math inline">\(c\)</span> determina el nivel de confianza. Cada vez que se selecciona <span class="math inline">\(a\)</span> la incertidubre se reduce: <span class="math inline">\(N_t(a)\)</span> incrementa y como se encuentra en el denominador el segundo termino de la suma decredce, lo cual reduce la varianza. El uso del logaritmo significa que los aumentos se reducen con el tiempo, pero son ilimitadas. Todas las acciones serán seleccionadas, pero las acciones con valores estimados más bajos, o que ya han sido seleccionadas con frecuencia, serán seleccionadas con frecuencia decreciente en el tiempo.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/ganancias.png" alt="Promedio de ganancias al escoger las acciones con el método CSC y 0,1-codicioso" />
+<p class="caption">Promedio de ganancias al escoger las acciones con el método CSC y 0,1-codicioso</p>
+</div>
+</div>
+<div id="algoritmo-del-gradiente" class="section level2">
+<h2><span class="header-section-number">2.8</span> Algoritmo del gradiente</h2>
+<p>Hasta ahora hemos estudiado métodos que estiman los valores de las acciones y usan esta estimación para seleccionar acciones. Esto frecuentemente es un buen enfoque, pero no el único. En esta sección consideraremos aprender una preferencia numérica para cada acción <span class="math inline">\(a\)</span>, la cual denotaremos <span class="math inline">\(H_t(a)\)</span>, la mayor preferencia es la acción mas tomada, pero la preferencia no tiene interpretación en términos de ganancias. únicamnete la preferencia relativa de una acción sobre otra es importante. Si agregamos 100 a cada acción esta no afectaran las probabilidades de acción, las cuales son determinadas por las distribuciones Gibbs o Boltzmann, como sigue: <span class="math display">\[P\{ A_t=a\}=\frac{e^{H_t(a)}}{\sum_{b=1}^{k}e^{H_t(b)}}=\pi_t(a)\]</span> Donde <span class="math inline">\(\pi_t(a)\)</span> es la probabilidad de tomar la acción <span class="math inline">\(a\)</span> en el tiempo <span class="math inline">\(t\)</span>. Inicialmente todas las preferencias son iguales (por ejemplo, <span class="math inline">\(H_1(a)=0\)</span> para toda acción <span class="math inline">\(a\)</span>) es decir todas las acciones tienen la misma preferencia.</p>
+<p>Hay un algoritmo de aprendizaje basado en la idea del descenso del gradiente estocástico. En cada paso, despues de seleccionar la acción <span class="math inline">\(A_t\)</span> y recibir la recompensa <span class="math inline">\(R_t\)</span>, las preferencias son actualizadas así:<span class="math display">\[H_{t+1}(A_t)=H_{t}(A_t)+\alpha(R_t-\overline{R_t})(1-\pi_t(A_t))\]</span> y <span class="math display">\[H_{t+1}(a)=H_{t}(a)+\alpha(R_t-\overline{R_t})(\pi_t(a))\quad\textrm{para todo }a\neq A_t\]</span> donde <span class="math inline">\(\alpha &gt; 0\)</span> es el parámetro de paso, y <span class="math inline">\(\overline{R_t}\)</span> es el promedio de todas las recompensas haste el tiempo <span class="math inline">\(t\)</span>. <span class="math inline">\(\overline{R_t}\)</span> sirve como un umbral con el que se compara las recompensas. Si <span class="math inline">\(R_t\)</span> es mayor que el umbral la probabilidad de seleccionar la accion <span class="math inline">\(A_t\)</span> aumenta y viceversa.</p>
+</div>
+<div id="investigacion-asociativa" class="section level2">
+<h2><span class="header-section-number">2.9</span> Investigación asociativa</h2>
+<p>Hasta ahora en este capítulo solo hemos considerado problemas no asociativos, es decir, no hay necesidad de asociar diferentes acciones con diferentes situaciones.En estas tareas, el alumno trata de encontrar la mejor acción cuando la tarea es estacionaria, o trata de econtrar la mejor acción a medida que el entorno cambia con el tiempo cuando la tarea no es estacionaria. Sin embargo, en Reinforcement Learning hay mas de una situación y la meta, es aprender una política: una función que tenga como dominio situaciones y rango de acciones óptimas en esas situaciones. Para prepararnos para esto discutiremos brevemente como las tareas no asociativas se extienden a ajustes asosiativos.</p>
+<p>Por ejemplo, supongamos que hay varios problemas de bandidos de k-brasos, y que en cada paso te enfrentas a uno de ellos aleatoriamente, es decir cambia de un paso a otro al azar. Pareciera que estamos en un problema no estacionario en el que el valor de las acciones cambia aleatoriamente y estariamos tentados a usar uno de los métodos vistos anteriormente para intentar afrontar esto, pero a menos que las acciones cambien sus valores de forman no tan drastica estariamos utilazando métodos que se adaptarian de forma muy lenta a las distintas situaciones que afrontamos. Supongamos que estamos en dos problemas de k brazos y dependiendo del alguna condicion usamos aproximaciones diferentes, es decir si se cumple la condicion 1 usar la aproximacion 1 si se cumplen la condicion 2 usar la aproximación 2. Con una política correcta uno pudiera hacer esta selección de una forma mas adecuada en el caso de no tener información clara que permita distinguir que condición se cumple.</p>
+<p>Esto es un ejemplo de busqueda asosiativa, llamada así por que estimula el intenta y error en momentos en el que se esta aprendiendo buscar mejores acciones, y asociar estas acciones con las situaciones en las cuales ellas son mejores. La tarea de buscar asociaciones es llamada bandido contextual en la literatura. En conclusión esto se puede considerar como el problema del Reinforcement Learning semi-completo, pues involucra el aprendizaje de una politica, se nota la diferencia con el problema de k-brasos en el cual las acciones son afectadas por la ganancia inmediata, si se permite que las acciones afecten tanto a la siguiente situación como a la recompensa, entonces tenemos el problema de Reinforcement Learning completo. Esto será presentado en el siguiente capítulo.</p>
+
+</div>
+</div>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-78759535-1', 'auto');
+ga('send', 'pageview');  
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduccion.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="procesos-de-decision-de-markov-finitos.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/synergyvision/Analisis_y_Medida/edit/master/bookdown/100-capitulo1.Rmd",
+"text": "Edit"
+},
+"download": ["Reinforcement Learning.pdf"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

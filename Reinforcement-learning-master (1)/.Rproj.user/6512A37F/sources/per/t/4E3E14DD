@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1545056988765.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1736762491",
+    "id" : "4E3E14DD",
+    "lastKnownWriteTime" : 1545057456,
+    "last_content_update" : 1545057456691,
+    "path" : "~/Documents/Synergy Vision/app/mi_app.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "0,14",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

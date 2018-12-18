@@ -1,0 +1,218 @@
+# Procesos de decision de Markov finitos
+
+En este capitulo introduciremos de manera formal el problema de un proceso de decisión de Markov finito, o MDP finito, por sus siglas en ingles (Markov decision processes), el cual inentaremos resolver en el resto del libro. Este problema involucra una retroalimnetación evaluativa, como el capítulo del problema del bandido, pero ademas involucra un aspecto asociativo, escogiendo diferentes acciones en diferentes situaciones. MDP son una formalización de las decisiones sequenciales, donde las acciones influyen no solo en las recompensas inmediatas, sino en las subsequentes situaciones, o estados a través de esas recompensas futuras. Las MDP implican una recompensa diferida o descontada y la necesidad de equilibrar recompensas inmediatas y diferidad. Mientras en el problema del bandido estimavamos el valor $q_*(a)$ de la acción $a$, en MDP estimaremos el valor $q_*(s,a)$ de la acción $a$ en el estado $s$, o estimaremos el valor $v_*(s)$ de cada estado dando selecciones de acciones optimas. Esta cantidades dependientes de los estados son esenciales para asignar el beneficio de posteriores selecciones de subsucesiones de acciones individuales.
+
+MDP son una herramienta matematicamente idealizada para resolver el problema de Reinforcement Learning, el cual tiene solidas afirmaciones teóricas. Se definiran terminos provenientes de la estructura matematica tales como retornos, funciones de valor y ecuación de bellman. Como en toda la inteligencia artificial, existe una tensión entre la amplitud de la aplicabilidad y la manejabilidad matemática. En este capítulo presentamos esta tensión y discutimos algunos de los compromisos y desafíos que implica.
+
+##  El agente, Un interface del entorno
+
+Los MDP estan pensados como un marco sencillo en el proceso de aprendizaje proveniente de la interacción para alcanzar una meta. El alumno y el que toma la decision son llamados el agente. Todo lo que puede interactuar el agente es llamado entorno. Este interactua continuamente, el selecciona acciones y el entorno responde a estas acciones y presenta nuevas situaciones al agente. El entorno ademas da recompensas, valores numericos que el agente busca maximizar en el transurso del tiempo a traves de la seleccion de acciones. Ver siguiente figura.
+
+![Interacción entre el agente y el entorno en un proceso de decision de Markov\label{fig:"sd3"}](~/Reinforcement-learning/entorno.png)
+
+De forma mas especifica, el agente y el entorno interactuan en cada sucesión de tiempo discreto, $t = 0,1,2,...$ En cada tiempo $t$, el agente recibe alguna representación del estado del entorno, $S_t \in \textit{S}$, y sobre esta información selecciona una acción, $A_t \in \textit{A}(s)$, en cada momento en parte por la implementación de acciones el agente recibe recompensa numerica $R_{t+1} \in \textit{R} \subset \mathbb{R}$ y se encuentra en un nuevo estado, $S_{t+1}$. En general uno puede describir este proceso como la siguiente sucesion o trayectoria:$$S_0,A_0,R_1,S_1,A_1,R_2,S_2,A_2,R_3,....$$
+
+En una MDP finita, los conjunto de estados, acciones y recompensas son finitos, es decir tiene un numero finito de elementos. En este caso, las vsriables aleatorias $R_t$ y $S_t$ tienen bien definidas distribuciones de probabilidad discreta las cuales dependen unicamente del anterior estado y acción. Esto es, para particulares valores de estas variables aleatorias, $s´\in \textit{S}$ y $r\in \textit{R}$, existe una probabilidad de que esos valores se produzcan en el tiempo t, dados los valores particulares del estado y la acción precedente: $$p(s´,r|s,a) \doteq p(S_t=s´, R_t=r|S_{t-1}=s,A_{t-1}=a)$$ para todo $s´,s\in \textit{S}$, $r \in \textit{R}$ y $a\in\textit{A}(s)s$. La función $p:\textit{S}\textrm{x}\textit{R}\textrm{x}\textit{S}\textrm{x}\textit{A}\rightarrow[0,1]$ es una función eterminada por cuatro argumentos. Recordemos que $p$ determina la distribución de probabilidad de cada para $s$ y $a$. esto es:$$\sum_{s´\in\textit{S}}\sum_{r\in\textit{R}}p(s´,r|s,a)=1,\quad\textrm{para todo }s\in \textit{S},a\in \textit{A}(s)$$ La probabilidad dada por esto cuatro argumentos caracteriza copletamente el dinamismo de una MDP, A partir de ella, se puede calcular cualquier otra cosa que se quiera saber sobre el entorno, como por ejemplo las probabilidades de transición de los estados, de la siguiente forma:$$p(s´|s,a)\doteq \sum_{r\in\textit{R}}p(s´,r|s,a)$$ Ademas podemos calcular la esperanza esperada por un par estado-acción de la siguiente forma: $$r(s,a) \doteq \sum_{r\in\textit{R}}r\sum_{s´\in\textit{S}}p(s´,r|s,a)$$ Tambien podemos calcular las recompensas del proximo estado mediante $$r(s,a,s´)  \doteq \sum_{r\in\textit{R}}r\frac{p(s´,r|s,a)}{p(s´|s,a)}$$
+
+El marco de un MDP es abstracto y se puede aplicar a muchos problemas diferentes. Por ejemplo los pasos en el tiempo no necesitan referirse a intervalos de tiempo real, puede referirse a etapas sucesivas de toma de decisiones. Las acciones pueden ser deb bajo nivel, tales como las tensiones aplicadas a los motores a los motores de un brazo robotico, o decisiones de alto nivel, tales como decidir comer o ir a alguna parte. Del mismo modo, los estados pueden adoptar una amplia variedad de forma, pueden estar determinados por sensaciones de bajo nivel, como lecturas de un sensor, o pueden ser de alto nivel, comolas descripciones simbolicas de los objetos de una habitacion. Algunas acciones pueden ser totalmente mentales o computacionales. En general las acciones pueden ser cualquier decision que queramos aprender a tomar, y los estados cualquier cosa que podamos saber que pueda ser util. Acontinuación veremos algunos ejemplos:
+
+**Ejemplo 1: Biorreactor:** Supongamos que queremos usar Reinforcement Learning para determinar las temperaturas momento a momento y las velocidades de agitación de un biorreactor (una gran fuente de nutrientes y bacterias utilizada para producir químicos útiles). Las acciones en una aplicación de este tipo podrían ser ajustar a una temperatura objetivo y las velocidades de agitación que se transmiten a los sistemas de control de nivel inferior que, a su vez, activan directamente los elementos calefactores y los motores para alcanzar la orden. Los estados probablemente fueran la temperatura y otras lecturas sensoriales. Las recompensas pueden ser medidas en cantidad de producto quimico alcanzado.
+
+**Ejemplo 2: Robot que recicla:** Un robot tiene como objetivo recolectar latas vacias de refresco en el entorno de una oficina, este robot pose un detector de latas vacias, y un braso y una pinza que puede tomar las latas y ponerlas en un contenedor interno, el funciona con una bateria recargable. El sistema de control del robot tiene componentes para interpretar la información sensorial, para su movimiento, y para el control del braso y la pinsa. Decisiones de alto nivel para el robot es de como buscar las latas vacias usando un agente de Reinforcement Learning que se basa en la nivel de carga actual de la bateria. El agente tiene que decidir si el agente debe:
+
+* Buscar activamente una lata durante un cierto periodo de tiempo.
+
+* Permanecer inmovil y esperar por que alguien traiga una lata.
+
+* Regresar y recargar baterias.
+
+Estas decisiones deben tomarse periodicamente o siemre que ocurra un evento especifico, tal como encontrar un recipiente vacio. En conclusion, el agente tiene tres posibles acciones y el estado es determinado principalmente por el nivel actual de bateria. Las recompensas pudieran ser cero la mayor parte del tiempo y positivas cuando el robot consiga una lata vacia. En este ejemplo el agente no es el robot completo, solo el que se encarga de decidir que hacer, no se encarga de los asuntos mecanicos del robot, como por ejemplo el movimiento.
+
+**Ejemplo 3: Robot que recicla (MDP):** El ejemplo anterior puede ser convertido de forma sencilla y con algunos detalles en un MDP. Recordemos que el agente toma una decision de acuerdo a determinados eventos externos. El robot toma las decisiones enumeradas anteriormente. La mejor forma de encontrar puede ser buscarla activamente, pero esto consumiria rapidamente la bateria. Siempre que el robot esté buscando, existe la posibilidad de que su batería se agote, en ese caso el robot debe apagarse y esperar que lo rescaten.
+
+El agente toma sus decisiones en funcion solamente del nivel de bateria, así distinguimos dos niveles, alta y baja bateria, por lo cual el conjunto de estados es: $\textit{S}=\{$ alta, baja $\}$, y las acciones a tomar serán buscar, esperar y recargar. Asi el conjunto de acciones que se pueden tomar dependiendo la bateria son:$$\textit{A}(\textrm{Alta})\doteq\{\textrm{Buscar}, \textrm{Esperar}\}$$y$$\textit{A}(\textrm{Baja})\doteq\{\textrm{Buscar}, \textrm{Esperar},\textrm{Recargar}\}$$ Si el nivel de bateriaes alto entonces el periodo de busqueda puede siempre ser completado sin riesgo depender de la bateria. Si el robot decie buscar latas la probabilidad de que la bateria permanesca en nivel alto es $\alpha$, y de que pase a nivel bajo es $1-\alpha$. Por otro lado un periodo de busqueda cuando la bateria es baja tiene probabilida de permnanecer baja $\beta$ y de agotarse $1-\beta$. En el ultimo caso el robot debe ser rescatado y su bateria volveria a ser alta. Cada vez que se recoge una lata se recompensa con una ganancia de una unidad, mientras si el robot es rescatado se le asigna $-3$ de recompensa. Sea $r_{_{\textrm{Buscar}}}$ y $r_{_{\textrm{esperar}}}$, con $r_{_{\textrm{Buscar}}}>r_{_{\textrm{esperar}}}$, denotan el numero esperado de latas que el robot recogera mientras busca y espera respectivamente, finalmente para simplificar el problema supondremos que el robot no puede recoger latas cuando esta regresando para ser recargado o esta a punto de descargarse. Este sistema es un MDP con probabilidades de transición, dadas en la siguiente tabla: 
+
+|  $s$ |    $a$   | $s´$ |$p(s´:s,a)$ |           $r(s,a,s´)$     |
+|:----:|:--------:|:----:|:----------:|:-------------------------:|
+| Alta |  Buscar  | Alta |  $\alpha$  |  $r_{_{\textrm{Buscar}}}$ |
+| Alta |  Buscar  | Baja | $1-\alpha$ |  $r_{_{\textrm{Buscar}}}$ |
+| Baja |  Buscar  | Alta |  $1-\beta$ |             -3            |
+| Baja |  Buscar  | Baja |   $\beta$  |  $r_{_{\textrm{Buscar}}}$ |
+| Alta |  Esperar | Alta |      1     | $r_{_{\textrm{Esperar}}}$ |
+| Alta |  Esperar |      |      0     | $r_{_{\textrm{Esperar}}}$ |
+| Baja |  Esperar |      |      0     | $r_{_{\textrm{Esperar}}}$ |
+| Baja |  Esperar |      |      1     | $r_{_{\textrm{Esperar}}}$ |
+| Baja | Recargar |      |      1     |             0             |
+| Baja | Recargar |      |      0     |             0             |
+
+
+Un gráfico de transición para resumir el comportamiento dinámico de la MDP es muy util, el siguiente grafico muestra el grafico de transición del robot que recicla. Hay dos tipos de nodos: los nodos de estado y los nodo de acción. Hay un nodo de estado por cada posible estado(un gran círculo abierto marcado con el nombre del estado) y un nodo de acción por cada par estado-acción (un pequeño círculo sólido etiquetado con el nombre de la acción y conectado por una línea al nodo de estado). Iniciando en un estado $s$ y tomando una acción $a$ nos movemos a lo largo del nodo y de la acción $(s,a)$. Entonces el entorno responde con una transición al siguiente nodo del estado mediante una de las flechas que salen del nodo de acción $(s,a)$. Cada flecha corresponde a una tripleta $(s, s´, a)$, donde $s´$ es el siguiente estado, y marcamos la flecha con la probabilidad de transición, $p(s´|s, a)$, y la recompensa esperada para esa transición, $r(s, a, s´)$.
+
+
+![grafico de transición del robot que recicla\label{fig:"sd4"}](~/Reinforcement-learning/robot.png)
+
+## Metas y recompensas.
+
+En Reinforcement Learning, el proposito o meta del agente es formalizar en terminos de una señal especial una recompensa. En cada paso del tiempo, la recompensa es un simple numero real $R_t$. De manera informal la meta del agente es maximizar las recompensas en un lapsus de tiempo, no las recopensas inmediatas. Esto se aclara en la hipotesis de las recompensas que dice:
+
+"Todo lo que nosotros consideremos como metas y propositos pueden ser considerados como la maximización de la esperanza del valor acumulado de una suma de una señal escalar recibida (llamada recompensa) "
+
+El uso de señal de recompensa para formalizar la idea del Reinforcement Learning es una de sus caracteristicas mas distintivas.
+
+Podemos pensar que formular metas o propositos a partir de señales de recompensa pudiera limitarnos, en la practica se ha provadoque esto en realidad es flexible y ampliamente aplicable, entendamos esto con unos ejemplos. Hacer que un robot aprenda a caminar, se ha demostrado que la recompensa en cada paso debe ser proporcional al movimiento que realice hacia adelante, o si queremos que un robot escape de un laberinto en cada momento le asignaremos recompensa $-1$, para que de esta forma busque escapar de manera apresurada del mismo, o como en el ejemplo del robot que recicla pudieramos pensar en darle recompensa 0 en la mayor parte del tiempo o 1 en el caso de que encuentre una lata. 
+
+En estos ejemplos podemos ver que esta pasando, el agente siempre inteta aprender a maximizar sus recompensas. Si nosotros queremos hacerlo hacer algo por nosotros debemos de asignarle recompensas que lo ayuden a entender cual es su meta y así alcanzarla, el unico incoveniente es que el agente no se concentrara en realizar sub-metas, solo de alcanzar el objetivo principal, por ejemplo, en una partida de ajedrez el agente no se contrara tanto en dominar el centro del tablero o tomar ventaja material, solo se enfocara en capturar el rey contrario, aunque se puede ver en modelos computacionales que la mayoria de los agentes aprenden que estas submetas son importantes, hasta cierto punto. En conclusión la señal de recopensa le indica al robot que debe alcanzar no como alcanzarlo.
+
+
+
+## Retornos y episodios
+
+Hasta ahora hemos discutido informalmente el objetivo de aprendizaje. Dijimos que el objetivo del agente es maximizar una recompensa acumulada que va recibiendo a lo largo del tiempo, pero como debe hacer esto, si la sucesion de ganancias que recibe a partir del tiempo $t$ es $R_{t+1},R_{t+2},...$, entonces el agente debe enfocarse en maximizar esa sucesion. En general, buscamos maximizar el retorno esperado, donde el retorno, denotado por $G_t$ es una funcion escalar de la sucesion de ganancias. La forma mas sencilla de definir el retorno es: $$G_t = R_{t+1}+R_{t+2}+...+R_{T}$$ Donde $T$ es el ultimo tiempo a considerar. Esto en realidad mas que la forma mas sencilla, es la mas natural, ademas estamos considerando, que hay un momento final, en el transfondo de considerar el retorno de esta forma, es pensar que la interaccion entre el entorno y el agente se puede dividir naturalmente en sub-sucesiones llamados episodios, tales como etapas de un juego de mesa,viajar a traves de un laberinto, o cualquier orden repetido de interacciones. Cada episodio termina en un estado especial, llamado estado terminal, seguido de un reinicio para entrar en un estado de inicio o a una familia de posibles estados de inicio las cuales siguen una ley de probabilidad. Aunque paresca que los episodios terminan de diferentes maneras, como ganar o perder una partida, el siguiente episodio comienza independientemente de cómo terminó el anterior. Por lo tanto, se puede considerar que todos los episodios terminan en el mismo estado terminal, con recompensas diferentes por los resultados diferentes. Tareas con episodios de este tipo se denominan tareas episodicas. En tareas episodicas la mayoria de las veces necesitamos determinar el conjunto de todos los estados no terminales, denotado $\textit{S}^+$. El tiempo terminal $T$ es una variable aleatoria que normalmente varia de episodio a episodio.
+
+Por otro lado puede ocurrir que la interacción agente entorno ocurra de forma indefinida y no pueda por lo tanto ser dividida en episodios, en este caso hablamos de tareas continuas, en este caso definir el retorno como lo habiamos definido anterior  mente puede ser problematico, pues $T=\infty$, por lo que usaremos una definición de retorno un poco mas complicada, pero matematicamente mucho mas simple.
+
+En esta definición usaremos la idea de descuento, la idea es que el agente busque maximizar los retornos, pero poniendo mas peso en los primeras acciones. el retorno entonces será:$$G_t = R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}...=\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}$$donde $\gamma$ es un parametro, $0\leq\gamma\leq1$, llamado factor de descuento.
+
+El valor de descuento determina el valor futuro de una recompensa, es decir, una recompensa recibida $k$ pasos despues de iniciar solo valdra una fracción $\gamma^{k-1}$, de lo que pudiera valer si fuera dada en el momento inicial. Cuando $\gamma$ se aproxima a 1, el agente es mas futurista.
+
+**Ejemplo: Equilibrado de pértigas:** 
+
+El objetivo de esta tarea es aplicar fuerzas a un carro que se mueve a lo largo de una pista para evitar que se caiga un poste con bisagras en el carro: Se dice que ocurre una falla si el poste cae mas allá de la vertical o el carro se sale de la pista. La pertiga es regresada a la vertical cada vez que ocurre un fracaso. Esta tarea pudiera ser tratada como episodica donde los episodios naturales consisten en intentos de balancear la polea. Las recompensas pudieran ser 1, cada vez que no ocurra un fallo, pero esto pudiera retornarnos un retorno infinito. Alternativamente, podemos afrontar esta tarea como una tarea continua, usando descuentos. En este caso las ganancias fueran 0 la mayor parte del tiempo y $-1$ si ocurre un fallo. El retorno en este caso fuera $-\gamma^K$, donde $K$ es el numero de pasos hasta el fallo. En este caso se maximiza las ganancias al intentar mantener la pertiga balanceada el mayor tiempo posible.
+
+![|\label{fig:"sd4"}](~/Reinforcement-learning/balancing.png)
+
+## Notación unificada tanto para tareas episodicas y continuas.
+
+A partir de este momento estaremos hablando de tareas episodicas y continuas, en la primera la interaccion entre el agente y el entorno naturalmente se lleva a cabo en bloques que equivalen a episodios separados y en la segunda esta division no puede ocurrir. En este libro estaremos trabajando continuamente con ambos problemas, por lo cual establecer algun tipo de notacion que englobe a ambos será de mucha utilidad.
+
+Para ser mas precisos, cuando hablamos de tareas episodicas no podemos simplemente denotar a los estados por $S_t$, pues no nos indica sobre que episodio estamos, en realidad la notación ideal seria $S_{t,i}$, la cual indica que estamos en el episodia $i$ en el tiempo $t$ (similarmente para $A_{t,i}$,$R_{t,i}$,$\pi_{t,i}$,$T_{t,i}$, etc). Sin embargo en general no estamos interesados en episodios especificos, por que abusando de la notación usaremos $S_{t}$ en vez de $S_{t,i}$
+
+Para poder unificar ambos casos debemos ser capaces de generalizar el retorno para ambas tareas, esto se  puede realizar considerando que un estado absorvente de una episodio retorna asi mismo con recompensa cero a partir de ese momento. Por ejemplo el siguiente diagrama de transición. 
+
+![|\label{fig:"sd5"}](~/Reinforcement-learning/transicion.png)
+
+
+Asi podemos usar la formula de retornos descontados pero tomando $\gamma = 1$, de esta forma el retorno se puede definir como $G_T=\sum^T_{k=t+1}\gamma^{k-t-1}R_k$, donde incluimos la posibilidad de que $T=\infty$ y $\gamma=1$. Usaremos esta natoción a partir de ahora, para simplificar las cuentas y no especificaremos si nos estamos refiriendo a tareas episodicas o continuas, a menos que se establesca de antemano. 
+
+## Políticas y funciones de valor
+
+En casi todo el Reinforcement Learning estaremos calculando funciones de valor dee los estados (o del par estado-valor), que en realidad es un indicador de que tan bueno es para el agente estar en un estado dado. La noción de  "bueno" es definida en terminos de las recompensas futuras, que son en realidad una esperanza, o para ser mas preciso, la esperanza del retorno. Por supuesto que las recompensas que reciba el agente dependera de las acciones que el decida tomar. La forma como el decida internamente tomar las decisiciones de que acciones tomar sera llamada "politica".
+
+Formalmente una politica es una funcion de los estados a las probabilidades de seleccionar cada acción posible. Si el agente esta siguiendo la politica $\pi$ en el tiempo $t$, entonces $\pi(a|s)$ es la probabilidad que $A_t=a$ si $S_t=s$, los metodos de Reinforcement Learning indican como la politica que sigue el agente va cambiando a traves de la experiencia.
+
+El valor de un estado $s$ dado una politica $\pi$, denotado por $v_{\pi}(s)$, es el retorno esperado cuando iniciamos en un estado $s$ y seguimos la politica $\pi$. Formalmente para un MDP definimos $v_{\pi}(s)$ por $$v_{\pi}(s) = \mathbb{E}_{\pi}[G_{t}|S_t=s]=\mathbb{E}_{\pi}\bigg{[}\sum_{k=0}^\infty\gamma^kR_{t+k+1}\bigg{|}S_t=s\bigg{]},\quad\textrm{para todo }s\in\textit{S} $$. Es facil notar que si $S_t=s$ es un estado terminal el retorno será siempre 0. Llamaremos $v_{\pi}$ función de valor estado para la política $\pi$.
+
+Similarmente, definimos el valor de tomar la acción $a$ en el estado $s$ bajo la politica $\pi$, denotado por $q_{\pi}(s,a)$, como el retorno esperado iniciando desde el estado $s$, tomando la acción $a$, y despues seguir la política $\pi$:$$q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_{t}|S_t=s,A_t=a]=\mathbb{E}_{\pi}\bigg{[}\sum_{k=0}^\infty\gamma^kR_{t+k+1}\bigg{|}S_t=s,A_t=a\bigg{]}$$
+
+Llamaremos a $q_{\pi}$ la funcion de valor accion de la política $\pi$.
+
+La funciones $v_\pi$ y $q_\pi$ se estiman a partir de la experiencia. Por ejemplo e¿si el agente sigue una politica $\pi$ y mantiene un promedio, para cada estado encontrado, y calcula ese retorno a partir de ese momento, y repite este procedimiento varias veces, par la ley fuerte de los grandes numeros, el valor de este promedio convergera a $v_\pi$. Si seleccionamos los promedios para iniciar a partir de acciones especificas por la misma razon estos romedios convergeran a $q_\pi$, Estos metodos de estimacion son los "Metodos de Monte Carlo", por que involucran promedios sobre muestras aleatorias del retorno actual. Por supuestos si hay muchos estados y acciones hacer estas estimaciones pueden ser poco practicas por su alto nivel de computo. 
+
+Una propiedad muy importante de las funciones de volor usada de principio a fin en el Reinforcement Learning y la programación dinámica es que estas funciones satisfacen una relación de recurrencia, la siguiente condición de consistencia se mantiene entre el valor de $s$ y el valor de sus posibles estados sucesores:
+
+$$\begin{align}
+ v_{\pi}(s) &= \mathbb{E}_\pi[G_t|S_t=s]\\
+ &= \mathbb{E}_\pi[R_{t+1}+\gamma G_{t+1}|S_t=s]\\
+ &=\sum_a\pi(a|s)\sum_{s´}\sum_rp(s´,r|s,a)\big{[}r+\gamma\mathbb{E}_{\pi}[G_{t+1}|S_{t+1}=s´]\big{]} \\
+&= \sum_a\pi(a|s)\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma v_\pi(s´)\big{]} \\
+\end{align}$$
+
+Al final este valor puede ser visto como un valor esperado, para cada tripleta $a$,$s´$ y $r$, calculamos la probabilidad $\pi(a|s)p(s´,r|s,a)$ y sumamos sobre todos ellos.
+
+Esta ultima ecuacion es la ecuanción de Bellman (1957). Esta expresion relaciona los valores de un estado con sus posibles sucesores. Uno puede pensar esto como mirar hacia adelanta todos los posibles estados sucesores, esto se aprecia en el siguiente diagrama.
+
+![|\label{fig:"sd5"}](~/Reinforcement-learning/adelante.png)
+
+Cada circulo abierto representa un estado y cada ciculo solido una acción-estado. Iniciando desde el estado $s$, el nodo raiz en el tope pudiera tomar cualquiera accion del conjunto de acciones disponible, en el diagrama hay tres posibles acciones basadas en la politica $\pi$. Para cada acción el entorno puede responder con algun otro estado $s´$ y con alguna recompensa $r$ que depende de la dinamica del problema.
+
+** Ejemplo: GridWorld**
+
+La figura acontinuación representas un cuadrado cuadriculado que representa un simple MDP finito. Cada celda representa un posible estado del entorno. Cada estado posee 4 posibles acciones (norte, sur, este y oeste) las cuales determinan hacia donde se mueve el sistema. En general todas las acciones son dan recompensa 0, las que nos sacan de la cuadricula dan recompensa $-1$ y hay dos casos especiales las celdad correspondientes a las letras $A$ y $B$. La letra $A$ da ganancia de 10 y se puede mover a la celda $A´$ con la misma ganancia, de igual forma la letra $B´$ da recpmpensa de 5 y se puede mover a la celda $B´$ con igual recompensa.  
+
+
+![|\label{fig:"sd5"}](~/Reinforcement-learning/grid.png)
+
+Supongamos que el agente selecciona para cualquier estado las acciones con la misma probabilidad. La parte derecha de la imagen muestra la función de valor $v_\pi$ con factor de descuento $\gamma=0.9$. Estos valores se calcularon con la ecuacion de Bellman (sistema lineal). Aqui se aprecia el valor de cada acción y claramente la celda $A$ es la de mayor valor, pero su valor es menor que su ganancia inmediata, esto se debe a que cuando llega a la celda $A´$ se encuentra en el borde donde se asigna una recompensa negativa, mientras en la celda $B$ el valor es mayor que su recompensa inmediata, pues $B´$ no esta en el borde.
+
+** Ejemplo: Golf.** Diseñemos un marco de trabajo de Reinforcement Learning para ser aplicado al juego de golf. Nosotros tendremos una penalidad por cada de -1 (recompensa negativa) por cada golpe hasta llegar al hoyo. Los estados son la localización de la bola. El valor de un estado es la cantidad de golpes negativos que hagan falta para llegar al hoyo, para simplificar las acciones, ellas consistiran en seleccionar un palo (putter o driver). La parte superior de la grafica muestra un posible valor de los estados, $v_{\textrm{putt}}(s)$, para la politca que siempre usa putter. El estado terminal en el hoyo tiene valor de 0. Desde culquier lugar del green asumimos que podemos hacer un  putt, esos estados tienen valor de -1. Fuera del green no podemos llegar al hoyo con un putt, y sus valores son altos. Si podemos alcanzar el green desde un estado con un putt, entonces ese estado debe tener un valor menor que el valor del green. Supondremos que podemos hacer un pott de forma muy precisa. Todas las localizaciones antes del green requieren almenos dos golpes para llegar al hoyo. Con el pott no salimos de la trampa de arena, por lo que le ponemos un valor de $-\infty$. En genera, desde el inicio nos tomaria 6 golpes llegar al hoyo.
+
+
+
+![|\label{fig:"sd5"}](~/Reinforcement-learning/golf.png)
+
+## Funciones de valor y políticas optimas
+
+Resolver las tareas del Reinforcement Learning significa, hablando de forma clara, es encontrar una politica que alcanze la mayor cantidad de recompensa posible en el trancurso de la tarea. Para un MDP, nosotros podemos definir una politica optima de la siguiente forma. Las funciones de valor infieren un orden parcial sobre políticas. Una polítiva $\pi$ es mayor a una politica $\pi ´$ si y solo si $v_\pi(s)\geq v_{\pi´}(s)$ para todo $s\in \textit{S}$. Hay siempre una politica que es mejor o igual que todas las demas politicas, esta es la politica optima, aunque pudiera haber mas de una, denotaremos toda politica optima por $\pi_*$, ellas comparten la misma función de valor, llamada la funcion de valor estado optima, denotada por $v_*$, y definida por $$v_*(s)=max_{\pi}v_{\pi}(s)$$ para todo $s$
+
+Optimas politicas ademas comparten funcion de valor estado con el mismo valor, denotada por $q_*$ y definida por $$q_*(s,a)=max_{\pi}q_{\pi}(s,a)$$ para todo $s\in \textit{S}$ y $a\in \textit{A}$. para cada par estado acción $(s,a)$, esta función da el retorno esperado al tomar la accion $a$ en el estado $s$ y seguir la politica optima. Esto puede reescribirse en terminos de $v_*$ de la siguiente forma: $$ q_*(s,a)=\mathbb{E}[R_{t+1}+\gamma v_*(S_{t+1})|S_t=s,A_t=a]$$
+
+Como $v_*$ es la funcion de valor de una politica, esta debe satisfacer la condicion de auto consistencia dada por la ecuacion de bellman para los valores de los estados. Sin embargo las condiciones de consistencia de $v_*$ pueden ser reescritas de una forma especialsin referirnos a ninguna politica. Intuitivamente, la ecuacion de optimalidad de bellman expresael echo que que el valor de un estado sobre una politica optima debe ser igual al retorno esperado de la mejor accion de ese estado: 
+
+$$\begin{align}
+ v_{*}(s)&= max_{a\in \textit{A}}q_{\pi_*}(s,a)\\ 
+ &= max_{a}\mathbb{E}_\pi[G_t|S_t=s,A_t=a]\\
+ &=  max_{a}\mathbb{E}_\pi[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]\\
+ &=max_{a}\mathbb{E}_\pi[R_{t+1}+\gamma v_*(S_{t+1})|S_t=s,A_t=a] \\
+&= max_{a}\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma v_*(s´)\big{]} \\
+\end{align}$$ Las ultimas dos ecuaciones forman la ecuacion de optimalidad de bellman para $v_*$. La ecuación de optimalidad de bellman para $q*$ es:
+$$\begin{align}
+q_*(s,a) &= \mathbb{E}[R_{t+1}+\gamma max_{a´}q_*(S_{t+1},a´)|S_t=s,A_t=a]\\
+&=\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma max_{a}q_*(s´,a´)\big{]}
+\end{align}$$
+
+Los diagramas de la proxima figura muestran los estados futuros y acciones consideradas en la ecuacion de optimalidad de Bellman para $v_*$ y $q_*$
+
+![|\label{fig:"sd5"}](~/Reinforcement-learning/backup.png)
+
+Para un MDP finito la ecuacion de optimalidad de Bellman tiene solución unica para $v_\pi$ la cual es independiente de la politica. Este sistema genera una ecuaion por estado, asi si hay $n$ estados tendremos entonces un sistema con $n$ ecuaciones y $n$ incognitas, asi que uno puede usar cualquier metodo disponible para resolver este sistema.
+
+Una vez uno encuentra la solución al sistema generado por las ecuaciones de Bellman es realativamente facil hallar la politica optima a partir de $v_*$, para cada estado $s$ a partir de la solucion hallamos la acción o acciones que la maximizan. La bellesa de $v_*$ es que si uno la usa para evaluar a corto plazo las consecuencias de las acciones, la politica ambisiosa sera automaticamente la optima pues $v_*$ toma en cuenta todas los posibles comportamientos, por medio de $v_*$ el rendimiento óptimo esperado a largo plazo se convierte en una cantidad que está disponible local e inmediatamente para cada estado.
+
+Si calculamos $q_*$ escoger las acciones óptimas se vuelve incluso más fácil. Con $q_*$ el agente no tiene ni siquiera que hacer una busqueda con un paso de anticipación: para cualquier estado $s$ simplemente encuentra las acciones $a$ que maximizen $q_*(s,a)$. La función $q_*$ guarda todas las acciones anticipadas a un paso. Así  esta función proporciona el rendimiento óptimo esperado a largo plazo como un valor que está disponible localmente e inmediatamente para cada par de estado acción.
+
+* **Ejemplo: Ecuación de Bellman para el robot que recicla:** Del ejemplo del robot que recicla podemos escribir de forma explícita la ecuación de optimalidad de Bellman. Para esto haremos la notación mas compacta, abreviaremos alta, baja, buscar, esperar y regresar por sus iniciales. Como solo hay dos estados solo hay dos ecuaciones. La ecuación para $v_*$ se escribe:
+
+\begin{align}
+ v_{*}(s)&=max \left\{ \begin{array}{lcc}
+             p(h|h,s)[r(h,s,h)+\gamma v_*(h)]+p(l|h,s)[r(h,s,l)+\gamma v_*(l)] \\
+             \\ p(h|h,w)[r(h,w,h)+\gamma v_*(h)]+p(l|h,w)[r(h,w,l)+\gamma v_*(l)]
+            
+             \end{array}
+   \right.\\ 
+ &= max \left\{ \begin{array}{lcc}
+             \alpha[r_s+\gamma v_*(h)]+(1-\alpha)[r_s+\gamma v_*(l)] \\
+             \\ 1[r_w+\gamma v_*(h)]+0[r_w+\gamma v_*(l)]
+            
+             \end{array}
+   \right. \\
+ &=  max \left\{ \begin{array}{lcc}
+             r_s +\gamma[\alpha v_*(h)+(1-\alpha)v_*(l)] \\
+             \\ r_w+\gamma v_*(h)
+            
+             \end{array}
+   \right.\\
+ 
+\end{align}
+
+Haciendo el mismo procedimiento: 
+
+ $$v_{*}(s)=max \left\{ \begin{array}{lcc}
+             \beta r_s -3(1-\beta)+\gamma[(1-\beta)v_*(h)+\beta v_*(l)] \\
+             \\ r_w+\gamma v_*(l)\\
+            \\ \gamma v_*(h)
+             \end{array}
+  
+   \right. $$
+
+Resolver directamente la ecuación de optimalidad de Bellman nos da una ruta para hallar la política óptima, y esto resuelve el problema de Reinforcemente Learning. Sin embargo, esta solución es raramente facil de hallar. Esta solución se basa en tres supuestos que son raramente ciertos en la practica. (1) Conocemos con precisión la dinámica del entorno; (2) Tenemos los suficientes recursos computacionales para hallar la solución al sistema de ecuaciones; (3) La propiedad de Markov. En general no podemos hallar directamente la solución debido a que suelen violarse combinaciones de las suposiciones anteriores. Por ejemplo en el juego asiatico de Go, la primera y segunda supocisión no son problema, pero hay una gran cantidad de estado que hacen practicamente resolver la ecuación de Bellman.
+
+Algunos metodos de decisión pueden ser vistos como una forma de aproximacion de la solución de la ecuación de optimalidad Bellman. Los métodos de programación dinámica pueden relacionarse aún más estrechamente con la ecuación de la optimalidad de Bellman. Muchos métodos de Reinforcement Learning pueden entenderse claramente como la solución aproximada de la ecuación de la optimización de Bellman, utilizando transiciones experimentadas reales en lugar del conocimiento de las transiciy aproximaciones esperadas. Consideraremos una variedad de tales métodos en los siguientes capítulos.
+
+## Optimalidad y aproximación
+
+Ya hemos definido funciones de valor óptimas y políticas óptimas. Claramente, un agente que aprende una política óptima ha echo bien el trabajo, pero esto ocurre raramente en la practica. En general hallar políticas óptimas puede generar mucho costo computacional. Como ya hemos mencionado, si conocieramos el completo comportamiento dínamico del entorno, es practicamente imposible hallar una política óptima por la incapacidad de resolver la ecuación de Bellman. Por ejemplo juegos de mesa como el ajedrez si usamos la experiencia humana esto solo representaria una pequeña fracción de las posibles combinaciones, en este juego los metodos usuales sufren al hallar políticas óptimas.  Un crítico aspecto que se enfrenta el agente es siempre el poder computacional disponible, esto en particular, puede resumirse, en lo que se puede desarrolar en un solo paso.
+
+Ademas el uso de memoria es en general es otro problema, un gran almacenamiente de información es necesaria para calcular funciones de valor, políticas y modelos. Sy hay pocos estados, pudieramos crear una tablas o
+
+
+

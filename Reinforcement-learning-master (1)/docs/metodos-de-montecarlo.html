@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Reinforcement Learning</title>
+  <meta name="description" content="Reinforcement Learning">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Reinforcement Learning" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://synergy.vision/Reinforcement-learning/" />
+  <meta property="og:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+  
+  <meta name="github-repo" content="synergyvision/Reinforcement-learning/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Reinforcement Learning" />
+  
+  
+  <meta name="twitter:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+
+<meta name="author" content="Synergy Vision">
+
+
+<meta name="date" content="2018-12-13">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="programacion-dinamica.html">
+<link rel="next" href="aprendizaje-por-diferencia-temporal.html">
+<script src="libs/jquery/jquery.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><img src="images/logovision-black.png" width="160"></img></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#por-que-leer-este-libro"><i class="fa fa-check"></i>¿Por qué leer este libro?</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#informacion-sobre-los-programas-y-convenciones"><i class="fa fa-check"></i>Información sobre los programas y convenciones</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practicas-interactivas-con-r"><i class="fa fa-check"></i>Prácticas interactivas con R</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#agradecimientos"><i class="fa fa-check"></i>Agradecimientos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="acerca-del-autor.html"><a href="acerca-del-autor.html"><i class="fa fa-check"></i>Acerca del Autor</a></li>
+<li class="chapter" data-level="1" data-path="introduccion.html"><a href="introduccion.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduccion.html"><a href="introduccion.html#reinforcement-learning"><i class="fa fa-check"></i><b>1.1</b> Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.2" data-path="introduccion.html"><a href="introduccion.html#ejemplos"><i class="fa fa-check"></i><b>1.2</b> Ejemplos</a></li>
+<li class="chapter" data-level="1.3" data-path="introduccion.html"><a href="introduccion.html#elementos-del-reinforcement-learning"><i class="fa fa-check"></i><b>1.3</b> Elementos del Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.4" data-path="introduccion.html"><a href="introduccion.html#limitaciones-y-alcance"><i class="fa fa-check"></i><b>1.4</b> Limitaciones y alcance</a></li>
+<li class="chapter" data-level="1.5" data-path="introduccion.html"><a href="introduccion.html#un-ejemplo-clasico-tres-en-linea."><i class="fa fa-check"></i><b>1.5</b> Un ejemplo clásico: tres en linea.</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="modelos-lineales.html"><a href="modelos-lineales.html"><i class="fa fa-check"></i><b>2</b> Modelos Lineales</a><ul>
+<li class="chapter" data-level="2.1" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-lineal"><i class="fa fa-check"></i><b>2.1</b> Regresión lineal</a></li>
+<li class="chapter" data-level="2.2" data-path="modelos-lineales.html"><a href="modelos-lineales.html#estimacion-de-los-parametros-del-modelo"><i class="fa fa-check"></i><b>2.2</b> Estimación de los parámetros del modelo</a></li>
+<li class="chapter" data-level="2.3" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-lineal-multiple"><i class="fa fa-check"></i><b>2.3</b> Regresión Lineal Múltiple</a></li>
+<li class="chapter" data-level="2.4" data-path="modelos-lineales.html"><a href="modelos-lineales.html#modelo-de-regresion-lineal-en-notacion-matricial"><i class="fa fa-check"></i><b>2.4</b> Modelo de Regresión Lineal en notación matricial</a></li>
+<li class="chapter" data-level="2.5" data-path="modelos-lineales.html"><a href="modelos-lineales.html#un-problema-de-bandido-k-brasos"><i class="fa fa-check"></i><b>2.5</b> Un problema de bandido k-brasos</a></li>
+<li class="chapter" data-level="2.6" data-path="modelos-lineales.html"><a href="modelos-lineales.html#mtodos-de-accin-valor"><i class="fa fa-check"></i><b>2.6</b> M??todos de acci??n valor</a></li>
+<li class="chapter" data-level="2.7" data-path="modelos-lineales.html"><a href="modelos-lineales.html#pruebas-sobre-el-problema-del-bandido-de-10-brasos"><i class="fa fa-check"></i><b>2.7</b> Pruebas sobre el problema del bandido de 10 brasos</a></li>
+<li class="chapter" data-level="2.8" data-path="modelos-lineales.html"><a href="modelos-lineales.html#aplicacin-progresiva"><i class="fa fa-check"></i><b>2.8</b> Aplicaci??n progresiva</a></li>
+<li class="chapter" data-level="2.9" data-path="modelos-lineales.html"><a href="modelos-lineales.html#problemas-no-estacionarios"><i class="fa fa-check"></i><b>2.9</b> Problemas no estacionarios</a></li>
+<li class="chapter" data-level="2.10" data-path="modelos-lineales.html"><a href="modelos-lineales.html#ptimos-valores-iniciales"><i class="fa fa-check"></i><b>2.10</b> ??ptimos valores iniciales</a></li>
+<li class="chapter" data-level="2.11" data-path="modelos-lineales.html"><a href="modelos-lineales.html#cota-superior-de-confianza-en-la-seleccin-de-acciones-csc"><i class="fa fa-check"></i><b>2.11</b> Cota superior de confianza en la selecci??n de acciones (CSC)</a></li>
+<li class="chapter" data-level="2.12" data-path="modelos-lineales.html"><a href="modelos-lineales.html#algoritmo-del-gradiente"><i class="fa fa-check"></i><b>2.12</b> Algoritmo del gradiente</a></li>
+<li class="chapter" data-level="2.13" data-path="modelos-lineales.html"><a href="modelos-lineales.html#investigacin-asociativa"><i class="fa fa-check"></i><b>2.13</b> Investigaci??n asociativa</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html"><i class="fa fa-check"></i><b>3</b> Procesos de decision de Markov finitos</a><ul>
+<li class="chapter" data-level="3.1" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#el-agente-un-interface-del-entorno"><i class="fa fa-check"></i><b>3.1</b> El agente, Un interface del entorno</a></li>
+<li class="chapter" data-level="3.2" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#metas-y-recompensas."><i class="fa fa-check"></i><b>3.2</b> Metas y recompensas.</a></li>
+<li class="chapter" data-level="3.3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#retornos-y-episodios"><i class="fa fa-check"></i><b>3.3</b> Retornos y episodios</a></li>
+<li class="chapter" data-level="3.4" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#notacion-unificada-tanto-para-tareas-episodicas-y-continuas."><i class="fa fa-check"></i><b>3.4</b> Notación unificada tanto para tareas episodicas y continuas.</a></li>
+<li class="chapter" data-level="3.5" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#politicas-y-funciones-de-valor"><i class="fa fa-check"></i><b>3.5</b> Políticas y funciones de valor</a></li>
+<li class="chapter" data-level="3.6" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#funciones-de-valor-y-politicas-optimas"><i class="fa fa-check"></i><b>3.6</b> Funciones de valor y políticas optimas</a></li>
+<li class="chapter" data-level="3.7" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#optimalidad-y-aproximacion"><i class="fa fa-check"></i><b>3.7</b> Optimalidad y aproximación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html"><i class="fa fa-check"></i><b>4</b> Programación dinámica</a><ul>
+<li class="chapter" data-level="4.1" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#politicas-evaluadas-prediccion"><i class="fa fa-check"></i><b>4.1</b> Políticas evaluadas (Predicción)</a></li>
+<li class="chapter" data-level="4.2" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#mejora-de-las-politicas"><i class="fa fa-check"></i><b>4.2</b> Mejora de las políticas</a></li>
+<li class="chapter" data-level="4.3" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-politicas"><i class="fa fa-check"></i><b>4.3</b> Iteración de políticas</a></li>
+<li class="chapter" data-level="4.4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-valores"><i class="fa fa-check"></i><b>4.4</b> Iteración de valores</a></li>
+<li class="chapter" data-level="4.5" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#programacion-dinamica-asincronica."><i class="fa fa-check"></i><b>4.5</b> Programación dinámica asincrónica.</a></li>
+<li class="chapter" data-level="4.6" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-generalizada-de-politicas"><i class="fa fa-check"></i><b>4.6</b> Iteración generalizada de políticas</a></li>
+<li class="chapter" data-level="4.7" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#eficiencia-de-la-programacion-dinamica"><i class="fa fa-check"></i><b>4.7</b> Eficiencia de la programación dinámica</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html"><i class="fa fa-check"></i><b>5</b> Métodos de Montecarlo</a><ul>
+<li class="chapter" data-level="5.1" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#prediccion-con-monte-carlo"><i class="fa fa-check"></i><b>5.1</b> Predicción con Monte Carlo</a></li>
+<li class="chapter" data-level="5.2" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#estimacion-de-monte-carlo-de-los-valores-de-accion"><i class="fa fa-check"></i><b>5.2</b> Estimación de Monte Carlo de los Valores de Acción</a></li>
+<li class="chapter" data-level="5.3" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control"><i class="fa fa-check"></i><b>5.3</b> Métodos de Monte Carlo con control</a></li>
+<li class="chapter" data-level="5.4" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control-sin-iniciar-exploracion"><i class="fa fa-check"></i><b>5.4</b> Métodos de Monte Carlo con control sin iniciar exploración</a></li>
+<li class="chapter" data-level="5.5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#predicciones-no-politicas-via-muestreos-de-importancia."><i class="fa fa-check"></i><b>5.5</b> Predicciones no políticas via muestreos de importancia.</a></li>
+<li class="chapter" data-level="5.6" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#implementacion-incremental"><i class="fa fa-check"></i><b>5.6</b> Implementación incremental</a></li>
+<li class="chapter" data-level="5.7" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#monte-carlo-no-politico-con-control"><i class="fa fa-check"></i><b>5.7</b> Monte Carlo no político con control</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html"><i class="fa fa-check"></i><b>6</b> Aprendizaje por Diferencia Temporal</a><ul>
+<li class="chapter" data-level="6.1" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#prediccion"><i class="fa fa-check"></i><b>6.1</b> Predicción</a></li>
+<li class="chapter" data-level="6.2" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#ventajas-de-los-metodos-de-prediccion-de-td"><i class="fa fa-check"></i><b>6.2</b> Ventajas de los métodos de predicción de TD</a></li>
+<li class="chapter" data-level="6.3" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#calidad-de-td0"><i class="fa fa-check"></i><b>6.3</b> Calidad de TD(0)</a></li>
+<li class="chapter" data-level="6.4" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-td-politico-con-control"><i class="fa fa-check"></i><b>6.4</b> Sarsa: TD político con control</a></li>
+<li class="chapter" data-level="6.5" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#q-learning-td-no-politico-con-control"><i class="fa fa-check"></i><b>6.5</b> Q-Learning: TD no político con control</a></li>
+<li class="chapter" data-level="6.6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-esparada"><i class="fa fa-check"></i><b>6.6</b> Sarsa esparada</a></li>
+<li class="chapter" data-level="6.7" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sesgo-de-maximizacion-y-doble-aprendizaje"><i class="fa fa-check"></i><b>6.7</b> Sesgo de maximización y doble aprendizaje</a></li>
+<li class="chapter" data-level="6.8" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#juegos-afterstates-y-otros-casos-especiales"><i class="fa fa-check"></i><b>6.8</b> Juegos, afterstates y otros casos especiales</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html"><i class="fa fa-check"></i><b>7</b> Bootstrapping en <span class="math inline">\(n\)</span>-pasos</a><ul>
+<li class="chapter" data-level="7.1" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html#prediccion-de-td-en-n-pasos"><i class="fa fa-check"></i><b>7.1</b> Predicción de TD en <span class="math inline">\(n\)</span> pasos</a></li>
+</ul></li>
+<li class="appendix"><span><b>Apéndice</b></span></li>
+<li class="chapter" data-level="A" data-path="software-tools.html"><a href="software-tools.html"><i class="fa fa-check"></i><b>A</b> Software Tools</a><ul>
+<li class="chapter" data-level="A.1" data-path="software-tools.html"><a href="software-tools.html#r-and-r-packages"><i class="fa fa-check"></i><b>A.1</b> R and R packages</a></li>
+<li class="chapter" data-level="A.2" data-path="software-tools.html"><a href="software-tools.html#pandoc"><i class="fa fa-check"></i><b>A.2</b> Pandoc</a></li>
+<li class="chapter" data-level="A.3" data-path="software-tools.html"><a href="software-tools.html#latex"><i class="fa fa-check"></i><b>A.3</b> LaTeX</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Reinforcement Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="metodos-de-montecarlo" class="section level1">
+<h1><span class="header-section-number">Capítulo 5</span> Métodos de Montecarlo</h1>
+<p>En este capítulo consideramos nuestros primeros métodos de aprendizaje para estimar las funciones de valor y descubrir las políticas óptimas. A diferencia del capítulo anterior, aquí no suponemos un conocimiento completo del entorno. Los métodos de Monte Carlo requieren sólo experiencia -muestras de secuencias de estados, acciones y recompensas de la interacción real o simulada con un entorno. Aprender de la experiencia real es sorprendente porque no requiere un conocimiento previo de la dinámica del entorno, pero aún así puede lograr un comportamiento óptimo. Aprender de la experiencia simulada también es poderoso. Aunque se requiere un modelo, el modelo sólo necesita generar transiciones de muestra, no las distribuciones de probabilidad completas de todas las transiciones posibles que se requieren para la programación dinámica (DP). En muchos casos es sorprendentemente lo fácil que es generar experiencia muestreada de acuerdo a las distribuciones de probabilidad deseadas, pero no es factible obtener las distribuciones en forma explícita.</p>
+<p>Los métodos de Monte Carlo son formas de resolver el problema de Reinforcement Learning basado en el promedio de los resultados de las muestras. Para asegurar que los retornos bien definidos estén disponibles, aquí definimos los métodos de Monte Carlo sólo para las tareas episódicas. Es decir, asumimos que la experiencia está dividida en episodios, y que todos los episodios terminan finalmente sin importar qué acciones se seleccionen. Sólo cuando se completa un episodio se cambian las estimaciones de valor y las políticas. Por lo tanto, los métodos de Monte Carlo pueden ser incrementales en el sentido de episodio por episodio, pero no en el sentido de paso a paso (en línea). El término “Monte Carlo” se utiliza a menudo de manera más amplia para cualquier método de estimación cuya operación implica un componente aleatorio significativo. Aquí lo usamos específicamente para métodos basados en promediar retornos completos (a diferencia de los métodos que aprenden de los retornos parciales, considerados en el siguiente capítulo).</p>
+<p>Los métodos de Monte Carlo muestran y promedian los resultados de cada par de accion-estatado de manera muy parecida a los métodos de bandidos que exploramos en el Capítulo 2, y las recompensas promedio para cada acción. La principal diferencia es que ahora hay múltiples estados, cada uno actuando como un problema de bandidos diferente (como una búsqueda asociativa o un bandido contextual) y los diferentes problemas de bandidos están interrelacionados. Es decir, el retorno después de tomar una acción en un estado depende de las acciones tomadas en estados posteriores en el mismo episodio. Debido a que todas las selecciones de acciones están en aprendizaje, el problema se vuelve no estacionario desde el punto de vista del estado anterior.</p>
+<p>Para manejar la no estacionalidad, adaptamos la idea de iteración de políticas generales (GPI) desarrollada en el Capítulo 4 para DP. Mientras que allí calculamos funciones de valor a partir del conocimiento del MDP, aquí aprendemos funciones de valor a partir de los retornos de muestras con el MDP. Las funciones de valor y las políticas correspondientes todavía interactúan para alcanzar la optimización de la misma manera (GPI). Como en el capítulo de DP, primero consideramos el problema de la predicción (el cálculo de <span class="math inline">\(v_\pi\)</span> y <span class="math inline">\(q_\pi\)</span> para una política arbitraria fija <span class="math inline">\(\pi\)</span>), luego la mejora de la política y, finalmente, el problema del control y su solución por parte de GPI. Cada una de estas ideas tomadas de DP se extiende al caso de Monte Carlo, en el que sólo se dispone de una muestra de experiencia.</p>
+<div id="prediccion-con-monte-carlo" class="section level2">
+<h2><span class="header-section-number">5.1</span> Predicción con Monte Carlo</h2>
+<p>Comenzamos por considerar los métodos de Monte Carlo para aprender la función de valor estado para una política determinada. Recordemos que el valor de un estado es el retorno esperado, recompensa esperada acumulada descontada en el futuro a partir de ese estado. Una manera obvia de estimarlo a partir de la experiencia, entonces, es simplemente promediar los rendimientos observados después de las visitas a ese estado. A medida que se observan más retornos, el promedio debe converger hacia el valor esperado. Esta idea es la base de todos los métodos de Monte Carlo.</p>
+<p>En particular, supongamos que deseamos estimar <span class="math inline">\(v_\pi(s)\)</span>, el valor de un estado <span class="math inline">\(s\)</span> bajo la política <span class="math inline">\(\pi\)</span>, dado un conjunto de episodios obtenidos siguiendo <span class="math inline">\(\pi\)</span> y pasando por <span class="math inline">\(s\)</span>. Cada ocurrencia de estados <span class="math inline">\(s\)</span> en un episodio se llama una visita a <span class="math inline">\(s\)</span>. Por supuesto, <span class="math inline">\(s\)</span> puede ser visitado varias veces en el mismo episodio; llamemos a la primera vez que se visita en un episodio la primera visita a <span class="math inline">\(s\)</span>. El método MC de la primera visita estima <span class="math inline">\(v_\pi(s)\)</span> como el promedio de los retornos después de las primeras visitas a <span class="math inline">\(s\)</span>, mientras que el método MC de cada visita promedia los retornos después de todas las visitas a <span class="math inline">\(s\)</span>. Estos dos métodos de Monte Carlo (MC) son muy similares pero tienen propiedades teóricas ligeramente diferentes. La primera visita al MC ha sido la más ampliamente estudiada, ya que se remonta a la década de 1940, y es en la que nos centramos en este capítulo. Cada visita a MC se extiende de manera más natural a la aproximación funcional y a los rastros de elegibilidad, como se discute en los Capítulos 9 y 12. El MC de la primera visita se muestra en forma de procedimiento acontiniuación.</p>
+<p><strong>Predicción de la primera visita del MC, para estimar <span class="math inline">\(V\approx v_\pi\)</span> </strong></p>
+<ul>
+<li>Inicializamos:
+<ul>
+<li><span class="math inline">\(\pi \leftarrow\)</span> política a ser evaluada.</li>
+<li><span class="math inline">\(V \leftarrow\)</span> una función arbitraria de valor estado.</li>
+<li>Retorno<span class="math inline">\((s)\)</span> una lista vacia, para todo <span class="math inline">\(s \in S\)</span></li>
+</ul></li>
+<li>Repetimos por siempre:
+<ul>
+<li>Generamos un episodio usando <span class="math inline">\(\pi\)</span></li>
+<li>Para cada estado <span class="math inline">\(s\)</span> aparentemente en el episodio:
+<ul>
+<li><span class="math inline">\(G \leftarrow\)</span> el retorno que proviene de la primera ocurrencia de <span class="math inline">\(s\)</span></li>
+<li>Añadir <span class="math inline">\(G\)</span> al Retorno(<span class="math inline">\(s\)</span>)<br />
+</li>
+<li><span class="math inline">\(V(s) \leftarrow\)</span> Promedio(Retorno(<span class="math inline">\(s\)</span>))</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Tanto el MC de la primera visita como el MC de cada visita convergen a <span class="math inline">\(v_\pi(s)\)</span>, ya que el número de visitas (o primeras visitas) a <span class="math inline">\(s\)</span> es infinito. Esto es fácil de ver en el caso de la primera visita del MC. En este caso, cada retorno es una estimación independiente e idénticamente distribuida de <span class="math inline">\(v_\pi(s)\)</span> con varianza finita. Según la ley de los grandes números, la secuencia de los promedios de estas estimaciones converge a su valor esperado. Cada promedio es en sí mismo una estimación imparcial, y la desviación estándar de su error es de <span class="math inline">\(\frac{1}{\sqrt{n}}\)</span>, donde <span class="math inline">\(n\)</span> es el número de retornos promediados. Cada visita a MC es menos directa, pero sus estimaciones también convergen cuadráticamente a <span class="math inline">\(v_\pi(s)\)</span></p>
+<p>El método de Monte Carlo será ilustrado en el siguiente ejemplo.</p>
+<p><strong>Ejemplo: Blackjack</strong> El objetivo del popular juego de casino de cartas de blackjack es obtener cartas cuya suma de valores numéricos sea lo más grande posible sin exceder 21. Todas las cartas cuentan como 10, y un as puede contar como 1 o como 11. Consideramos la versión en la que cada jugador compite independientemente contra el dealer. El juego comienza con dos cartas repartidas tanto al crupier como al jugador. Una de las cartas de la banca está boca arriba y la otra boca abajo. Si el jugador tiene 21 inmediatamente (un as y una carta de 10), se llama natural. A continuación, gana a menos que el dealer también tiene un natural, en cuyo caso el juego es un empate. Si el jugador no tiene un natural, entonces puede pedir cartas adicionales, una por una (hits), hasta que se detenga (sticks) o exceda 21 (va a la quiebra). Si va a la quiebra, pierde; si se detiene, entonces se convierte en el turno del dealer. El crupier se detiene o pide otra carta de acuerdo a una estrategia fija sin elección: se detiene a cualquier suma de 17 o más, y pide otra carta en caso contrario. Si el dealer va a la quiebra entonces el jugador gana; en otro caso, el resultado (salida), ganar, empatar o perder, es determinado por el que tenga el resultado mas cercano a 21.</p>
+<p>Jugar blackjack está naturalmente formulado como un MDP episódico finito. Cada juego de blackjack es un episodio. Las recompensas de +1, -1 y 0 se dan por ganar, perder y empatar, respectivamente. Todas las recompensas dentro de un juego son cero, y no hacemos descuentos (γ = 1); por lo tanto, estas recompensas terminales son también los retornos. Las acciones del jugador son los hits o sticks. Los estados dependen de las cartas del jugador y de la carta que muestre el dealer. Suponemos que las cartas se reparten desde una baraja infinita (es decir, con reemplazo) de modo que no hay ventaja en llevar un registro de las cartas ya repartidas. Si el jugador tiene un as que podría contar como 11 sin quebrar, entonces se dice que el as es utilizable. En este caso siempre se cuenta como 11 porque contarlo como 1 haría la suma de 11 o menos, en cuyo caso no hay que tomar ninguna decisión porque, obviamente, el jugador siempre debe hacer hit. Así, el jugador toma decisiones sobre la base de tres variables: su suma actual (12-21), la carta que muestra el crupier (as-10), y si tiene o no un as utilizable. Esto hace un total de 200 estados.</p>
+<p>Considere la política que hace stick si la suma del jugador es 20 o 21, y de otra manera hace hit. Para encontrar la función de valor estado para esta política mediante un enfoque de Monte Carlo, se simulan muchos juegos de blackjack utilizando la política y se promedian los retornos después de cada estado. Tenga en cuenta que en esta tarea el mismo estado nunca se repite dentro de un episodio, por lo que no hay diferencia entre los métodos de MC de primera visita y los de cada visita. De esta manera, obtuvimos las estimaciones de la función estado-valor mostradas en la siguiente fº. Las estimaciones para los estados con un as utilizable son menos seguras y menos regulares porque estos estados son menos comunes. En cualquier caso, después de 500.000 partidas la función de valor está muy bien aproximada.</p>
+<p>Aunque tenemos un conocimiento completo del entorno en esta tarea, no sería fácil aplicar métodos DP para calcular la función de valor. Los métodos DP requieren la distribución de los siguientes eventos (en particular, requieren la dinámica del entornos tal y como la da la función de cuatro argumentos <span class="math inline">\(p\)</span>) y no es fácil determinar esto para el blackjack. Por ejemplo, supongamos que la suma del jugador es 14 y decide quedarse. ¿Cuál es su probabilidad de terminar con una recompensa de +1 en función de la carta que muestre el dealer? Todas las probabilidades deben ser calculadas antes de que DP pueda ser aplicado, y tales cálculos son a menudo complejos y propensos a errores. En contraste, generar los juegos de muestra requeridos por los métodos de Monte Carlo es fácil. Este es el caso que ocurre con mucha frecuencia; la capacidad de los métodos de Monte Carlo para trabajar con episodios de muestra puede ser una ventaja significativa incluso cuando se tiene un conocimiento completo de la dinámica del entorno.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/as.png" alt="Serie de movimientos" />
+<p class="caption">Serie de movimientos</p>
+</div>
+<p>¿Podemos generalizar la idea de los diagramas de apoyo a los algoritmos de Monte Carlo? La idea general de un diagrama de apoyo es mostrar en la parte superior el nodo raíz que se va a actualizar y mostrar debajo todas las transiciones y nodos de hoja cuyas recompensas y valores estimados contribuyen a la actualización. Para la estimación de Monte Carlo de <span class="math inline">\(v_\pi\)</span>, la raíz es un nodo de estado, y debajo está la trayectoria completa de las transiciones a lo largo de un episodio en particular, terminando en el estado terminal.</p>
+<p>Un hecho importante sobre los métodos de Monte Carlo es que las estimaciones para cada estado son independientes. La estimación para un estado no se basa en la estimación de cualquier otro estado, como es el caso de DP. En otras palabras, los métodos Monte Carlo no arrancan como lo definimos en el capítulo anterior.</p>
+<p>En particular, tenga en cuenta que el gasto computacional de estimar el valor de un solo estado es independiente del número de estados. Esto puede hacer que los métodos de Monte Carlo sean particularmente atractivos cuando se requiere el valor de sólo uno o un subconjunto de estados. Se pueden generar muchos episodios de muestra a partir de los estados de interés, promediando los retornos sólo de estos estados, ignorando todos los demás. Esta es una tercera ventaja que los métodos de Monte Carlo pueden tener sobre los métodos DP (después de la capacidad de aprender de la experiencia real y de la experiencia simulada).</p>
+</div>
+<div id="estimacion-de-monte-carlo-de-los-valores-de-accion" class="section level2">
+<h2><span class="header-section-number">5.2</span> Estimación de Monte Carlo de los Valores de Acción</h2>
+<p>Si no se dispone de un modelo, resulta especialmente útil estimar los valores de acción (los valores de los pares acción-estado) en lugar de los valores de estado. Con un modelo, los valores de los estados por sí solos son suficientes para determinar una política; uno simplemente mira hacia adelante un paso y elige cualquier acción que lleve a la mejor combinación de recompensa y el siguiente estado, como hicimos en el capítulo sobre DP. Sin embargo, sin un modelo, los valores de los estados por sí solos no son suficientes. Hay que estimar explícitamente el valor de cada acción para que los valores sean útiles a la hora de sugerir una política. Por lo tanto, uno de nuestros principales objetivos para los métodos de Monte Carlo es estimar <span class="math inline">\(q_*\)</span>. Para lograr esto, primero consideramos el problema de la evaluación de políticas para los valores de acción.</p>
+<p>El problema de evaluación de políticas para un par acción estado es estimar <span class="math inline">\(q_\pi(s,a)\)</span>, lo cual es el retorno final esperado al iniciar en el estado <span class="math inline">\(s\)</span>, tomar la acción <span class="math inline">\(a\)</span> y de ahí en adelante seguir la política <span class="math inline">\(\pi\)</span>. Los métodos de Monte Carlo para esto son esencialmente los mismos que los que se acaban de presentar para los valores de los estados, excepto que ahora hablamos de visitas a un par de acción-estado en lugar de un estado. Un par acción-estado <span class="math inline">\(s,a\)</span> se dice que se visita en un episodio si alguna vez se visita el estado <span class="math inline">\(s\)</span> y se toma la acción <span class="math inline">\(a\)</span> en él. El método MC en cada visita estima el valor de un par de acción de estado como el promedio de los retornos que han seguido a todas las visitas a él. El método MC de la primera visita promedia los retornos después de la primera vez en cada episodio en que se visitó el estado y se seleccionó la acción. Estos métodos convergen cuadráticamente, como antes, a los verdaderos valores esperados a medida que el número de visitas a cada par de acción-estado se acerca al infinito.</p>
+<p>La única complicación es que muchos pares de acción-estado nunca pueden ser visitados o son visitados con muy poca frecuencia. Si es una política ya determinada entonces, al seguirla, se observarán los retornos sólo para una de las acciones de cada estado. Sin retornos al promedio, las estimaciones de Monte Carlo de las otras acciones no mejorarán con la experiencia. Se trata de un problema grave porque el propósito del aprendizaje de los valores de acción es ayudar a elegir entre las acciones disponibles en cada estado. Para comparar alternativas necesitamos estimar el valor de todos los acciones de cada estado, no sólo la que actualmente favorecemos o tomamos con mayor frecuencia.</p>
+<p>Este es el problema general de <em>mantener la exploración</em>, como se discutió en el contexto del problema del bandido de <span class="math inline">\(k\)</span>-brasos en el capítulo 2. Para que la evaluación de políticas funcione a favor de los valores de acción, debemos asegurar una continua exploración. Una forma de hacerlo es especificar que los episodios comienzan en un par acción-estado, y que cada par tiene una probabilidad distinta de cero de ser seleccionado como inicio. Esto garantiza que todo par acción-estado serán visitados un número mínimo de veces en el límite de un número mínimo de episodios. Llamamos a esto como la suposición de que la exploración comienza.</p>
+<p>La suposición de comenzar a explorar es a veces útil, pero por supuesto no se puede confiar en ella en general, particularmente cuando se aprende directamente de la interacción real con un entorno. En ese caso, es poco probable que las condiciones de partida sean tan útiles. El enfoque alternativo más común para asegurar que se encuentren todos los pares de acción-estado es considerar sólo políticas estocásticas con una probabilidad no nula de seleccionar todas las acciones en cada estado. Discutiremos dos variantes importantes de este enfoque en secciones posteriores. Por ahora, mantenemos el supuesto de que la exploración comienza y completa la presentación de un método de control completo de Monte Carlo.</p>
+</div>
+<div id="metodos-de-monte-carlo-con-control" class="section level2">
+<h2><span class="header-section-number">5.3</span> Métodos de Monte Carlo con control</h2>
+<p>Ahora estamos listos para considerar cómo se puede utilizar la estimación de Monte Carlo en el control, es decir, para aproximar las políticas óptimas. La idea general es proceder de acuerdo con el mismo patrón que en el capítulo de DP, es decir, de acuerdo con la idea de la iteración generalizada de políticas (GPI). En GPI se mantiene tanto una política aproximada como una función de valor aproximada. La función de valor se altera repetidamente para aproximarse más a la función de valor de la política actual, y la política se mejora repetidamente con respecto a la función de valor actual, como se sugiere en la siguiente. Estos dos tipos de cambios se contraponen hasta cierto punto, ya que cada uno de ellos crea un objetivo móvil para el otro, pero juntos hacen que tanto la política como la función de valor se acerquen a la optimización.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/mc.png" alt="Serie de movimientos" />
+<p class="caption">Serie de movimientos</p>
+</div>
+<p>Para empezar, consideremos una versión clásica del Monte Carlo de iteración de política. En este método, alternamos pasos completos de evaluación y mejora de políticas, comenzando con una política arbitraria <span class="math inline">\(\pi_0\)</span> y terminando con la política óptima y la función óptima de valor-acción:<span class="math display">\[\pi_0\stackrel{E}{\rightarrow}q_{\pi_0}\stackrel{I}{\rightarrow}\pi_1\stackrel{E}{\rightarrow}q_{\pi_1}\stackrel{I}{\rightarrow}\pi_2\stackrel{E}{\rightarrow}\cdots\stackrel{I}{\rightarrow}\pi_*\stackrel{E}{\rightarrow}q_*\]</span> donde <span class="math inline">\(\stackrel{E}{\rightarrow}\)</span> denota la evaluación de la política completa y <span class="math inline">\(\stackrel{I}{\rightarrow}\)</span> denota la mejora de la política. La evaluación de políticas se realiza exactamente como se describe en la sección anterior. Se experimentan muchos episodios, en los que la función del valor de acción aproximado se aproxima asintóticamente a la función real. Por el momento, supongamos que observamos un número mínimo de episodios y que, además, los episodios se generan con el inicio de la exploración. Sobre estas supocisiones los métodos de Monte Carlo calcularan cada <span class="math inline">\(q_{\pi_{k}}\)</span> para cada <span class="math inline">\(\pi_k\)</span></p>
+<div class="figure">
+<img src="~/Reinforcement-learning/mc2.png" alt="Serie de movimientos" />
+<p class="caption">Serie de movimientos</p>
+</div>
+</div>
+<div id="metodos-de-monte-carlo-con-control-sin-iniciar-exploracion" class="section level2">
+<h2><span class="header-section-number">5.4</span> Métodos de Monte Carlo con control sin iniciar exploración</h2>
+<p>¿Cómo podemos evitar la improbable suposición de que comienza la exploración? La única manera general de asegurar que todas las acciones se seleccionen de forma innata es que el agente continúe seleccionándolas. Existen dos enfoques para garantizarlo, lo que da lugar a lo que llamamos métodos políticos y métodos no políticos. Los métodos políticos intentan evaluar o mejorar la política que se utiliza para tomar decisiones, mientras que los métodos no políticos evalúan o mejoran una política diferente de la que se utiliza para generar los datos. En esta sección mostramos cómo se puede diseñar un método de control de Monte Carlo político que no utilice el supuesto poco realista de que se inicia la exploración. Los métodos no políticos se consideran en la siguiente sección.</p>
+<p>En los métodos de control políticos, la política es generalmente blanda, lo que significa que <span class="math inline">\(\pi(a|s) &gt; 0\)</span> para todos los <span class="math inline">\(s \in S\)</span> y todos los <span class="math inline">\(a \in A(s)\)</span>, pero gradualmente se va acercando cada vez más a una política determinista óptima. Muchos de los métodos discutidos en el Capítulo 2 proporcionan mecanismos para ello. El método político que presentamos en esta sección utiliza “políticas codiciosas, lo que significa que la mayoría de las veces se elige una acción que tiene un valor de acción estimado máximo, pero con probabilidad” en vez de seleccionan una acción al azar. Es decir, a todas las acciones no deseadas se les da la mínima probabilidad de selección, <span class="math inline">\(\frac{\epsilon}{|A(s)|}\)</span>, y el resto de la probabilidad, <span class="math inline">\(1-\epsilon+\frac{\epsilon}{|A(s)|}\)</span>, se escoge la acción codiciosa. Las políticas <span class="math inline">\(\epsilon\)</span>-codiciosas son un ejemolo de políticas <span class="math inline">\(\epsilon\)</span>-suaves. definidas como políticas para las cuales <span class="math inline">\(\pi(a|s)\geq\frac{\epsilon}{|A(s)|}\)</span>, para todos estados y accione, y para algun <span class="math inline">\(\epsilon&gt;0\)</span>. Entre políticas <span class="math inline">\(\epsilon\)</span>-suaves, las politícas <span class="math inline">\(\epsilon\)</span>-codiciosas son, en cierto sentido, las más cercanas a la codiciosa.</p>
+<p>La idea general de los Métodos políticos de control de Monte Carlo sigue siendo la de GPI. Al igual que en la ES Monte Carlo, utilizamos métodos de MC de primera visita para estimar la función de valor acción para la política actual. Sin embargo, sin el supuesto de que se inicie la exploración, no podemos simplemente mejorar la política haciéndola codiciosa con respecto a la función de valor actual, porque eso impediría que se siguieran explorando las acciones no deseadas. Afortunadamente, GPI no requiere que la política sea llevada hasta el final a una política codiciosa, sólo que sea movida hacia una política codiciosa. En nuestro método político lo moveremos sólo a una “política codiciosa”. Para cualquier política <span class="math inline">\(\epsilon\)</span>-blanda,<span class="math inline">\(\pi\)</span>, cualquier “política codiciosa con respecto a <span class="math inline">\(q_\pi\)</span> está garantizada que sera mejor o igual a <span class="math inline">\(\pi\)</span>. El algoritmo completo se da acontinuación.</p>
+<ul>
+<li>Inicializamos para todo <span class="math inline">\(s\in S\)</span>, <span class="math inline">\(a\in A(s)\)</span>
+<ul>
+<li><span class="math inline">\(Q(s,a)\leftarrow\)</span> arbitrario</li>
+<li>Retorno<span class="math inline">\((a,s)\leftarrow\)</span> list vacia</li>
+<li><span class="math inline">\(\pi(s|a)\leftarrow\)</span> una arbitraria política <span class="math inline">\(\epsilon\)</span>-suave.</li>
+</ul></li>
+<li>Repetimos por siempre:
+<ul>
+<li>Generamos un episodio usando <span class="math inline">\(\pi\)</span></li>
+<li>Para cada par<span class="math inline">\((s,a)\)</span> aparentemente en el episodio:
+<ul>
+<li><span class="math inline">\(G\leftarrow\)</span> retorno que sigue de l primera ocuerrencia de <span class="math inline">\(s,a\)</span></li>
+<li>Agregamos <span class="math inline">\(G\)</span> al retorno(<span class="math inline">\(s,a\)</span>)</li>
+<li><span class="math inline">\(Q(s,a)\leftarrow\)</span> promedio (retorno(<span class="math inline">\(s,a\)</span>))</li>
+</ul></li>
+<li>Para cada <span class="math inline">\(s\)</span> en el episodio
+<ul>
+<li><span class="math inline">\(A^*\leftarrow argmax_a Q(s,a)\)</span></li>
+<li>Para todo <span class="math inline">\(a\in A(s):\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<p><span class="math display">\[\pi(a|s)= \left\{ \begin{array}{lcc}
+             1-\epsilon+\frac{\epsilon}{|A(s)|} &amp;   si &amp; a= A^* \\
+             \\ \frac{\epsilon}{|A(s)|} &amp;  si &amp; a\neq A^*\\
+             \end{array}
+   \right.\]</span></p>
+<p>Que cualquier “política codiciosa” con respecto a <span class="math inline">\(q\)</span> es una mejora sobre cualquier “política blanda” está asegurado por el teorema de la mejora de políticas. Sea <span class="math inline">\(\pi^´\)</span> una política <span class="math inline">\(\epsilon\)</span>-codiciosa. Las condiciones del teorema de mejoras de políticas aplican por que para cualquier <span class="math inline">\(s\)</span>:<span class="math display">\[\begin{align}
+ q_{\pi}(s,\pi^´(s)) &amp;= \sum\pi^´(a|s)q_\pi(s,a)\\
+&amp;=\frac{\epsilon}{|A(s)|}\sum_a q_\pi(s,a)+(1-\epsilon)max_a q_\pi(s,a) \\
+&amp;\geq \frac{\epsilon}{|A(s)|}\sum q_\pi(s,a)+(1-\epsilon)\sum_{a}\frac{\pi(a|s)-\frac{\epsilon}{|A(s)|}}{1-\epsilon}q_\pi(s,a) \\
+\end{align}\]</span> (la suma es un promedio ponderado con pesos no negativos que suman 1, y como tal debe ser menor o igual que el mayor número promediado.)<span class="math display">\[\begin{align}
+ &amp;= \frac{\epsilon}{|A(s)|}\sum q_\pi(s,a)-\frac{\epsilon}{|A(s)|}\sum q_\pi(s,a)+\sum_a\pi(a|s)q_\pi(s,a)\\
+&amp;=v_\pi(s) \\
+\end{align}\]</span> Entonces por el teorema de mejora de políticas, <span class="math inline">\(\pi´\geq\pi\)</span> (i.e., <span class="math inline">\(v_{\pi´}(s)\geq v_{\pi}(s)\)</span>, para todo <span class="math inline">\(s\)</span>). Ahora demostramos que la igualdad sólo puede mantenerse cuando ambos <span class="math inline">\(\pi´\)</span> y <span class="math inline">\(\pi\)</span> son óptimos entre las políticas <span class="math inline">\(\epsilon\)</span>-blandas, es decir, cuando son mejores o iguales que todas las demás “políticas blandas”.</p>
+<p>Consideremos un nuevo entorno que sea igual al entorno original, excepto con la exigencia de que las políticas se “muevan suavemente dentro” del entorno. El nuevo entorno tiene las mismas acciónes y estados que el original y se comporta de la siguiente manera. Si estamos en el estado s y tomamos la acción a, entonces con probabilidad <span class="math inline">\(1-\epsilon\)</span>, el nuevo entorno se comporta exactamente igual que el viejo entorno. Con probabilidad <span class="math inline">\(\epsilon\)</span> repite la acción al azar, con probabilidades iguales, y luego se comporta como el viejo entorno con la nueva acción al azar. Lo mejor que se puede hacer en este nuevo entorno con políticas generales es lo mismo que lo mejor que se puede hacer en el entorno original con políticas “blandas”. Sean <span class="math inline">\(\widetilde{v_*}(s)\)</span> y <span class="math inline">\(\widetilde{q_*}(s,a)\)</span> indican las funciones de valor óptimo para el nuevo entorno. Entonces la política <span class="math inline">\(\pi\)</span> es optimo entre las políticas <span class="math inline">\(\epsilon\)</span>-blandas si y solo si <span class="math inline">\(v_\pi=\widetilde{v_{*}}\)</span>. De la definición de <span class="math inline">\(\widetilde{v_{*}}\)</span> sabemos que es la única solución para: <span class="math display">\[\begin{align}\widetilde{v_{*}} &amp;= (1-\epsilon)max_a\widetilde{q_{*}}(s,a)+\frac{\epsilon}{|A(s)|}\sum_a\widetilde{q_{*}}(s,a)\\
+&amp;=(1-\epsilon)max_a\sum_{s´,r}p(s´,r|s,a)[r+\gamma \widetilde{v_*}(s)]+ \frac{\epsilon}{|A(s)|}\sum_a\sum_{s´,r}p(s´,r|s,a)[r+\gamma \widetilde{v_*}(s´)]\\
+\end{align}\]</span> Cuando la igualdad se mantiene y la política <span class="math inline">\(\epsilon\)</span>-blanda <span class="math inline">\(\pi\)</span> ya no se mejora, entonces:</p>
+<p><span class="math display">\[\begin{align}v_\pi(s) &amp;= (1-\epsilon)max_aq_{\pi}(s,a)+\frac{\epsilon}{|A(s)|}\sum_aq_{\pi}(s,a)\\
+&amp;=(1-\epsilon)max_a\sum_{s´,r}p(s´,r|s,a)[r+\gamma v_\pi(s´)]+ \frac{\epsilon}{|A(s)|}\sum_a\sum_{s´,r}p(s´,r|s,a)[r+\gamma v_\pi(s´)]\\
+\end{align}\]</span> Sin embargo, esta ecuación es la misma que la anterior, excepto por la sustitución de <span class="math inline">\(v_\pi\)</span> por <span class="math inline">\(\widetilde{v_*}\)</span>. Como <span class="math inline">\(\widetilde{v_*}\)</span> es la única solución, debe ocurrir entonces que <span class="math inline">\(v_\pi=\widetilde{v_*}\)</span>.</p>
+<p>En esencia, hemos mostrado en las últimas páginas que la iteración de políticas funciona para “políticas blandas”. Utilizando la noción natural de política codiciosa para las “políticas blandas”, se asegura la mejora en cada paso, excepto cuando se ha encontrado la mejor política entre las “políticas blandas”. Este análisis es independiente de cómo se determinan las funciones de valor de acción en cada etapa, pero asume que se calculan exactamente. Esto nos lleva aproximadamente al mismo punto que en la sección anterior. Ahora sólo conseguimos la mejor política entre las “políticas <span class="math inline">\(\epsilon\)</span>-blandas”, pero por otro lado, hemos eliminado el supuesto de los comienzos de la exploración.</p>
+</div>
+<div id="predicciones-no-politicas-via-muestreos-de-importancia." class="section level2">
+<h2><span class="header-section-number">5.5</span> Predicciones no políticas via muestreos de importancia.</h2>
+<p>Todos los métodos de control del aprendizaje se enfrentan a un dilema: buscan aprender valores de acción condicionados a un comportamiento óptimo posterior, pero necesitan comportarse de manera no óptima para explorar todas las acciones (para encontrar las acciones óptimas). ¿Cómo pueden aprender la política óptima mientras se comportan de acuerdo con una política exploratoria? El enfoque político de la sección anterior es en realidad un compromiso: aprende valores de acción no para la política óptima, sino para una política casi óptima que todavía se está explorando. Un enfoque más directo es utilizar dos políticas, una que se aprende y que se convierte en la política óptima, y otra que es más exploratoria y se utiliza para generar un comportamiento. La política que se está aprendiendo se llama la política objetivo, y la política utilizada para generar comportamiento se llama la política de comportamiento. En este caso decimos que el aprendizaje es a partir de datos fuera de la política objetivo, y el proceso general se denomina aprendizaje no político.</p>
+<p>A lo largo de este libro consideraremos métodos políticos y no políticos. Los métodos no políticos requieren conceptos y notaciones adicionales, y debido a que los datos se deben a una política diferente, estos son a menudo de mayor varianza y su convergencia es más lenta. Por otro lado, los métodos no políticos son más poderosos y generales. Incluyen métodos políticos como el caso especial en el que las políticas de objetivo y de comportamiento son las mismas. Los métodos no políticos también tienen una gran variedad de usos en aplicaciones. Por ejemplo, a menudo se pueden aplicar para aprender de los datos generados por un sistema de control convencional que no es de aprendizaje, o de un experto humano.</p>
+<p>En esta sección comenzamos el estudio de los métodos fuera de la política considerando el problema de la predicción, en el que se fijan tanto las políticas de objetivo como las de comportamiento. Esto es, supongamos que deseamos estimar <span class="math inline">\(v_\pi\)</span> o <span class="math inline">\(q_\pi\)</span> pero todo lo que tenemos son episodios que siguen a otra política <span class="math inline">\(b\)</span>, donde <span class="math inline">\(b\neq\pi\)</span>. En este caso, <span class="math inline">\(\pi\)</span> es la política objetivo, y <span class="math inline">\(b\)</span> es la política del comportamiento, y ambas políticas son consideradas y dadas. Para utilizar los episodios de <span class="math inline">\(b\)</span>% para estimar los valores de <span class="math inline">\(\pi\)</span>, requerimos que cada acción tomada sobre <span class="math inline">\(\pi\)</span> en b también se tome, al menos ocasionalmente, en b. Esto significa, que si <span class="math inline">\(\pi(a|s)&gt;0\)</span> implica que <span class="math inline">\(b(a|s)&gt;0\)</span>. Esto se llama la suposición de la cobertura. Por lo que la cobertura de <span class="math inline">\(b\)</span> debe ser estocastica en los estados donde no es identicamente a <span class="math inline">\(\pi\)</span>. La política objetivo <span class="math inline">\(\pi\)</span>, por otro lado, puede ser determinista y, de hecho, este es un caso de particular interés en los problemas de control. En control, la política de objetivo es típicamente la política codiciosa determinística con respecto a la estimación actual de la función acción-valor. Esta política se convierte en una política determinista óptima mientras que la política de comportamiento permanece estocástica y más exploratoria, por ejemplo, las políticas <span class="math inline">\(\epsilon\)</span>-codiciosas. En esta sección, sin embargo, consideramos los problemas de predicción, en los cuales <span class="math inline">\(\pi\)</span> no cambia y es dada.</p>
+<p>Casi todos los métodos no políticos utilizan muestreos de importancias, una tecnica general para estimar valores esperados bajo una distribución dsdo una muestra proveniente de otra. Aplicamos el muestreo de importancia al aprendizaje no político mediante la ponderación de los resultados de acuerdo con la probabilidad relativa de que sus trayectorias ocurran bajo las políticas de objetivo y de comportamiento, lo que se denomina la proporción de muestreo de importancia. Dado un estado inicial <span class="math inline">\(S_t\)</span>, la probabilidad de la trayectoria estado-acción <span class="math inline">\(A_t,S_{t+1},A_{t+1},....,,S_{T}\)</span>, ocurriendo bajo una política <span class="math inline">\(\pi\)</span> es: <span class="math display">\[\begin{align}
+ P(A_t,S_{t+1},A_{t+1},....,,S_{T}|S_t,A_{t:T-1}\sim\pi) &amp; \\
+&amp;=\pi(A_t|S_t)p(S_{t+1}|S_t,A_t)\pi(A_{t+1}|S_{t+1})....p(S_{T}|S_{T-1},A_{T-1}) \\
+&amp;=\prod_{k=t}^{T-1}\pi(A_k|S_k)p(S_{k+1}|S_k,A_k) \\
+\end{align}\]</span>donde <span class="math inline">\(p\)</span> es la probabilidad de transición de estados. Así, la probabilidad relativa de la trayectoria bajo las políticas objetivo y comportamiento (la relación importancia-muestreo) es <span class="math display">\[\rho_{t:T-1}\doteq\frac{\prod_{k=t}^{T-1}\pi(A_k|S_k)p(S_{k+1}|S_k,A_k) }{\prod_{k=t}^{T-1}b(A_k|S_k)p(S_{k+1}|S_k,A_k) } =\frac{\prod_{k=t}^{T-1}\pi(A_k|S_k)}{\prod_{k=t}^{T-1}b(A_k|S_k)}\]</span></p>
+<p>Aunque las probabilidades de trayectoria dependen de las probabilidades de transición del MDP, que son generalmente desconocidas, aparecen idénticamente tanto en el numerador como en el denominador, y por lo tanto se cancelan. La relación de muestreo de la importancia termina dependiendo sólo de las dos políticas y de la secuencia, no del MDP.</p>
+<p>Ahora estamos listos para dar un algoritmo de Monte Carlo que utiliza un grupo de episodios observados siguiendo la política <span class="math inline">\(b\)</span> para estimar <span class="math inline">\(v_\pi(s)\)</span>. Aquí es conveniente numerar los pasos de tiempo de una manera que aumente a través de los límites de los episodios. Es decir, si el primer episodio del grupo termina en un estado terminal en el momento 100, entonces el siguiente episodio comienza en el momento <span class="math inline">\(t = 101\)</span>. Esto nos permite utilizar números de pasos de tiempo para referirnos a pasos particulares en episodios particulares. En particular, se puede deducir el conjunto de todos los pasos de tiempo en los que el estado <span class="math inline">\(s\)</span> es visitada denotado por <span class="math inline">\(\mathfrak{T}(s)\)</span>. Esto es para un método de cada visita; para un método de primera visita, <span class="math inline">\(\mathfrak{T}(s)\)</span>,sólo incluiría pasos de tiempo que eran las primeras visitas a <span class="math inline">\(s\)</span> dentro de sus episodios. Ademas sea <span class="math inline">\(T(t)\)</span> la primera finalización después del tiempo <span class="math inline">\(t\)</span>, y <span class="math inline">\(G_t\)</span> denota el retorno desde de <span class="math inline">\(t\)</span> hasta <span class="math inline">\(T(t)\)</span>. Entonces <span class="math inline">\(\{G_t\}_{t\in\mathfrak{T}(s)}\)</span> son los retornos que pertenecen al estado s, y <span class="math inline">\(\{\rho_{t:T-1}\}_{t\in\mathfrak{T}(s)}\)</span> son las correspondientes relaciones importancia-muestreo. Para estimar <span class="math inline">\(v_\pi(s)\)</span> simplemente se escalan los retornos por los ratios y se promedian los resultados:<span class="math display">\[V(s)\doteq\frac{\sum_{\mathfrak{T}(s)}\rho_{t:T(t)-1}G_t}{|\mathfrak{T}(s)|}\]</span> Cuando el muestreo de importancia se hace como un promedio simple de esta manera, se le llama muestreo de importancia ordinaria. Una alternativa importante es el muestreo de importancia ponderada, que utiliza un promedio ponderado, denotado como: <span class="math display">\[V(s)\doteq\frac{\sum_{\mathfrak{T}(s)}\rho_{t:T(t)-1}G_t}{\sum_{\mathfrak{T}(s)}\rho_{t:T(t)-1}}\]</span> o cero si el denominador es cero. Para entender estas dos variedades de muestreo de importancia, considere sus estimaciones después de observar una simple retorno. En la estimación de la media ponderada, la radio <span class="math inline">\(\rho_{t:T(t)-1}\)</span> para el retorno simple se cancela en el numerador y denominador, de modo que la estimación es igual al retorno observado independientemente de la relación (suponiendo que la relación es distinta de cero). Dado que esta rentabilidad fue la única observada, se trata de una estimación razonable, pero su esperanza es <span class="math inline">\(v_b(s)\)</span> mas que <span class="math inline">\(v_\pi(s)\)</span> y en este sentido estadístico está sesgada. En contraste el simple promedio es siempre <span class="math inline">\(v_\pi(s)\)</span> en esperanza (es insesgado), pero puede ser extremo. Supongamos que la proporción fuera de diez, lo que indica que la trayectoria observada es diez veces más probable bajo la política objetivo que bajo la política de comportamiento. En este caso, la estimación del muestreo de importancia ordinaria sería diez veces mayor que el retorno observado. Es decir, se alejaría bastante del retorno observado, a pesar de que la trayectoria del episodio se considera muy representativa de la política objetivo.</p>
+<p>Formalmente, la diferencia entre los dos tipos de muestreo de importancia se expresa en sus sesgos y varianzas. El estimador de muestreo de importancia ordinaria es imparcial, mientras que el estimador de muestreo de importancia ponderada es sesgado (el sesgo converge asintóticamente a cero). Por otra parte, la varianza del estimador ordinario de muestreo de importancia es en general no acotada porque la varianza de las proporciones puede ser no acotada, mientras que en el estimador ponderado el mayor peso en un solo retorno es uno. De hecho, suponiendo retornos limitados, la varianza del estimador ponderado de muestreo de importancia converge a cero, incluso si la varianza de los ratios en sí es mínima. En la práctica, el estimador ponderado usualmente tiene una varianza dramáticamente menor y es fuertemente preferido. Sin embargo, no abandonaremos totalmente el muestreo de importancia ordinaria ya que es más fácil extenderlo a los métodos aproximados utilizando la aproximación funcional que exploramos en la segunda parte de este libro.</p>
+<p><strong>Ejemeplo: Estimación no política de los valores-estado del Blackjack</strong></p>
+<p>Aplicaremos los mmétodos de muestreo con importancia ordinario y ponderado para estimar los valores de los estados de blackjack de una data no política. Recordemos que una de las ventajas de los métodos de Monte Carlo es que pueden ser utilizados para evaluar un solo estado sin formar estimaciones para otros estados. En este ejemplo, hemos evaluado el estado en el que el dealer está mostrando un dos, la suma de las cartas del jugador es 13, y el jugador tiene un as utilizable (es decir, el jugador tiene un as y un dos, o tres ases equivalentes). Los datos se generaron comenzando en este estado y luego eligiendo hacer hit o stick al azar con la misma probabilidad (la conducta de la política). Los objetivos de la polítican es hacer stick solo cuando la suma es 20 o 21. El valor de este estado bajo la política objetivo es de aproximadamente -0.27726 (esto se calculo usando 100 millones de repeticiones usando la política objetivo y el promedio de sus retornos). Ambos métodos no políticos despues de 1000 repeticiones se acercaron mucho a este valor usando políticas aleatorias. Para asegurarnos de que lo hicieran de forma fiable, realizamos 100 ejecuciones independientes, cada una partiendo de estimaciones de cero y aprendiendo durante 10.000 episodios. La siguiente figura muestra el resultado de la curva de aprendizaje, promediado sobre 100 ejecuciones. El error se aproxima a cero para ambos, pero el muestreo con importancia ponderado tiene un error mucho menor al inicio. <img src="~/Reinforcement-learning/black12.png" alt="Serie de movimientos" /></p>
+</div>
+<div id="implementacion-incremental" class="section level2">
+<h2><span class="header-section-number">5.6</span> Implementación incremental</h2>
+<p>Los métodos de predicción de Monte Carlo pueden implementarse de forma incremental, episodio por episodio, utilizando extensiones de las técnicas descritas en el Capítulo 2. Mientras que en el Capítulo 2 hicimos un promedio de las recompensas, en los métodos de Monte Carlo hicimos un promedio de los retornos. En todos los demás aspectos, pueden utilizarse exactamente los mismos métodos que se utilizan en el capítulo 2 para los métodos políticos de Monte Carlo. Para los métodos no políticos de Monte Carlo, necesitamos considerar por separado los que utilizan el muestreo de importancia ordinaria y los que utilizan el muestreo de importancia ponderada.</p>
+<p>En el muestreo de importancia ordinaria, los retornos son escalados por el radio de muestreo de importancia <span class="math inline">\(\rho_{t:T(t)-1}\)</span>, entonces es el simple promedio. Para estos métodos podemos usar nuevamente los métodos incrementales del Capítulo 2, pero usando los retornos escalonados en lugar de las recompensas de ese capítulo. Esto deja el caso de los métodos de no políticos que utilizan el muestreo de importancia ponderada. Aquí tenemos que formar un promedio ponderado de los retornos, y se requiere un algoritmo incremental ligeramente diferente.</p>
+<p>Supongamos que tenenmos una sucesión de retornos <span class="math inline">\(G_1,G_2,...,G_{n-1}\)</span>, todos iniciando desde el mismo estado y cada uno con su correspondiente peso aleatorio <span class="math inline">\(W_i\)</span> (por ejemplo, <span class="math inline">\(W_i=\rho_{t:T(t)-1}\)</span>). Deseamos formar la estimación <span class="math display">\[V_n=\frac{\sum^{n-1}_{k=1}W_kG_k}{\sum^{n-1}_{k=1}W_k},\qquad n\geq1\]</span>y<span class="math display">\[C_{n+1}\doteq C_n+W_{n+1}\]</span>donde <span class="math inline">\(C_0=0\)</span> (y <span class="math inline">\(V_1\)</span> es arbitrario y ni necesita ser especificado). Acontinuación se presenta el algoritmo incremental completo, episodio por episodio, para la evaluación de la política de Monte Carlo. El algoritmo es nominalmente para el caso no político, usando un muestreo de importancia ponderada, pero se aplica también al caso no-político con sólo elegir las políticas de objetivo y de comportamiento como las mismas. La aproximación <span class="math inline">\(Q\)</span> converge a <span class="math inline">\(q\pi\)</span> (para todos los pares de estado-acción encontrados) mientras que las acciones se seleccionan de acuerdo con una política potencialmente diferente, <span class="math inline">\(b\)</span>.</p>
+<p><strong>Predicción no política de Monte Carlo</strong></p>
+<ul>
+<li><p>Entrada: Una política arbitraria <span class="math inline">\(\pi\)</span></p></li>
+<li>Iniciamos, para todo <span class="math inline">\(s\in S, \quad a\in A(s):\)</span>
+<ul>
+<li><span class="math inline">\(Q(s,a)\leftarrow \textrm{ arbitario}\)</span></li>
+<li><span class="math inline">\(C(s,a)\leftarrow \textrm{ arbitario}\)</span></li>
+</ul></li>
+<li>Repetir por siempre:
+<ul>
+<li><span class="math inline">\(b\leftarrow \textrm{ cualquier política que cubra a } \pi\)</span></li>
+<li>Generamos un episodio usando <span class="math inline">\(b: \quad S_0,A_0,R_1,....,S_{T-1},R_T,S_T\)</span></li>
+<li><span class="math inline">\(G\leftarrow 0\)</span></li>
+<li><span class="math inline">\(W \leftarrow 1\)</span></li>
+<li>Para <span class="math inline">\(t= T-1,T-2...., \textrm{ hasta }0\)</span>
+<ul>
+<li>$GG+R_{t+1}</li>
+<li><span class="math inline">\(C(S_t,A_t)\leftarrow C(S_t,A_t)+W\)</span></li>
+<li><span class="math inline">\(Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\frac{W}{C(S_t,A_t)}[G-Q(S_t,A_t)]\)</span></li>
+<li><span class="math inline">\(\pi(S_t)\leftarrow argmax_a Q(S_t,a)\)</span></li>
+<li>Si <span class="math inline">\(A_t\neq \pi(S_t)\)</span> entinces salir del ciclo</li>
+<li><span class="math inline">\(W \leftarrow W\frac{1}{b(A_t|S_t)}\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div id="monte-carlo-no-politico-con-control" class="section level2">
+<h2><span class="header-section-number">5.7</span> Monte Carlo no político con control</h2>
+<p>Ahora estamos listos para presentar un ejemplo de la segunda clase de métodos de control del aprendizaje que consideramos en este libro: métodos no políticos. Recordemos que la característica distintiva de los métodos políticos es que estiman el valor de una política mientras la utilizan para el control. En los métodos no políticos, estas dos funciones están separadas. La política utilizada para generar comportamiento, llamada política de comportamiento, puede, de hecho, no estar relacionada con la política que se evalúa y mejora, llamada política objetivo. Una ventaja de esta separación es que la política objetivo puede ser determinista (por ejemplo, codiciosa), mientras que la política de comportamiento puede continuar muestreando todas las acciones posibles.</p>
+<p>Los métodos de control no políticos de Monte Carlo utilizan una de las técnicas presentadas en las dos secciones anteriores. Ellos siguen la política de comportamiento mientras aprenden y mejoran la política objetivo. Estas técnicas requieren que la política de comportamiento tenga una probabilidad distinta de cero de seleccionar todas las acciones que podrían ser seleccionadas por la política objetivo (cobertura). Para explorar todas las posibilidades, requerimos que la política de conducta sea suave (es decir, que seleccione todas las acciones en todos los estados con una probabilidad distinta a cero).</p>
+<p>El proximo recuadro muestra un método de control de Monte Carlo basado en el GPI y el muestreo de importancia ponderada para estimar <span class="math inline">\(\pi_*\)</span> y <span class="math inline">\(q_*\)</span>. La política onjetivo <span class="math inline">\(\pi\approx\pi_*\)</span> es la política ambiciosa con respecto a <span class="math inline">\(Q\)</span>, la cual es un estimador de <span class="math inline">\(q_\pi\)</span>. La política de comportamiento <span class="math inline">\(b\)</span> puede ser cualquier cosa, pero para asegurar la convergencia de la política óptima, se debe obtener un número mínimo de retornos para cada par de estados y acciones. Esto se puede asegurar eligiendo <span class="math inline">\(b\)</span> para que sea “<span class="math inline">\(\epsilon\)</span>-blanda”. La política <span class="math inline">\(\pi\)</span> converge hacia la óptima en todos los estados encontrados, aunque las acciones se seleccionan de acuerdo con una política blanda <span class="math inline">\(b\)</span>, que puede cambiar entre episodios o incluso dentro de ellos.</p>
+<p>Un problema potencial es que este método sólo aprende de las colas de los episodios, cuando todas las acciones restantes del episodio son codiciosas. Si las acciones no deseadas son comunes, entonces el aprendizaje será lento, particularmente para los estados que aparecen en las primeras porciones de los episodios largos. Potencialmente, esto podría retrasar enormemente el aprendizaje. No ha habido suficiente experiencia con los métodos de Monte Carlo para evaluar la gravedad de este problema. Si es s</p>
+<ul>
+<li>Inicializamos para todo <span class="math inline">\(s\in S \quad a\in A(s):\)</span>
+<ul>
+<li><span class="math inline">\(Q(s,a) \leftarrow\textrm{arbitrario}\)</span></li>
+<li><span class="math inline">\(C(s,a)\leftarrow 0\)</span></li>
+<li><span class="math inline">\(\pi(s)\leftarrow argmax_a Q(S_t,a)\)</span></li>
+</ul></li>
+<li>Repetir por siempre
+<ul>
+<li><span class="math inline">\(b \leftarrow\textrm{cualquier política suave}\)</span></li>
+<li><span class="math inline">\(\textrm{Generamos un episodio usando } b\)</span>
+<ul>
+<li><span class="math inline">\(S_0,A_0,R_1,...,S_{T-1},A_{T-1},R_{T},S_{T}\)</span></li>
+</ul></li>
+<li><span class="math inline">\(G \leftarrow 0\)</span></li>
+<li><span class="math inline">\(W\leftarrow 1\)</span></li>
+<li><span class="math inline">\(\textrm{Para } t=T-1,T-2,...,\textrm{hasta }0\)</span>
+<ul>
+<li><span class="math inline">\(G \leftarrow \gamma G+R_{t+1}\)</span></li>
+<li><span class="math inline">\(C(S_t,A_t)\leftarrow C(S_t,A_t)+W\)</span></li>
+<li><span class="math inline">\(Q(S_t,A_t) \leftarrow Q(S_t,A_t)+ \frac{w}{C(S_t,A_t)}[G-Q(S_t,A_t)]\)</span></li>
+<li><span class="math inline">\(\pi(S_t)\leftarrow argmax_aQ(S_t,a)\)</span></li>
+<li>Si <span class="math inline">\(A_t\neq\pi(S_t)\textrm{ entonces salir del ciclo}\)</span></li>
+<li><span class="math inline">\(W\leftarrow W\frac{1}{b(A_t|S_t)}\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
+
+</div>
+</div>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-78759535-1', 'auto');
+ga('send', 'pageview');  
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="programacion-dinamica.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="aprendizaje-por-diferencia-temporal.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/lunr.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/synergyvision/Analisis_y_Medida/edit/master/bookdown/202-capitulo4.Rmd",
+"text": "Edit"
+},
+"download": ["Reinforcement Learning.pdf"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544706266055.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4125452480",
+    "id" : "DDC80144",
+    "lastKnownWriteTime" : 1544442602,
+    "last_content_update" : 1544442602,
+    "path" : "~/Documents/Synergy Vision/Reinforcement-learning-master (1)/bookdown/index.Rmd",
+    "project_path" : "bookdown/index.Rmd",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

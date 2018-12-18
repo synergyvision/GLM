@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Reinforcement Learning</title>
+  <meta name="description" content="Reinforcement Learning">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Reinforcement Learning" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://synergy.vision/Reinforcement-learning/" />
+  <meta property="og:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+  
+  <meta name="github-repo" content="synergyvision/Reinforcement-learning/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Reinforcement Learning" />
+  
+  
+  <meta name="twitter:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+
+<meta name="author" content="Synergy Vision">
+
+
+<meta name="date" content="2018-12-13">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="procesos-de-decision-de-markov-finitos.html">
+<link rel="next" href="metodos-de-montecarlo.html">
+<script src="libs/jquery/jquery.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><img src="images/logovision-black.png" width="160"></img></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#por-que-leer-este-libro"><i class="fa fa-check"></i>¿Por qué leer este libro?</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#informacion-sobre-los-programas-y-convenciones"><i class="fa fa-check"></i>Información sobre los programas y convenciones</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practicas-interactivas-con-r"><i class="fa fa-check"></i>Prácticas interactivas con R</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#agradecimientos"><i class="fa fa-check"></i>Agradecimientos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="acerca-del-autor.html"><a href="acerca-del-autor.html"><i class="fa fa-check"></i>Acerca del Autor</a></li>
+<li class="chapter" data-level="1" data-path="introduccion.html"><a href="introduccion.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduccion.html"><a href="introduccion.html#reinforcement-learning"><i class="fa fa-check"></i><b>1.1</b> Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.2" data-path="introduccion.html"><a href="introduccion.html#ejemplos"><i class="fa fa-check"></i><b>1.2</b> Ejemplos</a></li>
+<li class="chapter" data-level="1.3" data-path="introduccion.html"><a href="introduccion.html#elementos-del-reinforcement-learning"><i class="fa fa-check"></i><b>1.3</b> Elementos del Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.4" data-path="introduccion.html"><a href="introduccion.html#limitaciones-y-alcance"><i class="fa fa-check"></i><b>1.4</b> Limitaciones y alcance</a></li>
+<li class="chapter" data-level="1.5" data-path="introduccion.html"><a href="introduccion.html#un-ejemplo-clasico-tres-en-linea."><i class="fa fa-check"></i><b>1.5</b> Un ejemplo clásico: tres en linea.</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="modelos-lineales.html"><a href="modelos-lineales.html"><i class="fa fa-check"></i><b>2</b> Modelos Lineales</a><ul>
+<li class="chapter" data-level="2.1" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-lineal"><i class="fa fa-check"></i><b>2.1</b> Regresión lineal</a></li>
+<li class="chapter" data-level="2.2" data-path="modelos-lineales.html"><a href="modelos-lineales.html#estimacion-de-los-parametros-del-modelo"><i class="fa fa-check"></i><b>2.2</b> Estimación de los parámetros del modelo</a></li>
+<li class="chapter" data-level="2.3" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-lineal-multiple"><i class="fa fa-check"></i><b>2.3</b> Regresión Lineal Múltiple</a></li>
+<li class="chapter" data-level="2.4" data-path="modelos-lineales.html"><a href="modelos-lineales.html#modelo-de-regresion-lineal-en-notacion-matricial"><i class="fa fa-check"></i><b>2.4</b> Modelo de Regresión Lineal en notación matricial</a></li>
+<li class="chapter" data-level="2.5" data-path="modelos-lineales.html"><a href="modelos-lineales.html#un-problema-de-bandido-k-brasos"><i class="fa fa-check"></i><b>2.5</b> Un problema de bandido k-brasos</a></li>
+<li class="chapter" data-level="2.6" data-path="modelos-lineales.html"><a href="modelos-lineales.html#mtodos-de-accin-valor"><i class="fa fa-check"></i><b>2.6</b> M??todos de acci??n valor</a></li>
+<li class="chapter" data-level="2.7" data-path="modelos-lineales.html"><a href="modelos-lineales.html#pruebas-sobre-el-problema-del-bandido-de-10-brasos"><i class="fa fa-check"></i><b>2.7</b> Pruebas sobre el problema del bandido de 10 brasos</a></li>
+<li class="chapter" data-level="2.8" data-path="modelos-lineales.html"><a href="modelos-lineales.html#aplicacin-progresiva"><i class="fa fa-check"></i><b>2.8</b> Aplicaci??n progresiva</a></li>
+<li class="chapter" data-level="2.9" data-path="modelos-lineales.html"><a href="modelos-lineales.html#problemas-no-estacionarios"><i class="fa fa-check"></i><b>2.9</b> Problemas no estacionarios</a></li>
+<li class="chapter" data-level="2.10" data-path="modelos-lineales.html"><a href="modelos-lineales.html#ptimos-valores-iniciales"><i class="fa fa-check"></i><b>2.10</b> ??ptimos valores iniciales</a></li>
+<li class="chapter" data-level="2.11" data-path="modelos-lineales.html"><a href="modelos-lineales.html#cota-superior-de-confianza-en-la-seleccin-de-acciones-csc"><i class="fa fa-check"></i><b>2.11</b> Cota superior de confianza en la selecci??n de acciones (CSC)</a></li>
+<li class="chapter" data-level="2.12" data-path="modelos-lineales.html"><a href="modelos-lineales.html#algoritmo-del-gradiente"><i class="fa fa-check"></i><b>2.12</b> Algoritmo del gradiente</a></li>
+<li class="chapter" data-level="2.13" data-path="modelos-lineales.html"><a href="modelos-lineales.html#investigacin-asociativa"><i class="fa fa-check"></i><b>2.13</b> Investigaci??n asociativa</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html"><i class="fa fa-check"></i><b>3</b> Procesos de decision de Markov finitos</a><ul>
+<li class="chapter" data-level="3.1" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#el-agente-un-interface-del-entorno"><i class="fa fa-check"></i><b>3.1</b> El agente, Un interface del entorno</a></li>
+<li class="chapter" data-level="3.2" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#metas-y-recompensas."><i class="fa fa-check"></i><b>3.2</b> Metas y recompensas.</a></li>
+<li class="chapter" data-level="3.3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#retornos-y-episodios"><i class="fa fa-check"></i><b>3.3</b> Retornos y episodios</a></li>
+<li class="chapter" data-level="3.4" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#notacion-unificada-tanto-para-tareas-episodicas-y-continuas."><i class="fa fa-check"></i><b>3.4</b> Notación unificada tanto para tareas episodicas y continuas.</a></li>
+<li class="chapter" data-level="3.5" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#politicas-y-funciones-de-valor"><i class="fa fa-check"></i><b>3.5</b> Políticas y funciones de valor</a></li>
+<li class="chapter" data-level="3.6" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#funciones-de-valor-y-politicas-optimas"><i class="fa fa-check"></i><b>3.6</b> Funciones de valor y políticas optimas</a></li>
+<li class="chapter" data-level="3.7" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#optimalidad-y-aproximacion"><i class="fa fa-check"></i><b>3.7</b> Optimalidad y aproximación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html"><i class="fa fa-check"></i><b>4</b> Programación dinámica</a><ul>
+<li class="chapter" data-level="4.1" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#politicas-evaluadas-prediccion"><i class="fa fa-check"></i><b>4.1</b> Políticas evaluadas (Predicción)</a></li>
+<li class="chapter" data-level="4.2" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#mejora-de-las-politicas"><i class="fa fa-check"></i><b>4.2</b> Mejora de las políticas</a></li>
+<li class="chapter" data-level="4.3" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-politicas"><i class="fa fa-check"></i><b>4.3</b> Iteración de políticas</a></li>
+<li class="chapter" data-level="4.4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-valores"><i class="fa fa-check"></i><b>4.4</b> Iteración de valores</a></li>
+<li class="chapter" data-level="4.5" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#programacion-dinamica-asincronica."><i class="fa fa-check"></i><b>4.5</b> Programación dinámica asincrónica.</a></li>
+<li class="chapter" data-level="4.6" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-generalizada-de-politicas"><i class="fa fa-check"></i><b>4.6</b> Iteración generalizada de políticas</a></li>
+<li class="chapter" data-level="4.7" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#eficiencia-de-la-programacion-dinamica"><i class="fa fa-check"></i><b>4.7</b> Eficiencia de la programación dinámica</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html"><i class="fa fa-check"></i><b>5</b> Métodos de Montecarlo</a><ul>
+<li class="chapter" data-level="5.1" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#prediccion-con-monte-carlo"><i class="fa fa-check"></i><b>5.1</b> Predicción con Monte Carlo</a></li>
+<li class="chapter" data-level="5.2" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#estimacion-de-monte-carlo-de-los-valores-de-accion"><i class="fa fa-check"></i><b>5.2</b> Estimación de Monte Carlo de los Valores de Acción</a></li>
+<li class="chapter" data-level="5.3" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control"><i class="fa fa-check"></i><b>5.3</b> Métodos de Monte Carlo con control</a></li>
+<li class="chapter" data-level="5.4" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control-sin-iniciar-exploracion"><i class="fa fa-check"></i><b>5.4</b> Métodos de Monte Carlo con control sin iniciar exploración</a></li>
+<li class="chapter" data-level="5.5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#predicciones-no-politicas-via-muestreos-de-importancia."><i class="fa fa-check"></i><b>5.5</b> Predicciones no políticas via muestreos de importancia.</a></li>
+<li class="chapter" data-level="5.6" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#implementacion-incremental"><i class="fa fa-check"></i><b>5.6</b> Implementación incremental</a></li>
+<li class="chapter" data-level="5.7" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#monte-carlo-no-politico-con-control"><i class="fa fa-check"></i><b>5.7</b> Monte Carlo no político con control</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html"><i class="fa fa-check"></i><b>6</b> Aprendizaje por Diferencia Temporal</a><ul>
+<li class="chapter" data-level="6.1" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#prediccion"><i class="fa fa-check"></i><b>6.1</b> Predicción</a></li>
+<li class="chapter" data-level="6.2" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#ventajas-de-los-metodos-de-prediccion-de-td"><i class="fa fa-check"></i><b>6.2</b> Ventajas de los métodos de predicción de TD</a></li>
+<li class="chapter" data-level="6.3" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#calidad-de-td0"><i class="fa fa-check"></i><b>6.3</b> Calidad de TD(0)</a></li>
+<li class="chapter" data-level="6.4" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-td-politico-con-control"><i class="fa fa-check"></i><b>6.4</b> Sarsa: TD político con control</a></li>
+<li class="chapter" data-level="6.5" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#q-learning-td-no-politico-con-control"><i class="fa fa-check"></i><b>6.5</b> Q-Learning: TD no político con control</a></li>
+<li class="chapter" data-level="6.6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-esparada"><i class="fa fa-check"></i><b>6.6</b> Sarsa esparada</a></li>
+<li class="chapter" data-level="6.7" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sesgo-de-maximizacion-y-doble-aprendizaje"><i class="fa fa-check"></i><b>6.7</b> Sesgo de maximización y doble aprendizaje</a></li>
+<li class="chapter" data-level="6.8" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#juegos-afterstates-y-otros-casos-especiales"><i class="fa fa-check"></i><b>6.8</b> Juegos, afterstates y otros casos especiales</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html"><i class="fa fa-check"></i><b>7</b> Bootstrapping en <span class="math inline">\(n\)</span>-pasos</a><ul>
+<li class="chapter" data-level="7.1" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html#prediccion-de-td-en-n-pasos"><i class="fa fa-check"></i><b>7.1</b> Predicción de TD en <span class="math inline">\(n\)</span> pasos</a></li>
+</ul></li>
+<li class="appendix"><span><b>Apéndice</b></span></li>
+<li class="chapter" data-level="A" data-path="software-tools.html"><a href="software-tools.html"><i class="fa fa-check"></i><b>A</b> Software Tools</a><ul>
+<li class="chapter" data-level="A.1" data-path="software-tools.html"><a href="software-tools.html#r-and-r-packages"><i class="fa fa-check"></i><b>A.1</b> R and R packages</a></li>
+<li class="chapter" data-level="A.2" data-path="software-tools.html"><a href="software-tools.html#pandoc"><i class="fa fa-check"></i><b>A.2</b> Pandoc</a></li>
+<li class="chapter" data-level="A.3" data-path="software-tools.html"><a href="software-tools.html#latex"><i class="fa fa-check"></i><b>A.3</b> LaTeX</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Reinforcement Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="programacion-dinamica" class="section level1">
+<h1><span class="header-section-number">Capítulo 4</span> Programación dinámica</h1>
+<p>El termino de programación dínamica (DP) se refiere a la colección de algoritmos que pueden ser usados para calcular polítics óptimas dado un entorno que sigue un MDP perfecto. Algoritmps clásicos de DP son de utilidas limitada en Reinforcement Learning, debido a que asumen la perfeccion del modelo y tienen un alto costo computacional, pero son importante en el ámbito teórico. DP nos provee de factores fundamentales para el entendimiento de los métodos presentados en el resto de este libro. En efecto,todos estos métodos pueden ser vistos como intentos de lograr el mismo efecto que DP, sólo que con menos computación y sin asumir un modelo perfecto del entorno.</p>
+<p>Supondremos que estamos en presencia de MDP finito, es decir el conjunto de estados, acciones y recompensas, <span class="math inline">\(\textit{S}\)</span> ,<span class="math inline">\(\textit{A}\)</span>, <span class="math inline">\(\textit{R}\)</span> son finitos, y que el comportamiento dinámico esta bien definido por <span class="math inline">\(p(s´,r|s,a)\)</span>, para todo <span class="math inline">\(s\in \textit{S}\)</span>, <span class="math inline">\(a\in \textit{A}(s)\)</span>, <span class="math inline">\(r\in \textit{R}\)</span> y <span class="math inline">\(s´\in \textit{S}^+\)</span>, donde <span class="math inline">\(\textit{S^+}\)</span> es el conjunto de estados no terminales, en el contexto de las tareas episódicas. Aunque las ideas de DP pueden aplicarse a problemas con espacios de estados y acciónes continuas, las soluciones exactas sólo son posibles en casos especiales. Una forma común de obtener soluciones aproximadas para tareas con estados y acciones continuas es cuantificar el estado y los espacios de acción y luego aplicar los métodos de DP que se usan en estados finitos.</p>
+<p>La idea clave en DP, y en Reinforcement Learning generalmente, es el uso de funciones de valor para organizar y estructurar la busqueda de buenas políticas. En este capitulo mostraremos como DP puede ser usado para computar las funciones de valor definidas en el capítulo anterior. Nosotros podemos obtener políticas óptimas una vez hemos encontrdo la funcion de valor óptima, <span class="math inline">\(v_*\)</span> o <span class="math inline">\(q_*\)</span>, las cuales satisfacen la ecuación de Bellman. Veremos, que los algoritmos de DP son obtenidos con manipulaciones de la ecuación de Bellman, es decir, en reglas de actualización para mejorar las aproximaciones de las funciones de valor deseadas.</p>
+<div id="politicas-evaluadas-prediccion" class="section level2">
+<h2><span class="header-section-number">4.1</span> Políticas evaluadas (Predicción)</h2>
+<p>Primero consideremos como computar funciones de valor <span class="math inline">\(v_\pi\)</span> para una arbitraria política <span class="math inline">\(\pi\)</span>. Esto es llamado políticas evaluadas en la literatura de DP. Ademas nos referiremos a esto como un problema de predicción. Recordemos del capítulo 3 que, para todo <span class="math inline">\(s\in\textit{S}\)</span> <span class="math display">\[\begin{align}
+ v_{\pi}(s) &amp;= \mathbb{E}_\pi[G_t|S_t=s]\\
+ &amp;=  \mathbb{E}_\pi[R_{t+1}+\gamma G_{t+1}|S_t=s]\\
+ &amp;=\mathbb{E}_\pi[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s] \\
+&amp;=\sum_a\pi(a|s)\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma v_\pi(s´)\big{]} \\
+\end{align}\]</span></p>
+<p>Donde <span class="math inline">\(\pi(a|s)\)</span> es la probabilidad de tomar la acción <span class="math inline">\(a\)</span> en el estado <span class="math inline">\(s\)</span> bajo la política <span class="math inline">\(\pi\)</span>, la existencia de <span class="math inline">\(v_\pi\)</span> esta garantizada mientras <span class="math inline">\(\gamma\)</span> nos garantiza la convergencia.</p>
+<p>Si la dinámica del entorno es completamente conocida, la solución al sistema anterior depende del cardinal de los estados, cabe acotar que es un sistema lineal. Su solución es directa, aunque tediosa, computacionalmente. Para nuestros propositos, la métodos de solución interactiva son mas deseados. Consideremos una sucesión de funciones de valores <span class="math inline">\(v_0,v_1,...,\)</span> cada una mapeando de <span class="math inline">\(\textit{S^+}\)</span> a <span class="math inline">\(\mathbb{R}\)</span>. La aproximación inicial es, <span class="math inline">\(v_0\)</span>, es escogida arbitrariamente (excepto para los estados terminales, en esos debe ser 0), y cada aproximación sucesiva es alcanzada usando la ecuación de Bellman como dicta la siguiente regla de aproximación:<span class="math display">\[\begin{align}
+ v_{k+1}(s) &amp;=\mathbb{E}_\pi[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s] \\
+&amp;=\sum_a\pi(a|s)\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma v_\pi(s´)\big{]} \\
+\end{align}\]</span> para todo <span class="math inline">\(s\in\textit{S}\)</span>, si <span class="math inline">\(v_k=v_\pi\)</span> hace que la regla de actualización sea constante. Puede mostrarse que la sucesión <span class="math inline">\(\{v_k\}\)</span> converge a <span class="math inline">\(v_\pi\)</span>, sobre algunas condiciones que garantizen la existencia de <span class="math inline">\(v_\pi\)</span>. Este algoritmo se llama evaluación iterativa de políticas.</p>
+<p>Para proceder a cada sucesiva aproximación, <span class="math inline">\(v_{k+1}\)</span> desde <span class="math inline">\(v_k\)</span>, este algoritmo la misma operación a cada estado <span class="math inline">\(s\)</span>: esto reemplaza el anterior estimación de <span class="math inline">\(s\)</span> con el nuevo valor obtenido a partir de la operacion que involucra al intiguo valor y las recompensas esperdas a un solo paso, a lo largo de todas las transiciones a un solo paso posibles. Llamamos a todos estos tipos de operaciones una actualizacion estimada. Cada iteracion del algoritmo evalua la aproximación de cada estado una vez se produce la nueva estimación del valor de la función <span class="math inline">\(v_{k+1}\)</span>. Existen ademas diferentes tipos de actualizaciones esperadas, dependiendo de si un estado o un par acción-estado estan siendo actualizados. y dependiendo de la forma precisa en que se combinen los valores estimados de los estados sucesores. Todas las actuañizaciones en DP son llamadas actualizaciones esperadas debido a que involucran una esperanza sobre todos los posibles proximos estados mas que una simple muestra del estado siguiente. Aunque teóricamente el algoritmo converge en el infinito, en la vida real necesitamos algun criterio, en genreal se calcula el <span class="math inline">\(max_{s\in S}|v_{k+1}(s)-v_{k}(s)|\)</span> despues de cada paso hasta alcanzar un valor propuesto. Una completa versión del algoritmo es presentado acontinuación</p>
+<ul>
+<li>Iniciamos con una política <span class="math inline">\(\pi\)</span> a ser evaluada</li>
+<li>Inicializamos una matriz <span class="math inline">\(V(s)=0\)</span> para todo <span class="math inline">\(s\in S^+\)</span></li>
+<li>Repetimos</li>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li>Para cada <span class="math inline">\(s\in S\)</span>:
+<ul>
+<li><span class="math inline">\(v \leftarrow V(s)\)</span></li>
+<li><span class="math inline">\(V(s) \leftarrow\sum_a\pi(a|s)\sum_{s´,r}p(s´,r|s,a)[r+\gamma V(s´)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta,|v-V(s)|)\)</span></li>
+</ul></li>
+<li><p>Hasta que <span class="math inline">\(\Delta &lt; \theta\)</span> (un numero positivo pequeño )</p></li>
+<li><p>Como salida <span class="math inline">\(V\approx v_\pi\)</span></p></li>
+</ul>
+<p><strong>Ejemplo:</strong> Consideremos la cuadrícula 4x4 mostrada acontunuación</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/grid3.png" alt="" />
+<p class="caption"></p>
+</div>
+<p>Los estados no terminales son <span class="math inline">\(S=\{1,2,3,...,14\}\)</span>, hay 4 acciones posibles por estado <span class="math inline">\(A=\{\)</span>arriba, abajo, derecha, izquierda<span class="math inline">\(\}\)</span>, las cuales deterministicamente causan estados de transición, excepto las acciones que sacarían al agente de la cuadrícula, de hecho dejan el estado sin cambios. Esto es por ejemplo <span class="math inline">\(p(6,-1|5,\)</span>derecha<span class="math inline">\()=1\)</span>, <span class="math inline">\(p(7,-1|7,\)</span>derecha<span class="math inline">\()=1\)</span>, <span class="math inline">\(p(10,r|5,\)</span>derecha<span class="math inline">\()=1\)</span>, para todo <span class="math inline">\(r\in R\)</span>. Esto es una tarea episódica. Las recompensas son -1 para todas las transiciones hasta encontrar el estado terminal (los cuales estan sombreados en la cuadricula). La función de recompensa esperada es <span class="math inline">\(r(s,a,s´)=-1\)</span> para todo par de estados <span class="math inline">\(s , s&#39;\)</span> y acción <span class="math inline">\(a\)</span>. Supondremos que el agente sigue una política a leatoria equiprobable. La columna izquierda de la proxima imagen representa el de <span class="math inline">\(\{v_k\}\)</span> calcula con el algoritmo de aproximación.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/grid2.png" alt="Convergencia del algoritmo en la cuadricula. La columna de la derecha es la sucesion de políticas codiciosas correspondientes a las funciones de valores estimadas" />
+<p class="caption">Convergencia del algoritmo en la cuadricula. La columna de la derecha es la sucesion de políticas codiciosas correspondientes a las funciones de valores estimadas</p>
+</div>
+</div>
+<div id="mejora-de-las-politicas" class="section level2">
+<h2><span class="header-section-number">4.2</span> Mejora de las políticas</h2>
+<p>Una razon para calcular el valor de las función de valor para una política es encontrar una mejor. Supongamos que hemos determinado el valor de la función <span class="math inline">\(v_\pi\)</span> para una política determinada <span class="math inline">\(\pi\)</span>. Para algun estado <span class="math inline">\(s\)</span> nos gustaria saber si o no deberiamos cambiar la política para la escogencia de una acción <span class="math inline">\(a\neq\pi(s)\)</span>. Sabemos lo bueno que es seguir la política actual desde el principio desde un estado <span class="math inline">\(s\)</span> (esto es <span class="math inline">\(v_\pi(s)\)</span>), pero ¿ seria mejor o peor cambiar a una nueva política?. Una menera de responder esta pregunta es considerar <span class="math inline">\(a\)</span> y <span class="math inline">\(s\)</span> y luego seguir la política existente <span class="math inline">\(\pi\)</span>. El valor de esta forma de actuar es: <span class="math display">\[\begin{align}
+ q_{\pi}(s,a) &amp;=\mathbb{E}[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s,A_t=a] \\
+&amp;=\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma v_\pi(s´)\big{]} \\
+\end{align}\]</span></p>
+<p>El criterio clave es verificar si esta cantidad es mayor o menor que <span class="math inline">\(v_\pi(s)\)</span>. Esto significa una vez en el estado <span class="math inline">\(s\)</span> preguntarse si es mejor seleccionar la acción <span class="math inline">\(a\)</span> y luego seguir la política <span class="math inline">\(\pi\)</span> que simplemente seguir la politica <span class="math inline">\(\pi\)</span> desde el principio. Si fuera mejor seleccionar la acción <span class="math inline">\(a\)</span> en vez de seguir la política desde el principio, entonces habremos encontrado una nueva política que sería mejor. La realidad de esta afirmación es un caso especial del popular teorema de mejoras de políticas. Sean <span class="math inline">\(\pi\)</span> y <span class="math inline">\(\pi&#39;\)</span> un par de políticas cualesquiera tal que para todo <span class="math inline">\(s\in S\)</span>: <span class="math display">\[q_\pi(s,\pi&#39;(s))\geq v_\pi(s)\]</span> entonces la política <span class="math inline">\(\pi_*\)</span> debe ser igual de buena o mejor que <span class="math inline">\(\pi\)</span>. Esto a ademas implica que se debe obtener un mayor o igual valor esperado para todo los estados <span class="math inline">\(s\in S\)</span>: <span class="math display">\[v_{\pi&#39;}(s)\geq v_{\pi}(s)\]</span></p>
+<p>Más aun si la desigualdad es estricta para todo los estados, entonces, entonces tambien es estricta para todos los para acción-estado. La idea detras de la demostración del teorema de mejoras de políticas es facil de entender:</p>
+<p><span class="math display">\[\begin{align}
+ v_{\pi}(s) &amp;\leq q_{\pi}(s,\pi&#39;(s))\\
+&amp;=\mathbb{E}[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s,A_t=a] \\
+&amp;=\mathbb{E}_\pi&#39;[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s]\\
+&amp;\leq \mathbb{E}_\pi&#39;[R_{t+1}+\gamma q_\pi(S_{t+1},\pi(S_{t+1}))|S_t=s]\\
+&amp;= \mathbb{E}_\pi&#39;[R_{t+1}+\gamma \mathbb{E}[R_{t+2}+\gamma v_\pi(S_{t+2})]|S_t=s]\\
+&amp;= \mathbb{E}_\pi&#39;[R_{t+1}+\gamma R_{t+2}+\gamma^2 v_\pi(S_{t+2})|S_t=s]\\
+&amp;\leq \mathbb{E}_\pi&#39;[R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+\gamma^3v_\pi(S_{t+3})|S_t=s]\\
+&amp;\vdots\\
+&amp;\leq \mathbb{E}_\pi&#39;[R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+\gamma^3R_{t+4}+...|S_t=s]\\
+&amp;=v_{\pi&#39;}(s)
+\end{align}\]</span></p>
+<p>Hasta ahora hemos visto como dado una política y su función de valor, podemos facilmente evaluar un cambio en la poolítica en un simple estado dado una acción particular. Es una extensión natural para considerar los cambios en todos los estados y en todas las acciones posibles, seleccionando en cada estado la acción que mejor se presenta en función de <span class="math inline">\(q_\pi(s,a)\)</span>. En otras palabras, consideraremos la nueva política codiciosa, <span class="math inline">\(\pi&#39;\)</span> dado por: <span class="math display">\[\begin{align}
+ \pi&#39;(s) &amp;= arg max_a q_{\pi}(s,a)\\
+&amp;=arg max_a \mathbb{E}[R_{t+1}+\gamma v_\pi(S_{t+1})|S_t=s,A_t=a] \\
+&amp;=\arg max_a \sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v_\pi(s&#39;)]\\
+\end{align}\]</span></p>
+<p>Pero esto lo mismo que la ecuación de optimalidad de Bellman, así, v_{’} debe ser <span class="math inline">\(v_*\)</span> y por lo tanto la política es la óptima. Así la forma de mejorar políticas presentada en esta sección nos da una manera de mejorar políticas, siempre y cuando esta ya sea óptima.</p>
+</div>
+<div id="iteracion-de-politicas" class="section level2">
+<h2><span class="header-section-number">4.3</span> Iteración de políticas</h2>
+<p>Una vez una política, <span class="math inline">\(\pi\)</span>, ha sido mejorada usando <span class="math inline">\(v_\pi\)</span> obteniendo, <span class="math inline">\(\pi&#39;\)</span> nosotros podemos computar <span class="math inline">\(v_{\pi&#39;}\)</span>, mejorarla de nuevo y obtener una mejor política <span class="math inline">\(\pi^{&#39;&#39;}\)</span>, así podemos obtener una sucesión de políticas mejoradas y sus funciones de valores: <span class="math display">\[\pi_0\stackrel{E}{\rightarrow}v_{\pi_0}\stackrel{I}{\rightarrow}\pi_1\stackrel{E}{\rightarrow}v_{\pi_1}\stackrel{I}{\rightarrow}\pi_2\stackrel{E}{\rightarrow}\cdots\stackrel{I}{\rightarrow}\pi_*\stackrel{E}{\rightarrow}v_*\]</span> donde <span class="math inline">\(\stackrel{E}{\rightarrow}\)</span> denota la evaluación de la política y <span class="math inline">\(\stackrel{I}{\rightarrow}\)</span> la mejora de la política. Cada política esta garantizada con una estricta mejoras sobre las anteriores (a menos que ya sea la óptima). Como estamos trabajando sobre un MDP finito debe haber un numero finito, por lo cual este proceso debe converger a la política óptima y a la función de valor óptima.</p>
+<p>Esta forma d ehallar políticas optimas es conocido como iteración de políticas. El algoritmo es presentado acontinuación, note que cada política evaluada, en si misma lleva un cómputo iterativo, este inicia con el cálculo de la función de valor de la política previa. Esto típicamente resulta en un gran aumento de la velocidad de convergencia en la evaluación de las políticas</p>
+<ul>
+<li><p>Inicializamos: <span class="math inline">\(V(s)\in\mathbb{R}\)</span> y <span class="math inline">\(\pi(s)\in A(s)\)</span> arbitrario para todo <span class="math inline">\(s\in S\)</span></p></li>
+<li>Evaluamos la política:</li>
+<li>Repetimos:
+<ul>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li>Para cada <span class="math inline">\(s\in S\)</span></li>
+<li><span class="math inline">\(v \leftarrow V(s)\)</span></li>
+<li><span class="math inline">\(V(s)\leftarrow \sum_{s&#39;,r}p(s&#39;,r|s,\pi(s))[r+\gamma V(s&#39;)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta, |v-V(s)|)\)</span></li>
+<li>Hasta <span class="math inline">\(\Delta&lt;\theta\)</span> (un numero positivo pequeño)</li>
+</ul></li>
+<li>Mejoramos la política:</li>
+<li>Política-Estable <span class="math inline">\(\leftarrow\)</span> true</li>
+<li>Para cada <span class="math inline">\(s\in S\)</span>:
+<ul>
+<li>Vieja-acción <span class="math inline">\(\leftarrow\pi(s)\)</span></li>
+<li>Ahora <span class="math inline">\(\pi\)</span> <span class="math inline">\(\leftarrow\)</span> <span class="math inline">\(argmax_a\sum_{s&#39;,r}\)</span> <span class="math inline">\(p(s&#39;,r|s,a)[r+\gamma V(s&#39;)]\)</span></li>
+<li>Si vieja-acción <span class="math inline">\(\neq\pi(s)\)</span>, entonces politica-estable <span class="math inline">\(\leftarrow\)</span> false</li>
+<li>Si la política-estable, entonces parar y retornar <span class="math inline">\(V \approx v_{+}\)</span> y <span class="math inline">\(\pi\approx \pi_+\)</span>: sino ir de nuevo a la mejora de política.</li>
+</ul></li>
+</ul>
+</div>
+<div id="iteracion-de-valores" class="section level2">
+<h2><span class="header-section-number">4.4</span> Iteración de valores</h2>
+<p>Una desventaja de la iteración de políticas es cada iteración involucra la evaluación de una política, la cual puede ser un cálculo prolongado a traves de la cantidad de estados que existan. Ahora si la iteración se lleva a cabo, la convergencia ocurre en el infinito. Pero, ¿Debemos esperar hasta el infinito, para la convergencia exacta, o podemos parar en cierto momento?.</p>
+<p>En efecto, la evaluación de las politicas puede ser truncada de varias maneras sin perder las garantias de convergencia. Un importante caso especial es cuando la evaluacion es parada despues de un solo barrido (una actualización de cada estado). Este algoritmo es llamado es valores iterados. Puede ser escrito como una operación de actualización particularmente simple que combina la mejora de la política y los pasos truncados de la evaluación.<span class="math display">\[v_{k+1}(s) = max_a\mathbb{E}[R_{t+1}+\gamma v_k(S_{t+1})|S_t=s,A_t=a]=max_a\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v_k(s&#39;)]\]</span> para todo <span class="math inline">\(s\in S\)</span>. Para un arbitrario <span class="math inline">\(v_0\)</span>, la sucesión <span class="math inline">\(\{v_k\}\)</span> puede mostrar que converge a <span class="math inline">\(v_*\)</span> bajo las mismas condiciones que garantizan la existencia de <span class="math inline">\(v_*\)</span>.</p>
+<p>Otra forma de entender la iteración de valores es hacer referencia a la ecuación de optimalidad Bellman. Notemos que que el valor iterado se obtiene simplemente como una regla de actualizacion sobre la ecuación. Ademas la actualización por valor iterado coincide la actualizacion de evaluación de políticas excepto que esta requiere la maximización sobre toda las acciones.</p>
+<p>Finalmente, consideremos cómo termina la iteración de valores. Como la evaluación de políticas, valores iterados formalmente requieren un número infinito de iteraciones para garantizar la convergencia exacta a <span class="math inline">\(v_*\)</span>. En la practica esto no es necesario, en general denetemos las iteraciones despues que las cambios son indignificantes según algún criterio. Acontinuación mostramos el algoritmo:</p>
+<ul>
+<li><p>Iniciamos una matriz arbitraria <span class="math inline">\(V\)</span> (por ejemplo <span class="math inline">\(V(s)=0\)</span> para todo <span class="math inline">\(s^S{+}\)</span></p></li>
+<li>Repetimos</li>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li>Para cada <span class="math inline">\(s\in S\)</span>:
+<ul>
+<li><span class="math inline">\(v \leftarrow V(s)\)</span></li>
+<li>$V(s) max_a_{s’,r}p(s’,r|s,a)[r+V(s’)]</li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta,|v-V(s)|)\)</span></li>
+</ul></li>
+<li><p>Hasta que <span class="math inline">\(\Delta &lt; \theta\)</span> (un numero positivo pequeño)</p></li>
+<li>Salida: Una determinada política , <span class="math inline">\(\pi \approx \pi_*\)</span>, tal que:</li>
+<li><p><span class="math inline">\(\pi(s)=argmax_a\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma V(s&#39;)]\)</span></p></li>
+</ul>
+<p>El valor iterado efectivamente combina, en cada barrido, un barrido de la evaluación de la política y un barrido de mejora de políticas. A menudo se logra una convergencia más rápida mediante la interposición de múltiples barridos de evaluación de políticas entre cada barrido de mejora de políticas. En genenral, toda la clase de algoritmos de iteración de políticas truncadas puede considerarse como secuencias de barridos, algunos de los cuales utilizan actualizaciones de evaluación de políticas y otros utilizan actualizaciones de iteración de valores.</p>
+<p><strong>Ejemplo: El problema del jugador</strong>: Un jugador tiene la opotunidad de hacer apuestas sobre el resultado de una sucesion de lanzamientos de una moneda. Si la moneda sale cara, el jugador gana lo mismo que aposto si sale cruz pierde todo. El juego se acaba cuando el jugador llega a 100 dolares o se queda sin dinero. En cada lanzamiento el jugador debe decidir que cantidad de dinero apuesta, solo se le permite hacer apuesta que representen numeros enteres. Este problema puede ser planteado como un problema no discontiunuo y episodico, con MDP finito. Los estados son el capital del jugador, <span class="math inline">\(s\in \{1,2,3,...,98,99\}\)</span> y las acciones son las apuestas, <span class="math inline">\(a\in \{0,1,2,....,min(s,100-s)\}\)</span>, la recompensa es cero en todas las transiciones exepto cuando alcanza la meta, en este caso es 1. La función de valor estado da la probabilidad de ganar en todo estado. Una política es una funcion del nivel de capital a las apuestas. La política óptima maximiza la probabilidad de alcanzar la meta. Sea <span class="math inline">\(p_h\)</span> la probabilidad de obtener una cara. Si <span class="math inline">\(p_h\)</span> es conocido, entonces se conoce todo el problema y se puede resolver, por ejemplo, mediante iteración de valores. La siguiente figura muestre el cambio en la funcion de valor de acuerdo a sucesivos barridos de valores iterados, y la política final encontrada, para el caso <span class="math inline">\(p_h=0.4\)</span>. Esta política es óptima pero no única. En efecto, existe una familia de políticas óptimas, toda correspondientes a valores comunes en la función de valor.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/gambler.png" alt="" />
+<p class="caption"></p>
+</div>
+</div>
+<div id="programacion-dinamica-asincronica." class="section level2">
+<h2><span class="header-section-number">4.5</span> Programación dinámica asincrónica.</h2>
+<p>Una gran desventaja de los métodos de DP que hemos visto es que involucran un intesivo barrido por cada actualización, es decir, necesita actualizar todos los estados existente, esto puede hacer preacticamente imposible la tarea. Por ejemplo el juego de Backgammon posee alrededor de <span class="math inline">\(10^{20}\)</span>, si inclusive pudieramos barrer un millos de estados por segundo, la tarea de una solo actualización nos tomaria 1000 años en ser completada.</p>
+<p>PD asincrónica son algoritmos que no requieren un barrido exhaustivo de los estados, estos algoritmos actualizan los valores de los estados en cualquier orden. Utilizando los valores de otros estados que esten disponibles. Los valores de unos estados pueden ser actualizados varias veces, mientras que otros una sola vez. Sin embargo para obtener la correcta convengencia, debemso actualizar todos los estados frecuentemente. DP asincrónica permite mucha flexibilidaden la seleccion de los estados a actualizar.</p>
+<p>Por supuesto, evitar los barridos no significa necesariamente que podamos salirnos con la nuestra. Sólo significa que un algoritmo no tiene que quedar atrapado en un barrido desesperadamente largo antes de que pueda progresar en la mejora de una política. Podemos intentar aprovechar esta flexibilidad seleccionando los estados en los que aplicamos las actualizaciones para mejorar el ritmo de progreso del algoritmo. Podemos intentar aprovechar esta flexibilidad seleccionando los estados en los que aplicamos las actualizaciones para mejorar el ritmo de progreso del algoritmo. Podemos intentar ordenar las actualizaciones para que la información de valor se propague de estado a estado de manera eficiente. Es posible que algunos estados no necesiten que sus valores se actualicen con tanta frecuencia como otros .Incluso podríamos tratar de omitir la actualización de algunos estados por completo si no son relevantes para un comportamiento óptimo.</p>
+<p>Los algoritmos asíncronos también facilitan la mezcla de la computación con la interacción en tiempo real. Para resolver un problema de MDP, podemos ejecutar un algoritmo iterativo de DP al mismo tiempo que un agente está experimentando con el MDP. La experiencia del agente puede utilizarse para determinar los estados en los que el algoritmo de DP aplica sus actualizaciones. Al mismo tiempo, la información más reciente sobre valores y políticas del algoritmo DP puede guiar la toma de decisiones del agente. Por ejemplo, podemos aplicar actualizaciones a los estados a medida que el agente los visita. Esto permite enfocar las actualizaciones del algoritmo DP en las partes del conjunto de estados que son más relevantes para el agente. Este tipo de enfoque es un tema repetido en el Reinforcement Learning.</p>
+</div>
+<div id="iteracion-generalizada-de-politicas" class="section level2">
+<h2><span class="header-section-number">4.6</span> Iteración generalizada de políticas</h2>
+<p>La iteración de políticas consiste en dos procesos simultáneos e interactivos, uno que hace que la función de valor sea coherente con la política actual (evaluación de políticas), y el otro que hace que la política sea codiciosa con respecto a la función de valor actual (mejora de políticas). En la iteración de políticas, estos dos procesos se alternan, cada uno completandose antes de que el otro comience, pero esto no es realmente necesario. En la iteración del valor, por ejemplo, sólo se realiza una única iteración de la evaluación de políticas entre cada mejora de las mismas. En los métodos DP asíncronos, los procesos de evaluación y mejora se intercalan a un grado uniforme. En algunos casos, un solo estado se actualiza en un paso, antes de volver al otro. Mientras ambos procesos continúen actualizando todos los estados, el resultado final es típicamente la misma convergencia hacia la función de valor óptimo y una política óptima.</p>
+<p>Utilizamos el término iteración generalizada de políticas (GPI) para referirnos a la idea general de permitir que la evaluación de políticas y los procesos de mejora de políticas interactúen, independientemente de la granularidad y otros detalles de los dos procesos. Casi todos los métodos de Reinforcement Learning son descritos de buena forma usando GPI. Es decir, todas tienen políticas identificables y funciones de valor, con la política siempre siendo mejorada con respecto a la función de valor y la función de valor siempre siendo dirigida hacia la función de valor para la política, como lo sugiere la próxima figura. Es fácil ver que si tanto el proceso de evaluación como el proceso de mejora se estabilizan, es decir, ya no producen cambios, entonces la función de valor y la política deben ser óptimas. La función de valor se estabiliza sólo cuando es consistente con la política actual, y la política se estabiliza sólo cuando es codiciosa con respecto a la función de valor actual. Por lo tanto, ambos procesos se estabilizan sólo cuando se ha encontrado una política que es codiciosa con respecto a su propia función de evaluación. Esto implica que la ecuación de optimización de Bellman se mantiene, y por lo tanto que la política y la función de valor son óptimas.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/diag.png" alt="" />
+<p class="caption"></p>
+</div>
+<p>También se podría pensar en la interacción entre los procesos de evaluación y mejora en los GPI en términos de dos limitaciones u objetivos, por ejemplo, como dos líneas en un espacio bidimensional, como se sugiere en la próxima figura. Aunque la geometría real es mucho más complicada, el diagrama sugiere lo que sucede en el caso real. Cada proceso conduce la función de valor o política hacia una de las líneas que representan una solución a uno de los dos objetivos. Las metas interactúan porque las dos líneas no son ortogonales. Conducir directamente hacia una meta causa que se aleje un poco de la otra meta. Sin embargo, inevitablemente, el proceso conjunto se acerca al objetivo general de la optimización. Las flechas de este diagrama corresponden al comportamiento de la iteración de políticas en el sentido de que cada una de ellas lleva al sistema hasta la consecución completa de uno de los dos objetivos. En GPI también se pueden dar pasos más pequeños e incompletos hacia cada meta. En cualquier caso, los dos procesos juntos logran el objetivo general de la optimización, aunque ninguno de los dos intente alcanzarlo directamente.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/diag2.png" alt="" />
+<p class="caption"></p>
+</div>
+</div>
+<div id="eficiencia-de-la-programacion-dinamica" class="section level2">
+<h2><span class="header-section-number">4.7</span> Eficiencia de la programación dinámica</h2>
+<p>DP puede no ser práctico para problemas muy grandes, pero en comparación con otros métodos para resolver MDPs, los métodos DP son en realidad bastante eficientes. Si ignoramos algunos detalles técnicos, entonces el tiempo que (en el peor de los casos) toman los métodos de DP para encontrar una política óptima es polinomial en el número de estados y acciones. Si<span class="math inline">\(n\)</span> y <span class="math inline">\(k\)</span> denotan el número de estados y acciones, esto significa que un método DP toma un número de operaciones computacionales que es menor que alguna función polinómica de <span class="math inline">\(n\)</span> y <span class="math inline">\(k\)</span>. Se garantiza un método DP para encontrar una política óptima en tiempo polinómico aunque el número total de políticas (determinista) sea <span class="math inline">\(k^n\)</span>. En este sentido, DP es exponencialmente más rápido de lo que podría ser cualquier búsqueda directa en el espacio de políticas, porque la búsqueda directa tendría que examinar exhaustivamente cada política para proporcionar la misma garantía. Los métodos de programación lineal también pueden utilizarse para resolver MDPs, y en algunos casos sus garantías de convergencia en el peor de los casos son mejores que las de los métodos DP. Pero los métodos de programación lineal resultan poco prácticos en un número mucho menor de estados que los métodos DP (por un factor de aproximadamente 100). Para los problemas más grandes, sólo los métodos DP son viables.</p>
+<p>A veces se piensa que la DP es de aplicabilidad limitada debido a la maldición de la dimensionalidad, el hecho de que el número de estados a menudo crece exponencialmente con el número de variables de estado. Los grandes conjuntos de estados crean dificultades, pero éstas son inherentes al problema, no a DP como método de solución. De hecho, DP es comparativamente más adecuada para manejar grandes espacios de estados que los métodos de la competencia como la búsqueda directa y la programación lineal.</p>
+<p>En la práctica, los métodos DP se pueden utilizar con los ordenadores actuales para resolver MDPs con millones de estados. Tanto la iteración de políticas como la iteración de valores se utilizan ampliamente, y no está claro cuál es mejor en general. En la práctica, estos métodos suelen converger mucho más rápido que sus tiempos de ejecución teóricos en el peor de los casos, especialmente si se inician con funciones o políticas de buen valor inicial.</p>
+<p>En caso de problemas con grandes espacios de estado, a menudo se prefieren los métodos DP asincrónicos. Para completar incluso un barrido de un método sincrónico, se requiere computación y memoria para cada estado. Para algunos incluso esta cantidad de memoria y computación no es práctica, sin embargo, el problema sigue siendo potencialmente solucionable porque se producen relativamente pocos estados a lo largo de las trayectorias óptimas de la solución. Métodos asíncronos y otras variaciones de las GPI pueden aplicarse en tales casos y pueden encontrar políticas buenas u óptimas en muchos casos. más rápido que los métodos síncronos.</p>
+
+</div>
+</div>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-78759535-1', 'auto');
+ga('send', 'pageview');  
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="procesos-de-decision-de-markov-finitos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="metodos-de-montecarlo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/lunr.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/synergyvision/Analisis_y_Medida/edit/master/bookdown/201-capitulo3.Rmd",
+"text": "Edit"
+},
+"download": ["Reinforcement Learning.pdf"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Reinforcement Learning</title>
+  <meta name="description" content="Reinforcement Learning">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Reinforcement Learning" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://synergy.vision/Reinforcement-learning/" />
+  <meta property="og:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+  
+  <meta name="github-repo" content="synergyvision/Reinforcement-learning/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Reinforcement Learning" />
+  
+  
+  <meta name="twitter:image" content="http://synergy.vision/Reinforcement-learning/images/cover.png" />
+
+<meta name="author" content="Synergy Vision">
+
+
+<meta name="date" content="2018-12-13">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="modelos-lineales.html">
+<link rel="next" href="programacion-dinamica.html">
+<script src="libs/jquery/jquery.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><img src="images/logovision-black.png" width="160"></img></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#por-que-leer-este-libro"><i class="fa fa-check"></i>¿Por qué leer este libro?</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#informacion-sobre-los-programas-y-convenciones"><i class="fa fa-check"></i>Información sobre los programas y convenciones</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#practicas-interactivas-con-r"><i class="fa fa-check"></i>Prácticas interactivas con R</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#agradecimientos"><i class="fa fa-check"></i>Agradecimientos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="acerca-del-autor.html"><a href="acerca-del-autor.html"><i class="fa fa-check"></i>Acerca del Autor</a></li>
+<li class="chapter" data-level="1" data-path="introduccion.html"><a href="introduccion.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduccion.html"><a href="introduccion.html#reinforcement-learning"><i class="fa fa-check"></i><b>1.1</b> Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.2" data-path="introduccion.html"><a href="introduccion.html#ejemplos"><i class="fa fa-check"></i><b>1.2</b> Ejemplos</a></li>
+<li class="chapter" data-level="1.3" data-path="introduccion.html"><a href="introduccion.html#elementos-del-reinforcement-learning"><i class="fa fa-check"></i><b>1.3</b> Elementos del Reinforcement Learning</a></li>
+<li class="chapter" data-level="1.4" data-path="introduccion.html"><a href="introduccion.html#limitaciones-y-alcance"><i class="fa fa-check"></i><b>1.4</b> Limitaciones y alcance</a></li>
+<li class="chapter" data-level="1.5" data-path="introduccion.html"><a href="introduccion.html#un-ejemplo-clasico-tres-en-linea."><i class="fa fa-check"></i><b>1.5</b> Un ejemplo clásico: tres en linea.</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="modelos-lineales.html"><a href="modelos-lineales.html"><i class="fa fa-check"></i><b>2</b> Modelos Lineales</a><ul>
+<li class="chapter" data-level="2.1" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-lineal"><i class="fa fa-check"></i><b>2.1</b> Regresión lineal</a></li>
+<li class="chapter" data-level="2.2" data-path="modelos-lineales.html"><a href="modelos-lineales.html#estimacion-de-los-parametros-del-modelo"><i class="fa fa-check"></i><b>2.2</b> Estimación de los parámetros del modelo</a></li>
+<li class="chapter" data-level="2.3" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-lineal-multiple"><i class="fa fa-check"></i><b>2.3</b> Regresión Lineal Múltiple</a></li>
+<li class="chapter" data-level="2.4" data-path="modelos-lineales.html"><a href="modelos-lineales.html#modelo-de-regresion-lineal-en-notacion-matricial"><i class="fa fa-check"></i><b>2.4</b> Modelo de Regresión Lineal en notación matricial</a></li>
+<li class="chapter" data-level="2.5" data-path="modelos-lineales.html"><a href="modelos-lineales.html#un-problema-de-bandido-k-brasos"><i class="fa fa-check"></i><b>2.5</b> Un problema de bandido k-brasos</a></li>
+<li class="chapter" data-level="2.6" data-path="modelos-lineales.html"><a href="modelos-lineales.html#mtodos-de-accin-valor"><i class="fa fa-check"></i><b>2.6</b> M??todos de acci??n valor</a></li>
+<li class="chapter" data-level="2.7" data-path="modelos-lineales.html"><a href="modelos-lineales.html#pruebas-sobre-el-problema-del-bandido-de-10-brasos"><i class="fa fa-check"></i><b>2.7</b> Pruebas sobre el problema del bandido de 10 brasos</a></li>
+<li class="chapter" data-level="2.8" data-path="modelos-lineales.html"><a href="modelos-lineales.html#aplicacin-progresiva"><i class="fa fa-check"></i><b>2.8</b> Aplicaci??n progresiva</a></li>
+<li class="chapter" data-level="2.9" data-path="modelos-lineales.html"><a href="modelos-lineales.html#problemas-no-estacionarios"><i class="fa fa-check"></i><b>2.9</b> Problemas no estacionarios</a></li>
+<li class="chapter" data-level="2.10" data-path="modelos-lineales.html"><a href="modelos-lineales.html#ptimos-valores-iniciales"><i class="fa fa-check"></i><b>2.10</b> ??ptimos valores iniciales</a></li>
+<li class="chapter" data-level="2.11" data-path="modelos-lineales.html"><a href="modelos-lineales.html#cota-superior-de-confianza-en-la-seleccin-de-acciones-csc"><i class="fa fa-check"></i><b>2.11</b> Cota superior de confianza en la selecci??n de acciones (CSC)</a></li>
+<li class="chapter" data-level="2.12" data-path="modelos-lineales.html"><a href="modelos-lineales.html#algoritmo-del-gradiente"><i class="fa fa-check"></i><b>2.12</b> Algoritmo del gradiente</a></li>
+<li class="chapter" data-level="2.13" data-path="modelos-lineales.html"><a href="modelos-lineales.html#investigacin-asociativa"><i class="fa fa-check"></i><b>2.13</b> Investigaci??n asociativa</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html"><i class="fa fa-check"></i><b>3</b> Procesos de decision de Markov finitos</a><ul>
+<li class="chapter" data-level="3.1" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#el-agente-un-interface-del-entorno"><i class="fa fa-check"></i><b>3.1</b> El agente, Un interface del entorno</a></li>
+<li class="chapter" data-level="3.2" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#metas-y-recompensas."><i class="fa fa-check"></i><b>3.2</b> Metas y recompensas.</a></li>
+<li class="chapter" data-level="3.3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#retornos-y-episodios"><i class="fa fa-check"></i><b>3.3</b> Retornos y episodios</a></li>
+<li class="chapter" data-level="3.4" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#notacion-unificada-tanto-para-tareas-episodicas-y-continuas."><i class="fa fa-check"></i><b>3.4</b> Notación unificada tanto para tareas episodicas y continuas.</a></li>
+<li class="chapter" data-level="3.5" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#politicas-y-funciones-de-valor"><i class="fa fa-check"></i><b>3.5</b> Políticas y funciones de valor</a></li>
+<li class="chapter" data-level="3.6" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#funciones-de-valor-y-politicas-optimas"><i class="fa fa-check"></i><b>3.6</b> Funciones de valor y políticas optimas</a></li>
+<li class="chapter" data-level="3.7" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#optimalidad-y-aproximacion"><i class="fa fa-check"></i><b>3.7</b> Optimalidad y aproximación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html"><i class="fa fa-check"></i><b>4</b> Programación dinámica</a><ul>
+<li class="chapter" data-level="4.1" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#politicas-evaluadas-prediccion"><i class="fa fa-check"></i><b>4.1</b> Políticas evaluadas (Predicción)</a></li>
+<li class="chapter" data-level="4.2" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#mejora-de-las-politicas"><i class="fa fa-check"></i><b>4.2</b> Mejora de las políticas</a></li>
+<li class="chapter" data-level="4.3" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-politicas"><i class="fa fa-check"></i><b>4.3</b> Iteración de políticas</a></li>
+<li class="chapter" data-level="4.4" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-de-valores"><i class="fa fa-check"></i><b>4.4</b> Iteración de valores</a></li>
+<li class="chapter" data-level="4.5" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#programacion-dinamica-asincronica."><i class="fa fa-check"></i><b>4.5</b> Programación dinámica asincrónica.</a></li>
+<li class="chapter" data-level="4.6" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#iteracion-generalizada-de-politicas"><i class="fa fa-check"></i><b>4.6</b> Iteración generalizada de políticas</a></li>
+<li class="chapter" data-level="4.7" data-path="programacion-dinamica.html"><a href="programacion-dinamica.html#eficiencia-de-la-programacion-dinamica"><i class="fa fa-check"></i><b>4.7</b> Eficiencia de la programación dinámica</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html"><i class="fa fa-check"></i><b>5</b> Métodos de Montecarlo</a><ul>
+<li class="chapter" data-level="5.1" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#prediccion-con-monte-carlo"><i class="fa fa-check"></i><b>5.1</b> Predicción con Monte Carlo</a></li>
+<li class="chapter" data-level="5.2" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#estimacion-de-monte-carlo-de-los-valores-de-accion"><i class="fa fa-check"></i><b>5.2</b> Estimación de Monte Carlo de los Valores de Acción</a></li>
+<li class="chapter" data-level="5.3" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control"><i class="fa fa-check"></i><b>5.3</b> Métodos de Monte Carlo con control</a></li>
+<li class="chapter" data-level="5.4" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#metodos-de-monte-carlo-con-control-sin-iniciar-exploracion"><i class="fa fa-check"></i><b>5.4</b> Métodos de Monte Carlo con control sin iniciar exploración</a></li>
+<li class="chapter" data-level="5.5" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#predicciones-no-politicas-via-muestreos-de-importancia."><i class="fa fa-check"></i><b>5.5</b> Predicciones no políticas via muestreos de importancia.</a></li>
+<li class="chapter" data-level="5.6" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#implementacion-incremental"><i class="fa fa-check"></i><b>5.6</b> Implementación incremental</a></li>
+<li class="chapter" data-level="5.7" data-path="metodos-de-montecarlo.html"><a href="metodos-de-montecarlo.html#monte-carlo-no-politico-con-control"><i class="fa fa-check"></i><b>5.7</b> Monte Carlo no político con control</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html"><i class="fa fa-check"></i><b>6</b> Aprendizaje por Diferencia Temporal</a><ul>
+<li class="chapter" data-level="6.1" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#prediccion"><i class="fa fa-check"></i><b>6.1</b> Predicción</a></li>
+<li class="chapter" data-level="6.2" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#ventajas-de-los-metodos-de-prediccion-de-td"><i class="fa fa-check"></i><b>6.2</b> Ventajas de los métodos de predicción de TD</a></li>
+<li class="chapter" data-level="6.3" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#calidad-de-td0"><i class="fa fa-check"></i><b>6.3</b> Calidad de TD(0)</a></li>
+<li class="chapter" data-level="6.4" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-td-politico-con-control"><i class="fa fa-check"></i><b>6.4</b> Sarsa: TD político con control</a></li>
+<li class="chapter" data-level="6.5" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#q-learning-td-no-politico-con-control"><i class="fa fa-check"></i><b>6.5</b> Q-Learning: TD no político con control</a></li>
+<li class="chapter" data-level="6.6" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sarsa-esparada"><i class="fa fa-check"></i><b>6.6</b> Sarsa esparada</a></li>
+<li class="chapter" data-level="6.7" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#sesgo-de-maximizacion-y-doble-aprendizaje"><i class="fa fa-check"></i><b>6.7</b> Sesgo de maximización y doble aprendizaje</a></li>
+<li class="chapter" data-level="6.8" data-path="aprendizaje-por-diferencia-temporal.html"><a href="aprendizaje-por-diferencia-temporal.html#juegos-afterstates-y-otros-casos-especiales"><i class="fa fa-check"></i><b>6.8</b> Juegos, afterstates y otros casos especiales</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html"><i class="fa fa-check"></i><b>7</b> Bootstrapping en <span class="math inline">\(n\)</span>-pasos</a><ul>
+<li class="chapter" data-level="7.1" data-path="bootstrapping-en-n-pasos.html"><a href="bootstrapping-en-n-pasos.html#prediccion-de-td-en-n-pasos"><i class="fa fa-check"></i><b>7.1</b> Predicción de TD en <span class="math inline">\(n\)</span> pasos</a></li>
+</ul></li>
+<li class="appendix"><span><b>Apéndice</b></span></li>
+<li class="chapter" data-level="A" data-path="software-tools.html"><a href="software-tools.html"><i class="fa fa-check"></i><b>A</b> Software Tools</a><ul>
+<li class="chapter" data-level="A.1" data-path="software-tools.html"><a href="software-tools.html#r-and-r-packages"><i class="fa fa-check"></i><b>A.1</b> R and R packages</a></li>
+<li class="chapter" data-level="A.2" data-path="software-tools.html"><a href="software-tools.html#pandoc"><i class="fa fa-check"></i><b>A.2</b> Pandoc</a></li>
+<li class="chapter" data-level="A.3" data-path="software-tools.html"><a href="software-tools.html#latex"><i class="fa fa-check"></i><b>A.3</b> LaTeX</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Reinforcement Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="procesos-de-decision-de-markov-finitos" class="section level1">
+<h1><span class="header-section-number">Capítulo 3</span> Procesos de decision de Markov finitos</h1>
+<p>En este capitulo introduciremos de manera formal el problema de un proceso de decisión de Markov finito, o MDP finito, por sus siglas en ingles (Markov decision processes), el cual inentaremos resolver en el resto del libro. Este problema involucra una retroalimnetación evaluativa, como el capítulo del problema del bandido, pero ademas involucra un aspecto asociativo, escogiendo diferentes acciones en diferentes situaciones. MDP son una formalización de las decisiones sequenciales, donde las acciones influyen no solo en las recompensas inmediatas, sino en las subsequentes situaciones, o estados a través de esas recompensas futuras. Las MDP implican una recompensa diferida o descontada y la necesidad de equilibrar recompensas inmediatas y diferidad. Mientras en el problema del bandido estimavamos el valor <span class="math inline">\(q_*(a)\)</span> de la acción <span class="math inline">\(a\)</span>, en MDP estimaremos el valor <span class="math inline">\(q_*(s,a)\)</span> de la acción <span class="math inline">\(a\)</span> en el estado <span class="math inline">\(s\)</span>, o estimaremos el valor <span class="math inline">\(v_*(s)\)</span> de cada estado dando selecciones de acciones optimas. Esta cantidades dependientes de los estados son esenciales para asignar el beneficio de posteriores selecciones de subsucesiones de acciones individuales.</p>
+<p>MDP son una herramienta matematicamente idealizada para resolver el problema de Reinforcement Learning, el cual tiene solidas afirmaciones teóricas. Se definiran terminos provenientes de la estructura matematica tales como retornos, funciones de valor y ecuación de bellman. Como en toda la inteligencia artificial, existe una tensión entre la amplitud de la aplicabilidad y la manejabilidad matemática. En este capítulo presentamos esta tensión y discutimos algunos de los compromisos y desafíos que implica.</p>
+<div id="el-agente-un-interface-del-entorno" class="section level2">
+<h2><span class="header-section-number">3.1</span> El agente, Un interface del entorno</h2>
+<p>Los MDP estan pensados como un marco sencillo en el proceso de aprendizaje proveniente de la interacción para alcanzar una meta. El alumno y el que toma la decision son llamados el agente. Todo lo que puede interactuar el agente es llamado entorno. Este interactua continuamente, el selecciona acciones y el entorno responde a estas acciones y presenta nuevas situaciones al agente. El entorno ademas da recompensas, valores numericos que el agente busca maximizar en el transurso del tiempo a traves de la seleccion de acciones. Ver siguiente figura.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/entorno.png" alt="Interacción entre el agente y el entorno en un proceso de decision de Markov" />
+<p class="caption">Interacción entre el agente y el entorno en un proceso de decision de Markov</p>
+</div>
+<p>De forma mas especifica, el agente y el entorno interactuan en cada sucesión de tiempo discreto, <span class="math inline">\(t = 0,1,2,...\)</span> En cada tiempo <span class="math inline">\(t\)</span>, el agente recibe alguna representación del estado del entorno, <span class="math inline">\(S_t \in \textit{S}\)</span>, y sobre esta información selecciona una acción, <span class="math inline">\(A_t \in \textit{A}(s)\)</span>, en cada momento en parte por la implementación de acciones el agente recibe recompensa numerica <span class="math inline">\(R_{t+1} \in \textit{R} \subset \mathbb{R}\)</span> y se encuentra en un nuevo estado, <span class="math inline">\(S_{t+1}\)</span>. En general uno puede describir este proceso como la siguiente sucesion o trayectoria:<span class="math display">\[S_0,A_0,R_1,S_1,A_1,R_2,S_2,A_2,R_3,....\]</span></p>
+<p>En una MDP finita, los conjunto de estados, acciones y recompensas son finitos, es decir tiene un numero finito de elementos. En este caso, las vsriables aleatorias <span class="math inline">\(R_t\)</span> y <span class="math inline">\(S_t\)</span> tienen bien definidas distribuciones de probabilidad discreta las cuales dependen unicamente del anterior estado y acción. Esto es, para particulares valores de estas variables aleatorias, <span class="math inline">\(s´\in \textit{S}\)</span> y <span class="math inline">\(r\in \textit{R}\)</span>, existe una probabilidad de que esos valores se produzcan en el tiempo t, dados los valores particulares del estado y la acción precedente: <span class="math display">\[p(s´,r|s,a) \doteq p(S_t=s´, R_t=r|S_{t-1}=s,A_{t-1}=a)\]</span> para todo <span class="math inline">\(s´,s\in \textit{S}\)</span>, <span class="math inline">\(r \in \textit{R}\)</span> y <span class="math inline">\(a\in\textit{A}(s)s\)</span>. La función <span class="math inline">\(p:\textit{S}\textrm{x}\textit{R}\textrm{x}\textit{S}\textrm{x}\textit{A}\rightarrow[0,1]\)</span> es una función eterminada por cuatro argumentos. Recordemos que <span class="math inline">\(p\)</span> determina la distribución de probabilidad de cada para <span class="math inline">\(s\)</span> y <span class="math inline">\(a\)</span>. esto es:<span class="math display">\[\sum_{s´\in\textit{S}}\sum_{r\in\textit{R}}p(s´,r|s,a)=1,\quad\textrm{para todo }s\in \textit{S},a\in \textit{A}(s)\]</span> La probabilidad dada por esto cuatro argumentos caracteriza copletamente el dinamismo de una MDP, A partir de ella, se puede calcular cualquier otra cosa que se quiera saber sobre el entorno, como por ejemplo las probabilidades de transición de los estados, de la siguiente forma:<span class="math display">\[p(s´|s,a)\doteq \sum_{r\in\textit{R}}p(s´,r|s,a)\]</span> Ademas podemos calcular la esperanza esperada por un par estado-acción de la siguiente forma: <span class="math display">\[r(s,a) \doteq \sum_{r\in\textit{R}}r\sum_{s´\in\textit{S}}p(s´,r|s,a)\]</span> Tambien podemos calcular las recompensas del proximo estado mediante <span class="math display">\[r(s,a,s´)  \doteq \sum_{r\in\textit{R}}r\frac{p(s´,r|s,a)}{p(s´|s,a)}\]</span></p>
+<p>El marco de un MDP es abstracto y se puede aplicar a muchos problemas diferentes. Por ejemplo los pasos en el tiempo no necesitan referirse a intervalos de tiempo real, puede referirse a etapas sucesivas de toma de decisiones. Las acciones pueden ser deb bajo nivel, tales como las tensiones aplicadas a los motores a los motores de un brazo robotico, o decisiones de alto nivel, tales como decidir comer o ir a alguna parte. Del mismo modo, los estados pueden adoptar una amplia variedad de forma, pueden estar determinados por sensaciones de bajo nivel, como lecturas de un sensor, o pueden ser de alto nivel, comolas descripciones simbolicas de los objetos de una habitacion. Algunas acciones pueden ser totalmente mentales o computacionales. En general las acciones pueden ser cualquier decision que queramos aprender a tomar, y los estados cualquier cosa que podamos saber que pueda ser util. Acontinuación veremos algunos ejemplos:</p>
+<p><strong>Ejemplo 1: Biorreactor:</strong> Supongamos que queremos usar Reinforcement Learning para determinar las temperaturas momento a momento y las velocidades de agitación de un biorreactor (una gran fuente de nutrientes y bacterias utilizada para producir químicos útiles). Las acciones en una aplicación de este tipo podrían ser ajustar a una temperatura objetivo y las velocidades de agitación que se transmiten a los sistemas de control de nivel inferior que, a su vez, activan directamente los elementos calefactores y los motores para alcanzar la orden. Los estados probablemente fueran la temperatura y otras lecturas sensoriales. Las recompensas pueden ser medidas en cantidad de producto quimico alcanzado.</p>
+<p><strong>Ejemplo 2: Robot que recicla:</strong> Un robot tiene como objetivo recolectar latas vacias de refresco en el entorno de una oficina, este robot pose un detector de latas vacias, y un braso y una pinza que puede tomar las latas y ponerlas en un contenedor interno, el funciona con una bateria recargable. El sistema de control del robot tiene componentes para interpretar la información sensorial, para su movimiento, y para el control del braso y la pinsa. Decisiones de alto nivel para el robot es de como buscar las latas vacias usando un agente de Reinforcement Learning que se basa en la nivel de carga actual de la bateria. El agente tiene que decidir si el agente debe:</p>
+<ul>
+<li><p>Buscar activamente una lata durante un cierto periodo de tiempo.</p></li>
+<li><p>Permanecer inmovil y esperar por que alguien traiga una lata.</p></li>
+<li><p>Regresar y recargar baterias.</p></li>
+</ul>
+<p>Estas decisiones deben tomarse periodicamente o siemre que ocurra un evento especifico, tal como encontrar un recipiente vacio. En conclusion, el agente tiene tres posibles acciones y el estado es determinado principalmente por el nivel actual de bateria. Las recompensas pudieran ser cero la mayor parte del tiempo y positivas cuando el robot consiga una lata vacia. En este ejemplo el agente no es el robot completo, solo el que se encarga de decidir que hacer, no se encarga de los asuntos mecanicos del robot, como por ejemplo el movimiento.</p>
+<p><strong>Ejemplo 3: Robot que recicla (MDP):</strong> El ejemplo anterior puede ser convertido de forma sencilla y con algunos detalles en un MDP. Recordemos que el agente toma una decision de acuerdo a determinados eventos externos. El robot toma las decisiones enumeradas anteriormente. La mejor forma de encontrar puede ser buscarla activamente, pero esto consumiria rapidamente la bateria. Siempre que el robot esté buscando, existe la posibilidad de que su batería se agote, en ese caso el robot debe apagarse y esperar que lo rescaten.</p>
+<p>El agente toma sus decisiones en funcion solamente del nivel de bateria, así distinguimos dos niveles, alta y baja bateria, por lo cual el conjunto de estados es: <span class="math inline">\(\textit{S}=\{\)</span> alta, baja <span class="math inline">\(\}\)</span>, y las acciones a tomar serán buscar, esperar y recargar. Asi el conjunto de acciones que se pueden tomar dependiendo la bateria son:<span class="math display">\[\textit{A}(\textrm{Alta})\doteq\{\textrm{Buscar}, \textrm{Esperar}\}\]</span>y<span class="math display">\[\textit{A}(\textrm{Baja})\doteq\{\textrm{Buscar}, \textrm{Esperar},\textrm{Recargar}\}\]</span> Si el nivel de bateriaes alto entonces el periodo de busqueda puede siempre ser completado sin riesgo depender de la bateria. Si el robot decie buscar latas la probabilidad de que la bateria permanesca en nivel alto es <span class="math inline">\(\alpha\)</span>, y de que pase a nivel bajo es <span class="math inline">\(1-\alpha\)</span>. Por otro lado un periodo de busqueda cuando la bateria es baja tiene probabilida de permnanecer baja <span class="math inline">\(\beta\)</span> y de agotarse <span class="math inline">\(1-\beta\)</span>. En el ultimo caso el robot debe ser rescatado y su bateria volveria a ser alta. Cada vez que se recoge una lata se recompensa con una ganancia de una unidad, mientras si el robot es rescatado se le asigna <span class="math inline">\(-3\)</span> de recompensa. Sea <span class="math inline">\(r_{_{\textrm{Buscar}}}\)</span> y <span class="math inline">\(r_{_{\textrm{esperar}}}\)</span>, con <span class="math inline">\(r_{_{\textrm{Buscar}}}&gt;r_{_{\textrm{esperar}}}\)</span>, denotan el numero esperado de latas que el robot recogera mientras busca y espera respectivamente, finalmente para simplificar el problema supondremos que el robot no puede recoger latas cuando esta regresando para ser recargado o esta a punto de descargarse. Este sistema es un MDP con probabilidades de transición, dadas en la siguiente tabla:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><span class="math inline">\(s\)</span></th>
+<th align="center"><span class="math inline">\(a\)</span></th>
+<th align="center"><span class="math inline">\(s´\)</span></th>
+<th align="center"><span class="math inline">\(p(s´:s,a)\)</span></th>
+<th align="center"><span class="math inline">\(r(s,a,s´)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Alta</td>
+<td align="center">Buscar</td>
+<td align="center">Alta</td>
+<td align="center"><span class="math inline">\(\alpha\)</span></td>
+<td align="center"><span class="math inline">\(r_{_{\textrm{Buscar}}}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">Alta</td>
+<td align="center">Buscar</td>
+<td align="center">Baja</td>
+<td align="center"><span class="math inline">\(1-\alpha\)</span></td>
+<td align="center"><span class="math inline">\(r_{_{\textrm{Buscar}}}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Baja</td>
+<td align="center">Buscar</td>
+<td align="center">Alta</td>
+<td align="center"><span class="math inline">\(1-\beta\)</span></td>
+<td align="center">-3</td>
+</tr>
+<tr class="even">
+<td align="center">Baja</td>
+<td align="center">Buscar</td>
+<td align="center">Baja</td>
+<td align="center"><span class="math inline">\(\beta\)</span></td>
+<td align="center"><span class="math inline">\(r_{_{\textrm{Buscar}}}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Alta</td>
+<td align="center">Esperar</td>
+<td align="center">Alta</td>
+<td align="center">1</td>
+<td align="center"><span class="math inline">\(r_{_{\textrm{Esperar}}}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">Alta</td>
+<td align="center">Esperar</td>
+<td align="center"></td>
+<td align="center">0</td>
+<td align="center"><span class="math inline">\(r_{_{\textrm{Esperar}}}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Baja</td>
+<td align="center">Esperar</td>
+<td align="center"></td>
+<td align="center">0</td>
+<td align="center"><span class="math inline">\(r_{_{\textrm{Esperar}}}\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">Baja</td>
+<td align="center">Esperar</td>
+<td align="center"></td>
+<td align="center">1</td>
+<td align="center"><span class="math inline">\(r_{_{\textrm{Esperar}}}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Baja</td>
+<td align="center">Recargar</td>
+<td align="center"></td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">Baja</td>
+<td align="center">Recargar</td>
+<td align="center"></td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<p>Un gráfico de transición para resumir el comportamiento dinámico de la MDP es muy util, el siguiente grafico muestra el grafico de transición del robot que recicla. Hay dos tipos de nodos: los nodos de estado y los nodo de acción. Hay un nodo de estado por cada posible estado(un gran círculo abierto marcado con el nombre del estado) y un nodo de acción por cada par estado-acción (un pequeño círculo sólido etiquetado con el nombre de la acción y conectado por una línea al nodo de estado). Iniciando en un estado <span class="math inline">\(s\)</span> y tomando una acción <span class="math inline">\(a\)</span> nos movemos a lo largo del nodo y de la acción <span class="math inline">\((s,a)\)</span>. Entonces el entorno responde con una transición al siguiente nodo del estado mediante una de las flechas que salen del nodo de acción <span class="math inline">\((s,a)\)</span>. Cada flecha corresponde a una tripleta <span class="math inline">\((s, s´, a)\)</span>, donde <span class="math inline">\(s´\)</span> es el siguiente estado, y marcamos la flecha con la probabilidad de transición, <span class="math inline">\(p(s´|s, a)\)</span>, y la recompensa esperada para esa transición, <span class="math inline">\(r(s, a, s´)\)</span>.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/robot.png" alt="grafico de transición del robot que recicla" />
+<p class="caption">grafico de transición del robot que recicla</p>
+</div>
+</div>
+<div id="metas-y-recompensas." class="section level2">
+<h2><span class="header-section-number">3.2</span> Metas y recompensas.</h2>
+<p>En Reinforcement Learning, el proposito o meta del agente es formalizar en terminos de una señal especial una recompensa. En cada paso del tiempo, la recompensa es un simple numero real <span class="math inline">\(R_t\)</span>. De manera informal la meta del agente es maximizar las recompensas en un lapsus de tiempo, no las recopensas inmediatas. Esto se aclara en la hipotesis de las recompensas que dice:</p>
+<p>“Todo lo que nosotros consideremos como metas y propositos pueden ser considerados como la maximización de la esperanza del valor acumulado de una suma de una señal escalar recibida (llamada recompensa)”</p>
+<p>El uso de señal de recompensa para formalizar la idea del Reinforcement Learning es una de sus caracteristicas mas distintivas.</p>
+<p>Podemos pensar que formular metas o propositos a partir de señales de recompensa pudiera limitarnos, en la practica se ha provadoque esto en realidad es flexible y ampliamente aplicable, entendamos esto con unos ejemplos. Hacer que un robot aprenda a caminar, se ha demostrado que la recompensa en cada paso debe ser proporcional al movimiento que realice hacia adelante, o si queremos que un robot escape de un laberinto en cada momento le asignaremos recompensa <span class="math inline">\(-1\)</span>, para que de esta forma busque escapar de manera apresurada del mismo, o como en el ejemplo del robot que recicla pudieramos pensar en darle recompensa 0 en la mayor parte del tiempo o 1 en el caso de que encuentre una lata.</p>
+<p>En estos ejemplos podemos ver que esta pasando, el agente siempre inteta aprender a maximizar sus recompensas. Si nosotros queremos hacerlo hacer algo por nosotros debemos de asignarle recompensas que lo ayuden a entender cual es su meta y así alcanzarla, el unico incoveniente es que el agente no se concentrara en realizar sub-metas, solo de alcanzar el objetivo principal, por ejemplo, en una partida de ajedrez el agente no se contrara tanto en dominar el centro del tablero o tomar ventaja material, solo se enfocara en capturar el rey contrario, aunque se puede ver en modelos computacionales que la mayoria de los agentes aprenden que estas submetas son importantes, hasta cierto punto. En conclusión la señal de recopensa le indica al robot que debe alcanzar no como alcanzarlo.</p>
+</div>
+<div id="retornos-y-episodios" class="section level2">
+<h2><span class="header-section-number">3.3</span> Retornos y episodios</h2>
+<p>Hasta ahora hemos discutido informalmente el objetivo de aprendizaje. Dijimos que el objetivo del agente es maximizar una recompensa acumulada que va recibiendo a lo largo del tiempo, pero como debe hacer esto, si la sucesion de ganancias que recibe a partir del tiempo <span class="math inline">\(t\)</span> es <span class="math inline">\(R_{t+1},R_{t+2},...\)</span>, entonces el agente debe enfocarse en maximizar esa sucesion. En general, buscamos maximizar el retorno esperado, donde el retorno, denotado por <span class="math inline">\(G_t\)</span> es una funcion escalar de la sucesion de ganancias. La forma mas sencilla de definir el retorno es: <span class="math display">\[G_t = R_{t+1}+R_{t+2}+...+R_{T}\]</span> Donde <span class="math inline">\(T\)</span> es el ultimo tiempo a considerar. Esto en realidad mas que la forma mas sencilla, es la mas natural, ademas estamos considerando, que hay un momento final, en el transfondo de considerar el retorno de esta forma, es pensar que la interaccion entre el entorno y el agente se puede dividir naturalmente en sub-sucesiones llamados episodios, tales como etapas de un juego de mesa,viajar a traves de un laberinto, o cualquier orden repetido de interacciones. Cada episodio termina en un estado especial, llamado estado terminal, seguido de un reinicio para entrar en un estado de inicio o a una familia de posibles estados de inicio las cuales siguen una ley de probabilidad. Aunque paresca que los episodios terminan de diferentes maneras, como ganar o perder una partida, el siguiente episodio comienza independientemente de cómo terminó el anterior. Por lo tanto, se puede considerar que todos los episodios terminan en el mismo estado terminal, con recompensas diferentes por los resultados diferentes. Tareas con episodios de este tipo se denominan tareas episodicas. En tareas episodicas la mayoria de las veces necesitamos determinar el conjunto de todos los estados no terminales, denotado <span class="math inline">\(\textit{S}^+\)</span>. El tiempo terminal <span class="math inline">\(T\)</span> es una variable aleatoria que normalmente varia de episodio a episodio.</p>
+<p>Por otro lado puede ocurrir que la interacción agente entorno ocurra de forma indefinida y no pueda por lo tanto ser dividida en episodios, en este caso hablamos de tareas continuas, en este caso definir el retorno como lo habiamos definido anterior mente puede ser problematico, pues <span class="math inline">\(T=\infty\)</span>, por lo que usaremos una definición de retorno un poco mas complicada, pero matematicamente mucho mas simple.</p>
+<p>En esta definición usaremos la idea de descuento, la idea es que el agente busque maximizar los retornos, pero poniendo mas peso en los primeras acciones. el retorno entonces será:<span class="math display">\[G_t = R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}...=\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}\]</span>donde <span class="math inline">\(\gamma\)</span> es un parametro, <span class="math inline">\(0\leq\gamma\leq1\)</span>, llamado factor de descuento.</p>
+<p>El valor de descuento determina el valor futuro de una recompensa, es decir, una recompensa recibida <span class="math inline">\(k\)</span> pasos despues de iniciar solo valdra una fracción <span class="math inline">\(\gamma^{k-1}\)</span>, de lo que pudiera valer si fuera dada en el momento inicial. Cuando <span class="math inline">\(\gamma\)</span> se aproxima a 1, el agente es mas futurista.</p>
+<p><strong>Ejemplo: Equilibrado de pértigas:</strong></p>
+<p>El objetivo de esta tarea es aplicar fuerzas a un carro que se mueve a lo largo de una pista para evitar que se caiga un poste con bisagras en el carro: Se dice que ocurre una falla si el poste cae mas allá de la vertical o el carro se sale de la pista. La pertiga es regresada a la vertical cada vez que ocurre un fracaso. Esta tarea pudiera ser tratada como episodica donde los episodios naturales consisten en intentos de balancear la polea. Las recompensas pudieran ser 1, cada vez que no ocurra un fallo, pero esto pudiera retornarnos un retorno infinito. Alternativamente, podemos afrontar esta tarea como una tarea continua, usando descuentos. En este caso las ganancias fueran 0 la mayor parte del tiempo y <span class="math inline">\(-1\)</span> si ocurre un fallo. El retorno en este caso fuera <span class="math inline">\(-\gamma^K\)</span>, donde <span class="math inline">\(K\)</span> es el numero de pasos hasta el fallo. En este caso se maximiza las ganancias al intentar mantener la pertiga balanceada el mayor tiempo posible.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/balancing.png" alt="|" />
+<p class="caption">|</p>
+</div>
+</div>
+<div id="notacion-unificada-tanto-para-tareas-episodicas-y-continuas." class="section level2">
+<h2><span class="header-section-number">3.4</span> Notación unificada tanto para tareas episodicas y continuas.</h2>
+<p>A partir de este momento estaremos hablando de tareas episodicas y continuas, en la primera la interaccion entre el agente y el entorno naturalmente se lleva a cabo en bloques que equivalen a episodios separados y en la segunda esta division no puede ocurrir. En este libro estaremos trabajando continuamente con ambos problemas, por lo cual establecer algun tipo de notacion que englobe a ambos será de mucha utilidad.</p>
+<p>Para ser mas precisos, cuando hablamos de tareas episodicas no podemos simplemente denotar a los estados por <span class="math inline">\(S_t\)</span>, pues no nos indica sobre que episodio estamos, en realidad la notación ideal seria <span class="math inline">\(S_{t,i}\)</span>, la cual indica que estamos en el episodia <span class="math inline">\(i\)</span> en el tiempo <span class="math inline">\(t\)</span> (similarmente para <span class="math inline">\(A_{t,i}\)</span>,<span class="math inline">\(R_{t,i}\)</span>,<span class="math inline">\(\pi_{t,i}\)</span>,<span class="math inline">\(T_{t,i}\)</span>, etc). Sin embargo en general no estamos interesados en episodios especificos, por que abusando de la notación usaremos <span class="math inline">\(S_{t}\)</span> en vez de <span class="math inline">\(S_{t,i}\)</span></p>
+<p>Para poder unificar ambos casos debemos ser capaces de generalizar el retorno para ambas tareas, esto se puede realizar considerando que un estado absorvente de una episodio retorna asi mismo con recompensa cero a partir de ese momento. Por ejemplo el siguiente diagrama de transición.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/transicion.png" alt="|" />
+<p class="caption">|</p>
+</div>
+<p>Asi podemos usar la formula de retornos descontados pero tomando <span class="math inline">\(\gamma = 1\)</span>, de esta forma el retorno se puede definir como <span class="math inline">\(G_T=\sum^T_{k=t+1}\gamma^{k-t-1}R_k\)</span>, donde incluimos la posibilidad de que <span class="math inline">\(T=\infty\)</span> y <span class="math inline">\(\gamma=1\)</span>. Usaremos esta natoción a partir de ahora, para simplificar las cuentas y no especificaremos si nos estamos refiriendo a tareas episodicas o continuas, a menos que se establesca de antemano.</p>
+</div>
+<div id="politicas-y-funciones-de-valor" class="section level2">
+<h2><span class="header-section-number">3.5</span> Políticas y funciones de valor</h2>
+<p>En casi todo el Reinforcement Learning estaremos calculando funciones de valor dee los estados (o del par estado-valor), que en realidad es un indicador de que tan bueno es para el agente estar en un estado dado. La noción de “bueno” es definida en terminos de las recompensas futuras, que son en realidad una esperanza, o para ser mas preciso, la esperanza del retorno. Por supuesto que las recompensas que reciba el agente dependera de las acciones que el decida tomar. La forma como el decida internamente tomar las decisiciones de que acciones tomar sera llamada “politica”.</p>
+<p>Formalmente una politica es una funcion de los estados a las probabilidades de seleccionar cada acción posible. Si el agente esta siguiendo la politica <span class="math inline">\(\pi\)</span> en el tiempo <span class="math inline">\(t\)</span>, entonces <span class="math inline">\(\pi(a|s)\)</span> es la probabilidad que <span class="math inline">\(A_t=a\)</span> si <span class="math inline">\(S_t=s\)</span>, los metodos de Reinforcement Learning indican como la politica que sigue el agente va cambiando a traves de la experiencia.</p>
+<p>El valor de un estado <span class="math inline">\(s\)</span> dado una politica <span class="math inline">\(\pi\)</span>, denotado por <span class="math inline">\(v_{\pi}(s)\)</span>, es el retorno esperado cuando iniciamos en un estado <span class="math inline">\(s\)</span> y seguimos la politica <span class="math inline">\(\pi\)</span>. Formalmente para un MDP definimos <span class="math inline">\(v_{\pi}(s)\)</span> por <span class="math display">\[v_{\pi}(s) = \mathbb{E}_{\pi}[G_{t}|S_t=s]=\mathbb{E}_{\pi}\bigg{[}\sum_{k=0}^\infty\gamma^kR_{t+k+1}\bigg{|}S_t=s\bigg{]},\quad\textrm{para todo }s\in\textit{S} \]</span>. Es facil notar que si <span class="math inline">\(S_t=s\)</span> es un estado terminal el retorno será siempre 0. Llamaremos <span class="math inline">\(v_{\pi}\)</span> función de valor estado para la política <span class="math inline">\(\pi\)</span>.</p>
+<p>Similarmente, definimos el valor de tomar la acción <span class="math inline">\(a\)</span> en el estado <span class="math inline">\(s\)</span> bajo la politica <span class="math inline">\(\pi\)</span>, denotado por <span class="math inline">\(q_{\pi}(s,a)\)</span>, como el retorno esperado iniciando desde el estado <span class="math inline">\(s\)</span>, tomando la acción <span class="math inline">\(a\)</span>, y despues seguir la política <span class="math inline">\(\pi\)</span>:<span class="math display">\[q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_{t}|S_t=s,A_t=a]=\mathbb{E}_{\pi}\bigg{[}\sum_{k=0}^\infty\gamma^kR_{t+k+1}\bigg{|}S_t=s,A_t=a\bigg{]}\]</span></p>
+<p>Llamaremos a <span class="math inline">\(q_{\pi}\)</span> la funcion de valor accion de la política <span class="math inline">\(\pi\)</span>.</p>
+<p>La funciones <span class="math inline">\(v_\pi\)</span> y <span class="math inline">\(q_\pi\)</span> se estiman a partir de la experiencia. Por ejemplo e¿si el agente sigue una politica <span class="math inline">\(\pi\)</span> y mantiene un promedio, para cada estado encontrado, y calcula ese retorno a partir de ese momento, y repite este procedimiento varias veces, par la ley fuerte de los grandes numeros, el valor de este promedio convergera a <span class="math inline">\(v_\pi\)</span>. Si seleccionamos los promedios para iniciar a partir de acciones especificas por la misma razon estos romedios convergeran a <span class="math inline">\(q_\pi\)</span>, Estos metodos de estimacion son los “Metodos de Monte Carlo”, por que involucran promedios sobre muestras aleatorias del retorno actual. Por supuestos si hay muchos estados y acciones hacer estas estimaciones pueden ser poco practicas por su alto nivel de computo.</p>
+<p>Una propiedad muy importante de las funciones de volor usada de principio a fin en el Reinforcement Learning y la programación dinámica es que estas funciones satisfacen una relación de recurrencia, la siguiente condición de consistencia se mantiene entre el valor de <span class="math inline">\(s\)</span> y el valor de sus posibles estados sucesores:</p>
+<p><span class="math display">\[\begin{align}
+ v_{\pi}(s) &amp;= \mathbb{E}_\pi[G_t|S_t=s]\\
+ &amp;= \mathbb{E}_\pi[R_{t+1}+\gamma G_{t+1}|S_t=s]\\
+ &amp;=\sum_a\pi(a|s)\sum_{s´}\sum_rp(s´,r|s,a)\big{[}r+\gamma\mathbb{E}_{\pi}[G_{t+1}|S_{t+1}=s´]\big{]} \\
+&amp;= \sum_a\pi(a|s)\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma v_\pi(s´)\big{]} \\
+\end{align}\]</span></p>
+<p>Al final este valor puede ser visto como un valor esperado, para cada tripleta <span class="math inline">\(a\)</span>,<span class="math inline">\(s´\)</span> y <span class="math inline">\(r\)</span>, calculamos la probabilidad <span class="math inline">\(\pi(a|s)p(s´,r|s,a)\)</span> y sumamos sobre todos ellos.</p>
+<p>Esta ultima ecuacion es la ecuanción de Bellman (1957). Esta expresion relaciona los valores de un estado con sus posibles sucesores. Uno puede pensar esto como mirar hacia adelanta todos los posibles estados sucesores, esto se aprecia en el siguiente diagrama.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/adelante.png" alt="|" />
+<p class="caption">|</p>
+</div>
+<p>Cada circulo abierto representa un estado y cada ciculo solido una acción-estado. Iniciando desde el estado <span class="math inline">\(s\)</span>, el nodo raiz en el tope pudiera tomar cualquiera accion del conjunto de acciones disponible, en el diagrama hay tres posibles acciones basadas en la politica <span class="math inline">\(\pi\)</span>. Para cada acción el entorno puede responder con algun otro estado <span class="math inline">\(s´\)</span> y con alguna recompensa <span class="math inline">\(r\)</span> que depende de la dinamica del problema.</p>
+<p>** Ejemplo: GridWorld**</p>
+<p>La figura acontinuación representas un cuadrado cuadriculado que representa un simple MDP finito. Cada celda representa un posible estado del entorno. Cada estado posee 4 posibles acciones (norte, sur, este y oeste) las cuales determinan hacia donde se mueve el sistema. En general todas las acciones son dan recompensa 0, las que nos sacan de la cuadricula dan recompensa <span class="math inline">\(-1\)</span> y hay dos casos especiales las celdad correspondientes a las letras <span class="math inline">\(A\)</span> y <span class="math inline">\(B\)</span>. La letra <span class="math inline">\(A\)</span> da ganancia de 10 y se puede mover a la celda <span class="math inline">\(A´\)</span> con la misma ganancia, de igual forma la letra <span class="math inline">\(B´\)</span> da recpmpensa de 5 y se puede mover a la celda <span class="math inline">\(B´\)</span> con igual recompensa.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/grid.png" alt="|" />
+<p class="caption">|</p>
+</div>
+<p>Supongamos que el agente selecciona para cualquier estado las acciones con la misma probabilidad. La parte derecha de la imagen muestra la función de valor <span class="math inline">\(v_\pi\)</span> con factor de descuento <span class="math inline">\(\gamma=0.9\)</span>. Estos valores se calcularon con la ecuacion de Bellman (sistema lineal). Aqui se aprecia el valor de cada acción y claramente la celda <span class="math inline">\(A\)</span> es la de mayor valor, pero su valor es menor que su ganancia inmediata, esto se debe a que cuando llega a la celda <span class="math inline">\(A´\)</span> se encuentra en el borde donde se asigna una recompensa negativa, mientras en la celda <span class="math inline">\(B\)</span> el valor es mayor que su recompensa inmediata, pues <span class="math inline">\(B´\)</span> no esta en el borde.</p>
+<p>** Ejemplo: Golf.** Diseñemos un marco de trabajo de Reinforcement Learning para ser aplicado al juego de golf. Nosotros tendremos una penalidad por cada de -1 (recompensa negativa) por cada golpe hasta llegar al hoyo. Los estados son la localización de la bola. El valor de un estado es la cantidad de golpes negativos que hagan falta para llegar al hoyo, para simplificar las acciones, ellas consistiran en seleccionar un palo (putter o driver). La parte superior de la grafica muestra un posible valor de los estados, <span class="math inline">\(v_{\textrm{putt}}(s)\)</span>, para la politca que siempre usa putter. El estado terminal en el hoyo tiene valor de 0. Desde culquier lugar del green asumimos que podemos hacer un putt, esos estados tienen valor de -1. Fuera del green no podemos llegar al hoyo con un putt, y sus valores son altos. Si podemos alcanzar el green desde un estado con un putt, entonces ese estado debe tener un valor menor que el valor del green. Supondremos que podemos hacer un pott de forma muy precisa. Todas las localizaciones antes del green requieren almenos dos golpes para llegar al hoyo. Con el pott no salimos de la trampa de arena, por lo que le ponemos un valor de <span class="math inline">\(-\infty\)</span>. En genera, desde el inicio nos tomaria 6 golpes llegar al hoyo.</p>
+<div class="figure">
+<img src="~/Reinforcement-learning/golf.png" alt="|" />
+<p class="caption">|</p>
+</div>
+</div>
+<div id="funciones-de-valor-y-politicas-optimas" class="section level2">
+<h2><span class="header-section-number">3.6</span> Funciones de valor y políticas optimas</h2>
+<p>Resolver las tareas del Reinforcement Learning significa, hablando de forma clara, es encontrar una politica que alcanze la mayor cantidad de recompensa posible en el trancurso de la tarea. Para un MDP, nosotros podemos definir una politica optima de la siguiente forma. Las funciones de valor infieren un orden parcial sobre políticas. Una polítiva <span class="math inline">\(\pi\)</span> es mayor a una politica <span class="math inline">\(\pi ´\)</span> si y solo si <span class="math inline">\(v_\pi(s)\geq v_{\pi´}(s)\)</span> para todo <span class="math inline">\(s\in \textit{S}\)</span>. Hay siempre una politica que es mejor o igual que todas las demas politicas, esta es la politica optima, aunque pudiera haber mas de una, denotaremos toda politica optima por <span class="math inline">\(\pi_*\)</span>, ellas comparten la misma función de valor, llamada la funcion de valor estado optima, denotada por <span class="math inline">\(v_*\)</span>, y definida por <span class="math display">\[v_*(s)=max_{\pi}v_{\pi}(s)\]</span> para todo <span class="math inline">\(s\)</span></p>
+<p>Optimas politicas ademas comparten funcion de valor estado con el mismo valor, denotada por <span class="math inline">\(q_*\)</span> y definida por <span class="math display">\[q_*(s,a)=max_{\pi}q_{\pi}(s,a)\]</span> para todo <span class="math inline">\(s\in \textit{S}\)</span> y <span class="math inline">\(a\in \textit{A}\)</span>. para cada par estado acción <span class="math inline">\((s,a)\)</span>, esta función da el retorno esperado al tomar la accion <span class="math inline">\(a\)</span> en el estado <span class="math inline">\(s\)</span> y seguir la politica optima. Esto puede reescribirse en terminos de <span class="math inline">\(v_*\)</span> de la siguiente forma: <span class="math display">\[ q_*(s,a)=\mathbb{E}[R_{t+1}+\gamma v_*(S_{t+1})|S_t=s,A_t=a]\]</span></p>
+<p>Como <span class="math inline">\(v_*\)</span> es la funcion de valor de una politica, esta debe satisfacer la condicion de auto consistencia dada por la ecuacion de bellman para los valores de los estados. Sin embargo las condiciones de consistencia de <span class="math inline">\(v_*\)</span> pueden ser reescritas de una forma especialsin referirnos a ninguna politica. Intuitivamente, la ecuacion de optimalidad de bellman expresael echo que que el valor de un estado sobre una politica optima debe ser igual al retorno esperado de la mejor accion de ese estado:</p>
+<p><span class="math display">\[\begin{align}
+ v_{*}(s)&amp;= max_{a\in \textit{A}}q_{\pi_*}(s,a)\\ 
+ &amp;= max_{a}\mathbb{E}_\pi[G_t|S_t=s,A_t=a]\\
+ &amp;=  max_{a}\mathbb{E}_\pi[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]\\
+ &amp;=max_{a}\mathbb{E}_\pi[R_{t+1}+\gamma v_*(S_{t+1})|S_t=s,A_t=a] \\
+&amp;= max_{a}\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma v_*(s´)\big{]} \\
+\end{align}\]</span> Las ultimas dos ecuaciones forman la ecuacion de optimalidad de bellman para <span class="math inline">\(v_*\)</span>. La ecuación de optimalidad de bellman para <span class="math inline">\(q*\)</span> es: <span class="math display">\[\begin{align}
+q_*(s,a) &amp;= \mathbb{E}[R_{t+1}+\gamma max_{a´}q_*(S_{t+1},a´)|S_t=s,A_t=a]\\
+&amp;=\sum_{s´,r}p(s´,r|s,a)\big{[}r+\gamma max_{a}q_*(s´,a´)\big{]}
+\end{align}\]</span></p>
+<p>Los diagramas de la proxima figura muestran los estados futuros y acciones consideradas en la ecuacion de optimalidad de Bellman para <span class="math inline">\(v_*\)</span> y <span class="math inline">\(q_*\)</span></p>
+<div class="figure">
+<img src="~/Reinforcement-learning/backup.png" alt="|" />
+<p class="caption">|</p>
+</div>
+<p>Para un MDP finito la ecuacion de optimalidad de Bellman tiene solución unica para <span class="math inline">\(v_\pi\)</span> la cual es independiente de la politica. Este sistema genera una ecuaion por estado, asi si hay <span class="math inline">\(n\)</span> estados tendremos entonces un sistema con <span class="math inline">\(n\)</span> ecuaciones y <span class="math inline">\(n\)</span> incognitas, asi que uno puede usar cualquier metodo disponible para resolver este sistema.</p>
+<p>Una vez uno encuentra la solución al sistema generado por las ecuaciones de Bellman es realativamente facil hallar la politica optima a partir de <span class="math inline">\(v_*\)</span>, para cada estado <span class="math inline">\(s\)</span> a partir de la solucion hallamos la acción o acciones que la maximizan. La bellesa de <span class="math inline">\(v_*\)</span> es que si uno la usa para evaluar a corto plazo las consecuencias de las acciones, la politica ambisiosa sera automaticamente la optima pues <span class="math inline">\(v_*\)</span> toma en cuenta todas los posibles comportamientos, por medio de <span class="math inline">\(v_*\)</span> el rendimiento óptimo esperado a largo plazo se convierte en una cantidad que está disponible local e inmediatamente para cada estado.</p>
+<p>Si calculamos <span class="math inline">\(q_*\)</span> escoger las acciones óptimas se vuelve incluso más fácil. Con <span class="math inline">\(q_*\)</span> el agente no tiene ni siquiera que hacer una busqueda con un paso de anticipación: para cualquier estado <span class="math inline">\(s\)</span> simplemente encuentra las acciones <span class="math inline">\(a\)</span> que maximizen <span class="math inline">\(q_*(s,a)\)</span>. La función <span class="math inline">\(q_*\)</span> guarda todas las acciones anticipadas a un paso. Así esta función proporciona el rendimiento óptimo esperado a largo plazo como un valor que está disponible localmente e inmediatamente para cada par de estado acción.</p>
+<ul>
+<li><strong>Ejemplo: Ecuación de Bellman para el robot que recicla:</strong> Del ejemplo del robot que recicla podemos escribir de forma explícita la ecuación de optimalidad de Bellman. Para esto haremos la notación mas compacta, abreviaremos alta, baja, buscar, esperar y regresar por sus iniciales. Como solo hay dos estados solo hay dos ecuaciones. La ecuación para <span class="math inline">\(v_*\)</span> se escribe:</li>
+</ul>
+<span class="math display">\[\begin{align}
+ v_{*}(s)&amp;=max \left\{ \begin{array}{lcc}
+             p(h|h,s)[r(h,s,h)+\gamma v_*(h)]+p(l|h,s)[r(h,s,l)+\gamma v_*(l)] \\
+             \\ p(h|h,w)[r(h,w,h)+\gamma v_*(h)]+p(l|h,w)[r(h,w,l)+\gamma v_*(l)]
+            
+             \end{array}
+   \right.\\ 
+ &amp;= max \left\{ \begin{array}{lcc}
+             \alpha[r_s+\gamma v_*(h)]+(1-\alpha)[r_s+\gamma v_*(l)] \\
+             \\ 1[r_w+\gamma v_*(h)]+0[r_w+\gamma v_*(l)]
+            
+             \end{array}
+   \right. \\
+ &amp;=  max \left\{ \begin{array}{lcc}
+             r_s +\gamma[\alpha v_*(h)+(1-\alpha)v_*(l)] \\
+             \\ r_w+\gamma v_*(h)
+            
+             \end{array}
+   \right.\\
+ 
+\end{align}\]</span>
+<p>Haciendo el mismo procedimiento:</p>
+$$v_{*}(s)=max {
+<span class="math display">\[\begin{array}{lcc}
+             \beta r_s -3(1-\beta)+\gamma[(1-\beta)v_*(h)+\beta v_*(l)] \\
+             \\ r_w+\gamma v_*(l)\\
+            \\ \gamma v_*(h)
+             \end{array}\]</span>
+<p>. $$</p>
+<p>Resolver directamente la ecuación de optimalidad de Bellman nos da una ruta para hallar la política óptima, y esto resuelve el problema de Reinforcemente Learning. Sin embargo, esta solución es raramente facil de hallar. Esta solución se basa en tres supuestos que son raramente ciertos en la practica. (1) Conocemos con precisión la dinámica del entorno; (2) Tenemos los suficientes recursos computacionales para hallar la solución al sistema de ecuaciones; (3) La propiedad de Markov. En general no podemos hallar directamente la solución debido a que suelen violarse combinaciones de las suposiciones anteriores. Por ejemplo en el juego asiatico de Go, la primera y segunda supocisión no son problema, pero hay una gran cantidad de estado que hacen practicamente resolver la ecuación de Bellman.</p>
+<p>Algunos metodos de decisión pueden ser vistos como una forma de aproximacion de la solución de la ecuación de optimalidad Bellman. Los métodos de programación dinámica pueden relacionarse aún más estrechamente con la ecuación de la optimalidad de Bellman. Muchos métodos de Reinforcement Learning pueden entenderse claramente como la solución aproximada de la ecuación de la optimización de Bellman, utilizando transiciones experimentadas reales en lugar del conocimiento de las transiciy aproximaciones esperadas. Consideraremos una variedad de tales métodos en los siguientes capítulos.</p>
+</div>
+<div id="optimalidad-y-aproximacion" class="section level2">
+<h2><span class="header-section-number">3.7</span> Optimalidad y aproximación</h2>
+<p>Ya hemos definido funciones de valor óptimas y políticas óptimas. Claramente, un agente que aprende una política óptima ha echo bien el trabajo, pero esto ocurre raramente en la practica. En general hallar políticas óptimas puede generar mucho costo computacional. Como ya hemos mencionado, si conocieramos el completo comportamiento dínamico del entorno, es practicamente imposible hallar una política óptima por la incapacidad de resolver la ecuación de Bellman. Por ejemplo juegos de mesa como el ajedrez si usamos la experiencia humana esto solo representaria una pequeña fracción de las posibles combinaciones, en este juego los metodos usuales sufren al hallar políticas óptimas. Un crítico aspecto que se enfrenta el agente es siempre el poder computacional disponible, esto en particular, puede resumirse, en lo que se puede desarrolar en un solo paso.</p>
+<p>Ademas el uso de memoria es en general es otro problema, un gran almacenamiente de información es necesaria para calcular funciones de valor, políticas y modelos. Sy hay pocos estados, pudieramos crear una tablas o</p>
+
+</div>
+</div>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-78759535-1', 'auto');
+ga('send', 'pageview');  
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="modelos-lineales.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="programacion-dinamica.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/lunr.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/synergyvision/Analisis_y_Medida/edit/master/bookdown/200-capitulo2.Rmd",
+"text": "Edit"
+},
+"download": ["Reinforcement Learning.pdf"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
