@@ -192,6 +192,39 @@ $$ e= Y - \hat Y = Y - X \hat \beta = Y -X(X^tX)^{-1} X^t Y= (I- X(X^tX)^{-1} X^
  
  $$ Var(e)= \sigma^2 (I-H)$$
 
+## Observaciones
+
+1. (Residuos): El modelo de regresión lineal impone que los errores $\varepsilon_i$ sean independientes, normales y tengan todos la misma varianza. Los errores no son observables, los residuos $ei$, que son el correlato empírico de los errores, son observables. Sin embargo, los residuos no son independientes entre sí y sus varianzas no son iguales.
+
+2. (Teórica): $H$ y $I-H$ son matrices de proyección (es decir, $H^2=H$ y $(I-H)^2=I-H$). $H$ proyecta el subespacio de $\mathbb{R}^n$ generado por las columnas de $X$.
+
+
+## Modelos Lineales Generalizados (GLM)
+
+### Componentes de un modelo lineal generalizado (GLM)
+
+Un modelo lineal generalizado tiene tres componentes básicos:
+
+-  **Componente aleatoria:** Identifica la variable respuesta y su distribución de probabilidad.
+
+- **Componente sistemática:** Especifica las variables explicativas (independientes o predictoras) utilizadas en la función predictora lineal.
+
+- **Función link:** Es una función del valor esperado de $Y,  E(Y)$, como una combinación lineal de las variables predictoras.
+
+**Componente aleatoria**
+
+La componente aleatoria de un GLM consiste en una variable aleatoria $Y$ con observaciones independientes $(y_1, \cdots, y_N )$. Suponemos la distribución de Y en la familia exponencial natural.
+
+
+$$f(y_i| \theta_i)= a(\theta_i) b(y_i) e^{[y_iQ(\theta_i)]}$$
+
+$\theta_i$ varia para los distintos $i$ dependiendo de los valores de las variables predictoras.
+
+$Q(\theta)$ recibe el nombre de parámetro natural.
+
+**Componente sistemática**
+
+
 
 
 ## Un problema de bandido k-brasos

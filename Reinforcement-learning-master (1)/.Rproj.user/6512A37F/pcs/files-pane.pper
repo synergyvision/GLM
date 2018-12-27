@@ -1,6 +1,10 @@
 {
-    "path" : "~/Documents/Synergy Vision/app",
+    "path" : "~/GLM/Reinforcement-learning-master (1)",
     "sortOrder" : [
+        {
+            "ascending" : false,
+            "columnIndex" : 4
+        },
         {
             "ascending" : true,
             "columnIndex" : 2
