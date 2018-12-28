@@ -1,0 +1,139 @@
+---
+title: "Reporte CreditRisk+"
+output: pdf_document
+params:
+  titulo: NA
+  titulo2: NA
+  titulo3: NA
+  titulo4: NA
+  titulo5: NA
+  titulo6: NA
+  titulo7: NA
+  titulo8: NA
+  titulo9: NA
+  titulo10: NA
+  titulo11: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##  Informe de Riesgo de Credito
+
+Este docuemento es un reporte de riesgo de credito, basado en la metodología CrediRisk+. En el presente informe observamos métricas que cuantifican el riesgo de credito (VaR, Perdida Esperada, TVaR).
+
+```{r, include=FALSE}
+signi <- params$titulo11
+```
+
+Para la selección de variables categoricas o cualitativas se uso la prueba chicuadrado con un nivel de significancia `r signi`
+
+Las variables usadas para la creacion del score de la cartera de clientes fueron:
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+mod <- params$titulo5
+modn <- as.data.frame(names(mod$coefficients)[2:length(names(mod$coefficients))])
+names(modn) <- c("Variables")
+kable(modn)
+```
+
+```{r, include=FALSE}
+parame <- params$titulo7
+unidper <- params$titulo8
+juni <- params$titulo9
+```
+
+
+
+Para realizar este modelo se uso un análisis de *Regresión Lineal Generalizada* donde el enlace que se escogio fue *`r parame`* 
+
+El grafico acontinuación conocido como ROC es un indicador del ajuste del modelo.
+
+```{r, echo=FALSE, fig.width = 4,fig.height=3,fig.align = "center"}
+ggroc(params$titulo6)
+```
+
+El grafico acontinuación conocido como QQnorm es un indicador de la independencia de los residuos del modelo
+
+```{r, echo=FALSE, fig.width = 5,fig.height=4,fig.align = "center"}
+d1 <- params$titulo5
+d <- d1[[2]]
+
+df <- data.frame(y = d)
+
+p <- ggplot(df,aes(sample = y))
+p + stat_qq() + stat_qq_line()
+
+```
+
+El resumen estadistico del modelo es:
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+coef <- params$titulo5
+
+coef <- coef[[1]]
+
+coef <- as.data.frame(coef)
+
+nom <- row.names(coef)
+nom[1] <- "Corte con el eje y"
+coe <- coef[,1]
+
+coef <- data.frame(nom,coe) 
+colnames(coef) <- c("Variables","Coeficientes")
+
+
+kable(coef)
+
+```
+
+Los criterios de información aportan:
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+reduccion <- params$titulo5
+
+inf <- data.frame(Criterios = c("Desviación","Desviación Nula","ACC"), Valor=c(reduccion[[10]],reduccion[[12]],reduccion[[11]]))
+
+kable(inf)
+
+```
+
+
+Los resultados del modelo sobre la data de entrenamiento se podran apreciar en la siguiente cuadro, conocido como matriz de confusión
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+w<-as.data.frame(params$titulo10)
+
+kable(w)
+
+```
+
+
+
+
+
+Para el desarrollo de la metología CreditRisk+ se usaron los siguientes parametros: 
+
+* Como únidad de perdida se considero como `r unidper`
+* Como porcentaje de recuperación en caso de incumplimiento se considero como el  `r juni` %
+
+
+
+
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+w<-data.frame(c("Perdida Esperada","VaR", "TVaR"),c(params$titulo3,params$titulo2,params$titulo4))
+
+colnames(w) <- c("Metrica","Valor")
+
+kable(w)
+
+```
+
+
