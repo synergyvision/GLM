@@ -42,7 +42,7 @@ shinyServer(function(input, output, session) {
   })
   
   
-  source("/Users/juancarlos/GLM/Riesgo-de-Credito-master/App/appTemplate/www/categoria.R")
+  source("www/categoria.R")
  
  
   
@@ -57,7 +57,7 @@ shinyServer(function(input, output, session) {
     datosSC()
   },options = list(scrollX=T,scrollY=300))
   
-  source("/Users/juancarlos/GLM/Riesgo-de-Credito-master/App/appTemplate/www/bondad.R")
+  source("www/bondad.R")
   
   
   pvalExp <- reactive({
@@ -77,7 +77,8 @@ shinyServer(function(input, output, session) {
    
   },options = list(scrollX=T,scrollY=300))
   
-  source("/Users/juancarlos/GLM/Riesgo-de-Credito-master/App/appTemplate/www/corre.R")
+ 
+  source("www/corre.R")
   
 correlaciones <- reactive({
   
@@ -126,11 +127,21 @@ output$Histograma <- renderPlotly({
 })
 
 
-  observe( updateCheckboxGroupInput(session,"selec",  choices = outVar2() ))
+
+varMod <- reactive({
+  d<- outVar2()
+  e<- which(d== input$columns)
+  f<- d[-e]
+  f
+  
+})
+
+
+  observe( updateCheckboxGroupInput(session,"selec",  choices = varMod() ))
   
  
-  source("/Users/juancarlos/GLM/Riesgo-de-Credito-master/App/appTemplate/www/regresion_lineal.R")
-  source("/Users/juancarlos/GLM/Riesgo-de-Credito-master/App/appTemplate/www/graficos.R")
+  source("www/regresion_lineal.R")
+  source("www/graficos.R")
   
   modelo <- reactive({
     
