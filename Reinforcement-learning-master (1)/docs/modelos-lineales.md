@@ -2,7 +2,7 @@
 title: "Reinforcement Learning"
 subtitle: "Ciencia de los Datos Financieros"
 author: "Synergy Vision"
-date: "2018-12-26"
+date: "2019-01-02"
 knit: "bookdown::render_book"
 documentclass: krantz
 bibliography: [book.bib, packages.bib]
@@ -272,7 +272,7 @@ Un modelo lineal generalizado tiene tres componentes básicos:
 
 -  **Componente aleatoria:** Identifica la variable respuesta y su distribución de probabilidad.
 
-- **Componente sistemática:** Especifica las variables explicativas (independientes o predictoras) utilizadas en la funci ́on predictora lineal.
+- **Componente sistemática:** Especifica las variables explicativas (independientes o predictoras) utilizadas en la función predictora lineal.
 
 - **Función link:** Es una función del valor esperado de $Y,  E(Y)$, como una combinación lineal de las variables predictoras.
 
@@ -287,6 +287,11 @@ $\theta_i$ varia para los distintos $i$ dependiendo de los valores de las variab
 
 $Q(\theta)$ recibe el nombre de parámetro natural.
 
+**Componente sistemática**
+
+La coponente sistemática de un GLM es el vector $(\eta_1, \cdots, \eta_N)$
+
+$\eta_i = \sum_{j} \beta_j x_{ij}$ con $i=1, \cdots, N$
 
 
 

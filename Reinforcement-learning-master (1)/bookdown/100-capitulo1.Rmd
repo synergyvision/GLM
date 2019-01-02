@@ -224,6 +224,9 @@ $Q(\theta)$ recibe el nombre de parámetro natural.
 
 **Componente sistemática**
 
+La coponente sistemática de un GLM es el vector $(\eta_1, \cdots, \eta_N)$
+
+$\eta_i = \sum_{j} \beta_j x_{ij}$ con $i=1, \cdots, N$
 
 
 

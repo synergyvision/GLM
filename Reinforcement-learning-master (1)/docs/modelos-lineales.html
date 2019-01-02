@@ -25,7 +25,7 @@
 <meta name="author" content="Synergy Vision">
 
 
-<meta name="date" content="2018-12-26">
+<meta name="date" content="2019-01-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -273,7 +273,7 @@
 <p>Un modelo lineal generalizado tiene tres componentes básicos:</p>
 <ul>
 <li><p><strong>Componente aleatoria:</strong> Identifica la variable respuesta y su distribución de probabilidad.</p></li>
-<li><p><strong>Componente sistemática:</strong> Especifica las variables explicativas (independientes o predictoras) utilizadas en la funci ́on predictora lineal.</p></li>
+<li><p><strong>Componente sistemática:</strong> Especifica las variables explicativas (independientes o predictoras) utilizadas en la función predictora lineal.</p></li>
 <li><p><strong>Función link:</strong> Es una función del valor esperado de <span class="math inline">\(Y, E(Y)\)</span>, como una combinación lineal de las variables predictoras.</p></li>
 </ul>
 <p><strong>Componente aleatoria</strong></p>
@@ -281,6 +281,9 @@
 <p><span class="math display">\[f(y_i| \theta_i)= a(\theta_i) b(y_i) e^{[y_iQ(\theta_i)]}\]</span></p>
 <p><span class="math inline">\(\theta_i\)</span> varia para los distintos <span class="math inline">\(i\)</span> dependiendo de los valores de las variables predictoras.</p>
 <p><span class="math inline">\(Q(\theta)\)</span> recibe el nombre de parámetro natural.</p>
+<p><strong>Componente sistemática</strong></p>
+<p>La coponente sistemática de un GLM es el vector <span class="math inline">\((\eta_1, \cdots, \eta_N)\)</span></p>
+<p><span class="math inline">\(\eta_i = \sum_{j} \beta_j x_{ij}\)</span> con <span class="math inline">\(i=1, \cdots, N\)</span></p>
 </div>
 </div>
 <div id="un-problema-de-bandido-k-brasos" class="section level2">
