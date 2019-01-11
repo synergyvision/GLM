@@ -30,11 +30,12 @@ shinyUI(
       
                   menuItem("Introducción", tabName = "intro", icon = icon("fal fa-database")),
                               
-                  menuItem("Regresión Lineal", tabName = "data", icon = icon("fal fa-database"),
+                  menuItem("Regresión lineal generalizada", tabName = "data", icon = icon("fal fa-database"),
                            
                            
                            
-                           menuSubItem("Datos", tabName = "subitem1", icon = icon("circle-o"))
+                           menuSubItem("Modelo Lineal", tabName = "subitem1", icon = icon("circle-o")),
+                           menuSubItem("Modelo General", tabName = "subitem2", icon = icon("circle-o"))
                           
                   ),
                   
@@ -122,6 +123,65 @@ shinyUI(
                              box(title = h3("Coeficientes de la Regresión"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput("coeficien"))
                            )
                              
+                    ),
+                    
+                    
+                    tabItem(tabName = "subitem2",
+                            
+                            
+                            fluidRow(
+                              fluidRow(column(6,box(width = 11,background="yellow", checkboxInput("dataset2", strong("Selecciona para inciar Datos de Ejemplo"), FALSE))),column(6,box(width = 12,background="yellow", checkboxInput('userFile2', strong('Cargar Datos Propios'), FALSE)))),
+                              fluidRow(
+                                column(12,box( background="yellow",width=12,status = "warning",
+                                               selectInput('columns3', 'Selecciona variable de estudio', "Seleccione primero los datos")
+                                ))
+                                
+                              )),
+                            conditionalPanel(condition = "input.userFile2 == true",
+                                             fluidRow(
+                                               box(width = 15, title = h3(UPLOADDATA_TEXT),
+                                                   box( width=15,background = "yellow",
+                                                        fileInput('file_data2', SELECTFILE_TEXT, accept = UPLOADFILETYPE_CONF,
+                                                                  placeholder = FILESELEC_TEXT, buttonLabel = BUTTSELEC_TEXT )
+                                                   ),
+                                                   fluidRow(
+                                                     box(width=4,background="yellow",strong(ENCABEZADO_TEXT),
+                                                         checkboxInput( width="80%", 'header2', WITHHEADER_TEXT, TRUE)),
+                                                     box(width=4,background="yellow",
+                                                         radioButtons( width="40%", 'sep2', SEPARATOR_TEXT, UPLOADFILESEP_CONF, ';')),
+                                                     box(width=4,background="yellow",
+                                                         radioButtons( width="40%", 'quote2', COMILLAS_TEXT, UPLOADCOMILLAS_CONF, ''))
+                                                   )
+                                               )
+                                             )),
+                            fluidRow(
+                              box( style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput('datatable2'))
+                              ,
+                              column(12,box( background="yellow",width=120,status = "warning",
+                                             selectInput('columns4', 'Selecciona variable de estudio', "Seleccione primero los datos"))
+                              )
+                            ),
+                            
+                           
+                           fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('Histograma2'))),
+                           fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('boxplot'))),
+                           fluidRow(
+                             box(title = h3("Prueba de hipótesis de normalidad"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput('datatable12'))
+                           ),
+                           
+                           fluidRow(
+                             box(title = h3("Correlaciones con la variable dependiente"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput('datatable5'))
+                           ),
+                           
+                           fluidRow(column(6,box(title = h3("Seleccione variables independientes"), style = "overflow-x:scroll",width=12,status = "warning",checkboxGroupInput("selec2",c("Seleccione")))),
+                                           column(6,box(title = h3("Tipo de Modelo"), style = "overflow-x:scroll",width=12,status = "warning",radioButtons("selec3","Familia",
+                                                    choices = list("binomial"=1,"gaussian"=2, "Gamma"=3,"inverse.gaussian"=4,"poisson"=5,"quasi"=6,"quasibinomial"=7,"quasipoisson"=8),selected = 1)))
+                             
+                           )
+                           
+                           
+                        
+                            
                     ),
                    
                     
