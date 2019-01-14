@@ -165,13 +165,9 @@ shinyUI(
                            
                            fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('Histograma2'))),
                            fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('boxplot'))),
-                           fluidRow(
-                             box(title = h3("Prueba de hipótesis de normalidad"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput('datatable12'))
-                           ),
+                          
                            
-                           fluidRow(
-                             box(title = h3("Correlaciones con la variable dependiente"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput('datatable5'))
-                           ),
+                           
                            
                            fluidRow(column(6,box(title = h3("Seleccione variables independientes"), style = "overflow-x:scroll",width=12,status = "warning",checkboxGroupInput("selec2",c("Seleccione")))),
                                            column(6,box(title = h3("Tipo de Modelo"), style = "overflow-x:scroll",width=12,status = "warning",radioButtons("selec3","Familia",

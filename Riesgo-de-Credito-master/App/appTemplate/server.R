@@ -178,7 +178,7 @@ varMod <- reactive({
   })
   
   
-  
+  #GLM
   
   
   datasetInput2 <- reactive({
@@ -259,21 +259,10 @@ varMod <- reactive({
   
   
   
-  datosSC2<- reactive({
-    
-    cate(data1org2())
-    
-    
-  })
+
   
   
-  pvalExp1 <- reactive({
-    
-    bondad(datosSC2())
-    
-    
-    
-  })
+ 
   
   output$datatable12 <-renderDataTable({
     s <- pvalExp1()
@@ -287,20 +276,8 @@ varMod <- reactive({
   
   
   
-  correlaciones2 <- reactive({
-    
-    correl(datosSC2(),input$columns3)
-    
-  })
   
-  output$datatable5 <-renderDataTable({
-    ss <- correlaciones2()
-    
-    mm <- as.data.frame(matrix(ss,ncol = length(colnames(datosSC2()))))
-    colnames(mm) <- colnames(datosSC2())
-    mm
-    
-  },options = list(scrollX=T,scrollY=300))
+  
   
   
   
