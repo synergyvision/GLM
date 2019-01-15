@@ -4,7 +4,7 @@
 title: "Reinforcement Learning"
 subtitle: "Ciencia de los Datos Financieros"
 author: "Synergy Vision"
-date: "2018-12-13"
+date: "2019-01-15"
 knit: "bookdown::render_book"
 documentclass: krantz
 bibliography: [book.bib, packages.bib]
@@ -337,9 +337,99 @@ $$E(Y/X)=X\beta$$
 y la matriz de covarianza de las $Y$ resulta ser la misma que la de $\varepsilon$
 
 
-$Var(Y/X)= \sigma^2I          $
+$Var(Y/X)= \sigma^2 I$
+
+## Estimación de los Parámetros 
+
+Usamos el método de mínimos cuadrados para ajustar el modelo. O sea, de􏰀nimos la siguiente función
+
+$$g(b_0, b_1, \cdots, b_{p-1})= \sum_{i=1}^n (Y_i- b_0X_{i0} - b_1X_{i1} - b_2 X_{i2} - \cdots - b_{p-1}X_{ip-1})^2$$ 
+y los estimadores $\hat \beta_0, \hat \beta_1, \cdots, \hat \beta_{p-1}$ serán aquellos valores de $b_o, b_1, \cdots, b_{p-1}$ que minimicen a g. Los llamaremos estimadores de mínimos cuadrados y denotaremos el vector coeficiente como $\hat \beta$
+
+
+
+$\hat \beta=\begin{bmatrix} \hat \beta_0 \\ \hat \beta_1\\ \vdots \\\hat  \beta_p-1 \end{bmatrix}_{p\times 1}$
+
+Las ecuaciones de mínimos cuadrados normales para el modelo de regresión lineal
+general son:
+
+$$X^t X \hat \beta= X^t Y$$
+
+
+donde $X^t$ quiere decir la matriz traspuesta. Los estimadores de mínimos cuadrados son:
+
+$$\hat \beta= (X^t X)^{-1} X^t Y $$
+Observaciones 
+
+-Para encontrar los estimadores de β no se necesita que los errores sean normales.
+-En el caso de la regresión lineal, los estimadores de mínimos cuadrados de los betas coinciden también con los estimadores de máxima verosimilitud para el modelo antes descripto, es decir, cuando se asume normalidad de los errores.
+
+## Valores Ajustados y Residuos
+
+Denotemos al vector de valores ajustados $\hat Y_i$ por $\hat Y$ y al vector de residuos $e_i= Y_i - \hat Y_i$ por $e$
+
+
+$\hat Y=\begin{bmatrix}\hat Y_1 \\ \hat Y_2\\ \vdots \\ \hat Y_n \end{bmatrix}_{n\times 1}$ $e=\begin{bmatrix}e_1 \\ e_2\\ \vdots \\ e_n \end{bmatrix}_{n\times 1}$ 
+
+Los valores ajustados se calculan de la siguiente manera
+
+$$\hat Y = X\hat \beta= X(X^t X)^{-1} X^t Y$$
+
+Los residuos se escriben matricialmente como:
+
+$$ e= Y - \hat Y = Y - X \hat \beta = Y -X(X^tX)^{-1} X^t Y= (I- X(X^tX)^{-1} X^t)Y$$
+ Renombraremos $H= X(X^tX)^{-1} X^t \in \mathbb{R}^{n \times n}$.
+ 
+ Tenemos que
+ 
+ $\hat Y= HY$ y $e=(I-H)Y$
+ 
+ La matriz de varianzas de los residuos es:
+ 
+ $$ Var(e)= \sigma^2 (I-H)$$
+
+## Observaciones
+
+1. (Residuos): El modelo de regresión lineal impone que los errores $\varepsilon_i$ sean independientes, normales y tengan todos la misma varianza. Los errores no son observables, los residuos $ei$, que son el correlato empírico de los errores, son observables. Sin embargo, los residuos no son independientes entre sí y sus varianzas no son iguales.
+
+2. (Teórica): $H$ y $I-H$ son matrices de proyección (es decir, $H^2=H$ y $(I-H)^2=I-H$). $H$ proyecta el subespacio de $\mathbb{R}^n$ generado por las columnas de $X$.
+
+
+## Modelos Lineales Generalizados (GLM)
+
+### Componentes de un modelo lineal generalizado (GLM)
+
+Un modelo lineal generalizado tiene tres componentes básicos:
+
+-  **Componente aleatoria:** Identifica la variable respuesta y su distribución de probabilidad.
+
+- **Componente sistemática:** Especifica las variables explicativas (independientes o predictoras) utilizadas en la función predictora lineal.
+
+- **Función link:** Es una función del valor esperado de $Y,  E(Y)$, como una combinación lineal de las variables predictoras.
+
+**Componente aleatoria**
+
+La componente aleatoria de un GLM consiste en una variable aleatoria $Y$ con observaciones independientes $(y_1, \cdots, y_N )$. Suponemos la distribución de Y en la familia exponencial natural.
+
+
+$$f(y_i| \theta_i)= a(\theta_i) b(y_i) e^{[y_iQ(\theta_i)]}$$
+
+$\theta_i$ varia para los distintos $i$ dependiendo de los valores de las variables predictoras.
+
+$Q(\theta)$ recibe el nombre de parámetro natural.
+
+**Componente sistemática**
+
+La coponente sistemática de un GLM es el vector $(\eta_1, \cdots, \eta_N)$
+
+$\eta_i = \sum_{j} \beta_j x_{ij}$ con $i=1, \cdots, N$
+
+donde $x_{ij}$ es el valor del j-ésimo predictor en la i-ésima posición.
+
+A la combinacion lineal $\sum_{j} \beta_j x_{ij}$ se le conoce como predictor lineal, se suele considerar que uno de los predictores $x_{ij}$ vale uno para todos los $i$ de modo que consideramos el término independiente. 
 
 ## Un problema de bandido k-brasos
+
 
 Consideremos el siguiente problema de aprendizaje. Usted se enfrenta repetidamente a una elecci??n entre k diferentes opciones, o acciones. Despues de tomar una decisi??n recibira una recompensa que depende de la accion tomada (la recompensa no es fija, es decir, sigue una ley de probabilidad para cada de decisi??n), el objetivo es maximizar las ganancias recibidas despues de $n$ repeticiones.
 
