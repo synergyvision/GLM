@@ -25,7 +25,7 @@
 <meta name="author" content="Synergy Vision">
 
 
-<meta name="date" content="2019-01-15">
+<meta name="date" content="2019-01-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -93,6 +93,9 @@
 <li class="chapter" data-level="2.8" data-path="modelos-lineales.html"><a href="modelos-lineales.html#modelos-lineales-generalizados-glm"><i class="fa fa-check"></i><b>2.8</b> Modelos Lineales Generalizados (GLM)</a><ul>
 <li class="chapter" data-level="2.8.1" data-path="modelos-lineales.html"><a href="modelos-lineales.html#componentes-de-un-modelo-lineal-generalizado-glm"><i class="fa fa-check"></i><b>2.8.1</b> Componentes de un modelo lineal generalizado (GLM)</a></li>
 </ul></li>
+<li class="chapter" data-level="2.9" data-path="modelos-lineales.html"><a href="modelos-lineales.html#modelos-lineales-generelizados-para-datos-binarios"><i class="fa fa-check"></i><b>2.9</b> Modelos Lineales Generelizados para datos binarios</a></li>
+<li class="chapter" data-level="2.10" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-logistica"><i class="fa fa-check"></i><b>2.10</b> Regresión Logística</a></li>
+<li class="chapter" data-level="2.11" data-path="modelos-lineales.html"><a href="modelos-lineales.html#regresion-probit"><i class="fa fa-check"></i><b>2.11</b> Regresión Probit</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html"><i class="fa fa-check"></i><b>3</b> Procesos de decision de Markov finitos</a><ul>
 <li class="chapter" data-level="3.1" data-path="procesos-de-decision-de-markov-finitos.html"><a href="procesos-de-decision-de-markov-finitos.html#el-agente-un-interface-del-entorno"><i class="fa fa-check"></i><b>3.1</b> El agente, Un interface del entorno</a></li>
@@ -273,12 +276,60 @@
 <p><span class="math inline">\(\theta_i\)</span> varia para los distintos <span class="math inline">\(i\)</span> dependiendo de los valores de las variables predictoras.</p>
 <p><span class="math inline">\(Q(\theta)\)</span> recibe el nombre de parámetro natural.</p>
 <p><strong>Componente sistemática</strong></p>
-<p>La coponente sistemática de un GLM es el vector <span class="math inline">\((\eta_1, \cdots, \eta_N)\)</span></p>
+<p>La coponente sistemática de un GLM especifica las variables explicativas, que entran en forma de efectos fijos en un modelo lineal, es decir, las variables <span class="math inline">\(x_j\)</span> se relacionan mediante</p>
+<p><span class="math display">\[\alpha+ \beta_{1} x_1+ \cdots+ \beta_k x_k\]</span> Esta combinación lineal se denomina predictor lineal.</p>
+<p>también se puede expresar como un vector <span class="math inline">\((\eta_1, \cdots, \eta_N)\)</span> tal que</p>
 <p><span class="math inline">\(\eta_i = \sum_{j} \beta_j x_{ij}\)</span> con <span class="math inline">\(i=1, \cdots, N\)</span></p>
 <p>donde <span class="math inline">\(x_{ij}\)</span> es el valor del j-ésimo predictor en la i-ésima posición.</p>
-<p>A la combinacion lineal <span class="math inline">\(\sum_{j} \beta_j x_{ij}\)</span> se le conoce como predictor lineal, se suele considerar que uno de los predictores <span class="math inline">\(x_{ij}\)</span> vale uno para todos los <span class="math inline">\(i\)</span> de modo que consideramos el término independiente.</p>
-
+<p>términoo independiente <span class="math inline">\(\alpha\)</span> se obtendría con esta notación haciendo que todos los <span class="math inline">\(x_{ij}\)</span> sean igual a 1 para todos los i.</p>
+<p><strong>Función Link</strong></p>
+<p>La esperanza de <span class="math inline">\(Y\)</span> la denotamos por <span class="math inline">\(E(Y) = \mu\)</span>. La función link específica una función <span class="math inline">\(g(\cdot)\)</span> que relaciona <span class="math inline">\(\mu\)</span> con el predictor lineal de la siguiente manera</p>
+<p><span class="math display">\[g(\mu)= \alpha + \beta_{1} x_1+ \cdots+ \beta_k x_k.\]</span></p>
+<p>De esta manera la función link relaciona las componentes aleatoria y sistemática.</p>
+<p>Luego, para <span class="math inline">\(i= 1, \cdots, N\)</span> tenemos que,</p>
+<p><span class="math display">\[\mu_i= E(Y_i)\]</span></p>
+<p><span class="math display">\[\eta_i= g(\mu_i)= \sum_{j} \beta_j x_{ij}\]</span></p>
 </div>
+</div>
+<div id="modelos-lineales-generelizados-para-datos-binarios" class="section level2">
+<h2><span class="header-section-number">2.9</span> Modelos Lineales Generelizados para datos binarios</h2>
+<p>Se define una respuesta binaria asignada de la siguiente manera 1 en caso de éxito y 0 en elfracaso, esto es, <span class="math inline">\(Y ∼ Bin(1,\pi)\)</span>. En este caso,</p>
+<p><span class="math display">\[f(y|\pi)= \pi^y(1-\pi)^{1-y}\\
+          =(1-\pi)\left(\dfrac{\pi}{1-\pi}\right)^y\\
+          =(1-\pi)e^{y log \left( \dfrac{\pi}{1 - \pi}\right)}\]</span></p>
+<p>con <span class="math inline">\(y= 0,1\)</span>.</p>
+<p>El parámetro natural es <span class="math display">\[Q(\pi)=log \left( \dfrac{\pi}{1-\pi} \right) = logit(\pi)\]</span></p>
+<p>en este caso tenemos</p>
+<p><span class="math display">\[E(Y)= P(Y=1)=\pi(x)\]</span> dependiente de p variables explicativas o independientes <span class="math inline">\(x= (x_1, \cdots,x_p)\)</span>, luego</p>
+<p><span class="math display">\[Var(Y) =\pi(x)(1-\pi(x)).\]</span></p>
+</div>
+<div id="regresion-logistica" class="section level2">
+<h2><span class="header-section-number">2.10</span> Regresión Logística</h2>
+<p>Por lo general las relaciones entre <span class="math inline">\(\pi(x)\)</span> y <span class="math inline">\(x\)</span> no son lineales, la relación habitualmente tiene forma de curva en forma sigmoidal</p>
+<div class="figure">
+<img src="images/sig.png" alt="Curva sigmoidal" />
+<p class="caption">Curva sigmoidal</p>
+</div>
+<p>Representada por la fórmula:</p>
+<p><span class="math display">\[\pi(x)= \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} }\]</span></p>
+<p>Llamada función logística de la que se derivan los modelos de regresión logística:</p>
+<p><span class="math display">\[1- \pi(x) =1 - \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} } \\
+= \dfrac{1}{1 + e^{\alpha+\beta x} }\]</span></p>
+<p>Opererando obtenemos</p>
+<p><span class="math display">\[\dfrac{\pi(x)}{1- \pi(x)}= e^{\alpha+\beta x}\]</span></p>
+<p>Despejando <span class="math inline">\(\alpha+\beta x\)</span> tenemos lo siguiente</p>
+<p><span class="math display">\[log \left( \dfrac{\pi(x)}{1- \pi(x)} \right) = \alpha+\beta x\]</span></p>
+<p>La función link <span class="math inline">\(log \left( \dfrac{\pi(x)}{1- \pi(x)} \right)\)</span> de <span class="math inline">\(\pi\)</span> se denomina funcioón logit, de modo que así se asegura que no habra problemas estructurales respecto al rango de valores de <span class="math inline">\(\pi\)</span>. El parámetro <span class="math inline">\(\beta\)</span> dtermina el rango y la velocidad de crecimiento o decrecimiento de la curva.</p>
+</div>
+<div id="regresion-probit" class="section level2">
+<h2><span class="header-section-number">2.11</span> Regresión Probit</h2>
+<p>Una idea natural es</p>
+<p><span class="math display">\[\pi(x)= F(x),\]</span></p>
+<p>siendo <span class="math inline">\(F\)</span> una función de distribución. Cuando <span class="math inline">\(X\)</span> es una variable aleatoria continua, la funcion de distribucion de x tiene forma de <span class="math inline">\(S\)</span>. Esto sugiere una clase de modelos de dependencia para modelos binarios.</p>
+<p>Como caso particular se puede considerar el link probit que transforma probabilidades en valores estándar de la funcion de distribución normal, <span class="math inline">\(F(x)=\Phi(x)\)</span>.</p>
+<p><span class="math display">\[\pi(x)= \Phi(\alpha+ \beta x) \\ \Phi^{-1}(\pi(x))= \alpha + \beta x\]</span> Así <span class="math inline">\(\Phi^{-1}\)</span> define un modelo probit.</p>
+<p>Nota: en la práctica los modelos logit y probit prodicen ajustes similares.</p>
+
 </div>
 </div>
 <script>

@@ -2,7 +2,7 @@
 title: "Reinforcement Learning"
 subtitle: "Ciencia de los Datos Financieros"
 author: "Synergy Vision"
-date: "2019-01-15"
+date: "2019-01-17"
 knit: "bookdown::render_book"
 documentclass: krantz
 bibliography: [book.bib, packages.bib]
@@ -289,13 +289,103 @@ $Q(\theta)$ recibe el nombre de parámetro natural.
 
 **Componente sistemática**
 
-La coponente sistemática de un GLM es el vector $(\eta_1, \cdots, \eta_N)$
+La coponente sistemática de un GLM especifica las variables explicativas, que entran en forma de efectos fijos en un modelo lineal, es decir, las variables $x_j$ se relacionan mediante
+
+$$\alpha+ \beta_{1} x_1+ \cdots+ \beta_k x_k$$
+Esta combinación lineal se denomina predictor lineal.
+
+también se puede expresar como un vector $(\eta_1, \cdots, \eta_N)$ tal que 
 
 $\eta_i = \sum_{j} \beta_j x_{ij}$ con $i=1, \cdots, N$
 
 donde $x_{ij}$ es el valor del j-ésimo predictor en la i-ésima posición.
 
-A la combinacion lineal $\sum_{j} \beta_j x_{ij}$ se le conoce como predictor lineal, se suele considerar que uno de los predictores $x_{ij}$ vale uno para todos los $i$ de modo que consideramos el término independiente. 
+términoo independiente $\alpha$ se obtendría con esta notación haciendo que todos los $x_{ij}$ sean igual a 1 para todos los i. 
+
+**Función Link**
+
+La esperanza de $Y$ la denotamos por $E(Y) = \mu$. La función link específica una función $g(\cdot)$ que relaciona $\mu$ con el predictor lineal de la siguiente manera
+
+$$g(\mu)= \alpha + \beta_{1} x_1+ \cdots+ \beta_k x_k.$$
+
+De esta manera la función link relaciona las componentes aleatoria y sistemática.
+
+Luego, para $i= 1, \cdots, N$ tenemos que,
+
+$$\mu_i= E(Y_i)$$
+
+$$\eta_i= g(\mu_i)= \sum_{j} \beta_j x_{ij}$$
+
+## Modelos Lineales Generelizados para datos binarios
+
+Se define una respuesta binaria asignada de la siguiente manera 1 en caso de éxito y 0 en elfracaso, esto es, $Y ∼ Bin(1,\pi)$. En este caso,
+
+
+
+$$f(y|\pi)= \pi^y(1-\pi)^{1-y}\\
+          =(1-\pi)\left(\dfrac{\pi}{1-\pi}\right)^y\\
+          =(1-\pi)e^{y log \left( \dfrac{\pi}{1 - \pi}\right)}$$
+
+con $y= 0,1$. 
+
+El parámetro natural es 
+$$Q(\pi)=log \left( \dfrac{\pi}{1-\pi} \right) = logit(\pi)$$
+
+en este caso tenemos
+
+$$E(Y)= P(Y=1)=\pi(x)$$
+dependiente de p variables explicativas o independientes $x= (x_1, \cdots,x_p)$, luego
+
+$$Var(Y) =\pi(x)(1-\pi(x)).$$
+
+
+
+## Regresión Logística 
+
+Por lo general las relaciones entre $\pi(x)$ y $x$ no son lineales, la relación habitualmente tiene forma de curva en forma sigmoidal 
+
+![Curva sigmoidal](images/sig.png) 
+
+
+Representada por la fórmula: 
+
+$$\pi(x)= \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} }$$
+
+Llamada función logística de la que se derivan los modelos de regresión logística:
+
+
+$$1- \pi(x) =1 - \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} } \\
+= \dfrac{1}{1 + e^{\alpha+\beta x} }$$
+
+Opererando obtenemos
+
+$$\dfrac{\pi(x)}{1- \pi(x)}= e^{\alpha+\beta x}$$
+
+Despejando $\alpha+\beta x$ tenemos lo siguiente
+
+$$log \left( \dfrac{\pi(x)}{1- \pi(x)} \right) = \alpha+\beta x$$
+
+La función link $log \left( \dfrac{\pi(x)}{1- \pi(x)} \right)$ de $\pi$ se denomina funcioón logit, de modo que así se asegura que no habra problemas estructurales respecto al rango de valores de $\pi$. El parámetro $\beta$ dtermina el rango y la velocidad de crecimiento o decrecimiento de la curva.
+
+## Regresión Probit
+
+Una idea natural es 
+
+$$\pi(x)= F(x),$$
+
+siendo $F$ una función de distribución. Cuando $X$ es una variable aleatoria continua, la funcion de distribucion de x tiene forma de $S$. Esto sugiere una clase de modelos de dependencia para modelos binarios.
+
+Como caso particular se puede considerar el link probit que transforma probabilidades en valores estándar de la funcion de distribución normal, $F(x)=\Phi(x)$.
+
+$$\pi(x)= \Phi(\alpha+ \beta x) \\ \Phi^{-1}(\pi(x))= \alpha + \beta x$$
+Así $\Phi^{-1}$ define un modelo probit.
+
+Nota: en la práctica los modelos logit y probit prodicen ajustes similares. 
+
+
+
+
+
 
 
 
