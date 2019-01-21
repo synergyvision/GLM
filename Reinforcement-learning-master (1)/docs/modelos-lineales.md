@@ -2,7 +2,7 @@
 title: "Reinforcement Learning"
 subtitle: "Ciencia de los Datos Financieros"
 author: "Synergy Vision"
-date: "2019-01-17"
+date: "2019-01-21"
 knit: "bookdown::render_book"
 documentclass: krantz
 bibliography: [book.bib, packages.bib]
@@ -278,14 +278,18 @@ Un modelo lineal generalizado tiene tres componentes básicos:
 
 **Componente aleatoria**
 
-La componente aleatoria de un GLM consiste en una variable aleatoria $Y$ con observaciones independientes $(y_1, \cdots, y_N )$. Suponemos la distribución de Y en la familia exponencial natural.
+La componente aleatoria de un GLM consiste en una variable aleatoria $Y$ con observaciones independientes $(y_1, \cdots, y_N )$. Suponemos la distribución de $Y$ en la familia exponencial natural.
 
 
-$$f(y_i| \theta_i)= a(\theta_i) b(y_i) e^{[y_iQ(\theta_i)]}$$
+$$f(y_i| \theta_i, \phi)= e^{\left( \dfrac{y_i \theta_i - b(\theta_i)}{a_i(\phi)} + c(y_i,\phi) \right)},$$
 
-$\theta_i$ varia para los distintos $i$ dependiendo de los valores de las variables predictoras.
+donde, 
 
-$Q(\theta)$ recibe el nombre de parámetro natural.
+* $\theta_i$ es el parámetro natural o canónico
+* $\phi$ es una parámetro adicional de dispersión o de escala
+* $a(\cdot)$, $b(\cdot)$ y $c(\cdot)$ son funciones conocidas
++ Si $\phi$ es conocido el modelo pertenece a la familia exponencial lineal
++ Si $\phi$ es desconocido el modelo es de dispersión exponencial.
 
 **Componente sistemática**
 
@@ -312,9 +316,9 @@ De esta manera la función link relaciona las componentes aleatoria y sistemáti
 
 Luego, para $i= 1, \cdots, N$ tenemos que,
 
-$$\mu_i= E(Y_i)$$
+$$\mu_i= E(Y_i),$$
 
-$$\eta_i= g(\mu_i)= \sum_{j} \beta_j x_{ij}$$
+$$\eta_i= g(\mu_i)= \sum_{j} \beta_j x_{ij}.$$
 
 ## Modelos Lineales Generelizados para datos binarios
 
@@ -324,16 +328,16 @@ Se define una respuesta binaria asignada de la siguiente manera 1 en caso de éx
 
 $$f(y|\pi)= \pi^y(1-\pi)^{1-y}\\
           =(1-\pi)\left(\dfrac{\pi}{1-\pi}\right)^y\\
-          =(1-\pi)e^{y log \left( \dfrac{\pi}{1 - \pi}\right)}$$
+          =(1-\pi)e^{y log \left( \dfrac{\pi}{1 - \pi}\right)},$$
 
 con $y= 0,1$. 
 
 El parámetro natural es 
-$$Q(\pi)=log \left( \dfrac{\pi}{1-\pi} \right) = logit(\pi)$$
+$$Q(\pi)=log \left( \dfrac{\pi}{1-\pi} \right) = logit(\pi),$$
 
 en este caso tenemos
 
-$$E(Y)= P(Y=1)=\pi(x)$$
+$$E(Y)= P(Y=1)=\pi(x),$$
 dependiente de p variables explicativas o independientes $x= (x_1, \cdots,x_p)$, luego
 
 $$Var(Y) =\pi(x)(1-\pi(x)).$$
@@ -349,9 +353,9 @@ Por lo general las relaciones entre $\pi(x)$ y $x$ no son lineales, la relación
 
 Representada por la fórmula: 
 
-$$\pi(x)= \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} }$$
+$$\pi(x)= \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} },$$
 
-Llamada función logística de la que se derivan los modelos de regresión logística:
+llamada función logística de la que se derivan los modelos de regresión logística:
 
 
 $$1- \pi(x) =1 - \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} } \\
@@ -359,13 +363,13 @@ $$1- \pi(x) =1 - \dfrac{e^{\alpha+\beta x}}{1 + e^{\alpha+\beta x} } \\
 
 Opererando obtenemos
 
-$$\dfrac{\pi(x)}{1- \pi(x)}= e^{\alpha+\beta x}$$
+$$\dfrac{\pi(x)}{1- \pi(x)}= e^{\alpha+\beta x}.$$
 
 Despejando $\alpha+\beta x$ tenemos lo siguiente
 
-$$log \left( \dfrac{\pi(x)}{1- \pi(x)} \right) = \alpha+\beta x$$
+$$log \left( \dfrac{\pi(x)}{1- \pi(x)} \right) = \alpha+\beta x .$$
 
-La función link $log \left( \dfrac{\pi(x)}{1- \pi(x)} \right)$ de $\pi$ se denomina funcioón logit, de modo que así se asegura que no habra problemas estructurales respecto al rango de valores de $\pi$. El parámetro $\beta$ dtermina el rango y la velocidad de crecimiento o decrecimiento de la curva.
+La función link $log \left( \dfrac{\pi(x)}{1- \pi(x)} \right)$ de $\pi$ se denomina función logit, de modo que así se asegura que no habra problemas estructurales respecto al rango de valores de $\pi$. El parámetro $\beta$ dtermina el rango y la velocidad de crecimiento o decrecimiento de la curva.
 
 ## Regresión Probit
 
@@ -377,94 +381,49 @@ siendo $F$ una función de distribución. Cuando $X$ es una variable aleatoria c
 
 Como caso particular se puede considerar el link probit que transforma probabilidades en valores estándar de la funcion de distribución normal, $F(x)=\Phi(x)$.
 
-$$\pi(x)= \Phi(\alpha+ \beta x) \\ \Phi^{-1}(\pi(x))= \alpha + \beta x$$
+$$\pi(x)= \Phi(\alpha+ \beta x) \\ \Phi^{-1}(\pi(x))= \alpha + \beta x .$$
 Así $\Phi^{-1}$ define un modelo probit.
 
 Nota: en la práctica los modelos logit y probit prodicen ajustes similares. 
 
 
+## Regresión de Poisson
+
+La regresión de Poisson es el modelo más básico adecuado para variables de respuesta de recuento, esta distribución es unimodal y su propiedad más importante es que la esperanza y la varianza son iguales a la media. 
+
+$$E(Y)= Var(Y)= \lambda$$
 
 
 
+En el modelo GLM por lo general se una el logarítmo de la media para la función link, de este modo el modelo log-lineal de una variable explicativa $X$ se puede expresar de la siguiente manera 
+
+$$log(\lambda) = \alpha + \beta x ,$$
+
+despejando obtenemos
+
+$$\lambda = e^{\alpha + \beta x} =e^\alpha(e^\beta)^x .$$
+
+
+## Funciones link más usadas 
+
+
+
+Link                             |    Fórmula
+---------------------------------|----------------------------------------
+Logit                            | $log\left( \dfrac{\pi}{1- \pi} \right)$
+Probit                           | $\Phi^{-1}(\pi)$
+Complementario log-log (cloglog) | $log(-log(1- \pi))$
+Identidad                        | $\mu$
+Inverso                          | $- \dfrac{1}{\mu}$
+Logaritmo                        | $log(\mu)$
+Raíz                             | $\sqrt \mu$
+
+
+La elección del link dependera de la familia de distribuciones, del tipo de respuestas y de la estructura de los datos. 
 
 
 
 <!--chapter:end:100-capitulo1.Rmd-->
-
-
-# Procesos de decision de Markov finitos
-
-Placeholder
-
-
-##  El agente, Un interface del entorno
-## Metas y recompensas.
-## Retornos y episodios
-## Notación unificada tanto para tareas episodicas y continuas.
-## Políticas y funciones de valor
-## Funciones de valor y políticas optimas
-## Optimalidad y aproximación
-
-<!--chapter:end:200-capitulo2.Rmd-->
-
-
-# Programación dinámica
-
-Placeholder
-
-
-## Políticas evaluadas (Predicción)
-## Mejora de las políticas
-## Iteración de políticas
-## Iteración de valores 
-## Programación dinámica asincrónica.
-## Iteración generalizada de políticas
-## Eficiencia de la programación dinámica
-
-<!--chapter:end:201-capitulo3.Rmd-->
-
-
-# Métodos de Montecarlo
-
-Placeholder
-
-
-## Predicción con Monte Carlo
-## Estimación de Monte Carlo de los Valores de Acción
-## Métodos de Monte Carlo con control
-## Métodos de Monte Carlo con control sin iniciar exploración
-## Predicciones no políticas via muestreos de importancia.
-## Implementación incremental
-## Monte Carlo no político con control
-
-<!--chapter:end:202-capitulo4.Rmd-->
-
-
-# Aprendizaje por Diferencia Temporal
-
-Placeholder
-
-
-## Predicción
-## Ventajas de los métodos de predicción de TD
-## Calidad de TD(0)
-## Sarsa: TD político con control 
-## Q-Learning: TD no político con control 
-## Sarsa esparada
-## Sesgo de maximización y doble aprendizaje
-## Juegos, afterstates y otros casos especiales
-
-<!--chapter:end:203-capitulo5.Rmd-->
-
-
-# Bootstrapping en $n$-pasos
-
-Placeholder
-
-
-## Predicción de TD en $n$ pasos
-
-<!--chapter:end:204-capitulo6.Rmd-->
 
 
 # (APPENDIX) Apéndice {-}
