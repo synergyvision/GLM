@@ -30,12 +30,12 @@ shinyUI(
       
                   menuItem("Introducción", tabName = "intro", icon = icon("fal fa-database")),
                               
-                  menuItem("Regresión lineal generalizada", tabName = "data", icon = icon("fal fa-database"),
+                  menuItem("Modelos Lineales", tabName = "data", icon = icon("fal fa-database"),
                            
                            
                            
                            menuSubItem("Modelo Lineal", tabName = "subitem1", icon = icon("circle-o")),
-                           menuSubItem("Modelo General", tabName = "subitem2", icon = icon("circle-o"))
+                           menuSubItem("Modelo Lineal General", tabName = "subitem2", icon = icon("circle-o"))
                           
                   ),
                   
