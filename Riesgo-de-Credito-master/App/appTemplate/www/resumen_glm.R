@@ -18,10 +18,4 @@ resuglm <- function(modelo){
   
 }
   
-resuglm(prueba)
- 
- prueba <- glm(Sepal.Length ~ Species+ Sepal.Width+ Petal.Length, data = iris) 
-u<- summary(prueba)  
-u
-plot(prueba)
-u$coefficients
+

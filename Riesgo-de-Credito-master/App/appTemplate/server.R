@@ -313,6 +313,69 @@ varMod <- reactive({
   
   
   
+  source("www/glmmulti.R")
+  
+  modelo2 <- reactive({
+    
+    if(length(input$selec2)==0){"Debe seleccionar variables"}else{
+      if(input$selec3==1){       glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,binomial,input$enlace)}
+      else if(input$selec3==2){glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,gaussian,input$enlace)}
+      else if(input$selec3==3){glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,Gamma,input$enlace)}
+      else if(input$selec3==4){glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,inverse.gaussian,input$enlace)}
+      else if(input$selec3==5){glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,poisson,input$enlace)}
+      else if(input$selec3==6){glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,quasi,input$enlace)}
+      else if(input$selec3==7){glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,quasibinomial,input$enlace)}
+      else if(input$selec3==8){glmmulti(data1org2()[c(input$columns3,input$selec2)],input$columns3,quasipoisson,input$enlace)}
+    }
+    
+  })
+  
+  source("www/links.R")
+  
+  observe({
+    updateRadioButtons(session, "enlace",label = "Enlace",
+                       if(input$selec3==1){ choices =Linkbinomial}
+                       else if(input$selec3==2){choices = Linkgaussian}
+                       else if(input$selec3==3){choices = LinkGamma}
+                       else if(input$selec3==4){choices = Linkinverse.gausian}
+                       else if(input$selec3==5){choices = Linkpoisson}
+                       else if(input$selec3==6){choices = Linkquasi}
+                       else if(input$selec3==7){choices = Linkquasibinomial}
+                       else if(input$selec3==8){choices = Linkquasipoisson}
+                       
+                       
+                       
+    )}) 
+  
+  
+  
+  source("www/resumen_glm.R")
+  
+  output$grafi2 <- renderPlot({ 
+    gra(modelo2()[[1]])
+  })
+  
+  
+  
+  
+  resGLM <- reactive({
+    
+    resuglm(modelo2()[[1]])
+    
+  })
+  
+  
+  output$summar2 <- renderDataTable({
+    
+    resGLM()[[2]]
+    
+  })
+  
+  output$coeficien2 <- renderDataTable({
+    
+    resGLM()[[1]]
+    
+  })  
   
   
   

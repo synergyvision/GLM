@@ -125,6 +125,7 @@ shinyUI(
                              
                     ),
                     
+                    ##### GLM
                     
                     tabItem(tabName = "subitem2",
                             
@@ -162,22 +163,34 @@ shinyUI(
                               )
                             ),
                             
-                           
-                           fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('Histograma2'))),
-                           fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('boxplot'))),
-                          
-                           
-                           
-                           
-                           fluidRow(column(6,box(title = h3("Seleccione variables independientes"), style = "overflow-x:scroll",width=12,status = "warning",checkboxGroupInput("selec2",c("Seleccione")))),
-                                           column(6,box(title = h3("Tipo de Modelo"), style = "overflow-x:scroll",width=12,status = "warning",radioButtons("selec3","Familia",
-                                                    choices = list("binomial"=1,"gaussian"=2, "Gamma"=3,"inverse.gaussian"=4,"poisson"=5,"quasi"=6,"quasibinomial"=7,"quasipoisson"=8),selected = 1)))
-                             
-                           )
-                           
-                           
-                        
                             
+                            fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('Histograma2'))),
+                            fluidRow( box( background="yellow",width=12,status = "warning",plotlyOutput('boxplot'))),
+                            #fluidRow(
+                              #box(title = h3("Prueba de hipótesis de normalidad"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput('datatable12'))
+                           # ),
+                            
+                            #fluidRow(
+                             # box(title = h3("Correlaciones con la variable dependiente"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput('datatable5'))
+                            #),
+                            
+                            fluidRow(column(4,box(title = h3("Seleccione variables independientes"), style = "overflow-x:scroll",width=12,status = "warning",checkboxGroupInput("selec2",c("Seleccione")))),
+                                     column(4,box(title = h3("Tipo de Modelo"), style = "overflow-x:scroll",width=12,status = "warning",radioButtons("selec3","Familia",
+                                                                                                                                                     choices = list("binomial"=1,"gaussian"=2, "Gamma"=3,"inverse.gaussian"=4,"poisson"=5,"quasi"=6,"quasibinomial"=7,"quasipoisson"=8),selected = 2))),
+                                     column(4,box(title = h3("Enlace"), style = "overflow-x:scroll",width=12,status = "warning",radioButtons("enlace","Enlace",
+                                                                                                                                             choices = c(""))))
+                            ),
+                            
+                            fluidRow(
+                              box(title = h3("Resultados gráficos"), style = "overflow-x:scroll",width=12,status = "warning",plotOutput("grafi2"))
+                            )
+                            ,
+                            fluidRow(
+                              box(title = h3("Resumen"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput("summar2"))
+                            ),
+                            fluidRow(
+                              box(title = h3("Coeficientes del modelo generalizado"), style = "overflow-x:scroll",width=12,status = "warning",dataTableOutput("coeficien2"))
+                            )
                     ),
                    
                     
