@@ -2,7 +2,7 @@
 title: "Reinforcement Learning"
 subtitle: "Ciencia de los Datos Financieros"
 author: "Synergy Vision"
-date: "2019-01-24"
+date: "2019-01-25"
 knit: "bookdown::render_book"
 documentclass: krantz
 bibliography: [book.bib, packages.bib]
@@ -472,7 +472,13 @@ La elección del link dependera de la familia de distribuciones, del tipo de res
 - $b(\theta)= e^\theta$
 - Otras funciones links: identidad, raiz. 
 
+## Parámetro de dispersión
 
+Regularmente el parámetro $a(\phi)= \dfrac{\phi}{w_i}$ con $w_i$ un peso. 
+
+- Para datos no agrupados $w_i=1$
+- Si las variables dependientes expresan promedios $w_i= n_i$
+- Si son la suma de $n_i$ variables individuales $w_i=\dfrac{1}{n_i}$
 
 
 
