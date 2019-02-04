@@ -2,7 +2,7 @@
 title: "Reinforcement Learning"
 subtitle: "Ciencia de los Datos Financieros"
 author: "Synergy Vision"
-date: "2019-01-25"
+date: "2019-02-04"
 knit: "bookdown::render_book"
 documentclass: krantz
 bibliography: [book.bib, packages.bib]
@@ -480,10 +480,65 @@ Regularmente el parámetro $a(\phi)= \dfrac{\phi}{w_i}$ con $w_i$ un peso.
 - Si las variables dependientes expresan promedios $w_i= n_i$
 - Si son la suma de $n_i$ variables individuales $w_i=\dfrac{1}{n_i}$
 
+## Sobredispersión
+
+Este fenómeno ocurre principal con distribuciones de varianza poco dúcti, como la binomial o poisson.
+
+Añadiendo un parámetro de dispersión $\phi$ se modifica la varianza 
+
+$$V[y]= a(\phi)\dfrac{d^2b(\theta)}{d\theta^2}$$
+ para simplificar la notación renombraremos $\dfrac{d^2b(\theta)}{d\theta^2}= b''(\theta)$ asi la ecuacion anterior queda de la siguiente manera: 
+ 
+ $$V[y]= a(\phi)b''(\theta)$$
+ 
+Puede representar una heteregeneidad no observada o una correlación positiva entre respuestas individuales. Otra forma de llamarla es extravarianza.
+
+## Máxima Verosimilitud
+
+Definimos el logaritmo de la verosimilitud de $\theta$ para las observaciones $y$ como sigue:
+
+$$l(\theta | y) = \sum_{i=1}^{n} \dfrac{y_i \theta_i - b(\theta_i)}{a_i(\phi)} + c(y_i, \phi)$$
+
+El principal objetivo es la estimación de $\beta$. El estimador de máxima verosimilitud de cada $\beta_j$ anula la derivada de $l$
+
+$$\dfrac{\partial l}{\partial \beta _j}= \sum_{i=1}^{n} \dfrac{(y_i-\mu_i)x_{ij}}{V[y_i]g'(\mu_i)}$$
+
+En general estas ecuaciones no se pueden resolver de manera directa, lo que se hace es una aproximación por procedimientos iterativos, utilizando la esperanza matemática de la segunda derivada parcial de $l$
+
+$$E\left[\dfrac{\partial^2l}{\partial \beta_j \partial \beta_k}\right]= \sum_{i=1}^{n} \dfrac{x_{ij}x_{ik}}{V[y_i]g'(\mu_i)^2}$$
+
+## Método de Scoring Fisher
+
+Primero recordemos el **algorítmo de Newton-Raphson**:
+
+Es un procedimiento iterativo a partir de una estimación inicial $\beta^0$
 
 
+$$\beta^{\gamma +1 } = \beta^\gamma - [D^2_\beta l(\beta^\gamma)]^{-1} D_\beta (\beta^\gamma)$$
+
+Donde $D_\beta (\beta^\gamma)$ es el vector de las primeras dervadas de $l$ y $D^2_\beta l(\beta^\gamma)$ es la matriz de las segundas derivadas evaluadas en $\beta^\gamma$.
 
 
+**Método Scoring Fisher**
+
+Consiste en sustituir $D^2_\beta l(\beta^\gamma)$ por su esperanza matemática
+
+$$E\left[\dfrac{\partial^2l}{\partial \beta_j \partial \beta_k}\right]= \sum_{i=1}^{n} \dfrac{x_{ij}x_{ik}}{V[y_i]g'(\mu_i)^2}$$
+
+Es equivalente a resolver un proble de mínimos cuadrados ponderados. La sucesión $\{ \beta^\gamma \}$ converge al estimador de máxima verosimilitud de $\beta$ 
+
+## Estimación del Parámetro de Dispersión
+
+Si el parámetro $\phi$ es desconocido se procede a utilizar una estimacion para realizar el cálculo de $V[y_i]$ de la ecuacion anterior
+
+Cuando $a_i(\phi)= \dfrac{\phi}{w_i}$, la expresión de la varianza 
+
+$$V[y_i]=a_i(\phi)b''(\theta)$$
+
+otorga un estimador consistente de $\phi$ apartir de una estimación de $\beta$
+
+
+$$\hat \phi= \dfrac{1}{n-p-1} \sum_{i=1}^{n} \dfrac{w_i(y_i-\hat \mu_i)^2}{b''(\hat \theta_i)}$$
 
 
 

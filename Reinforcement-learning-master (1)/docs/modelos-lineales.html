@@ -25,7 +25,7 @@
 <meta name="author" content="Synergy Vision">
 
 
-<meta name="date" content="2019-01-25">
+<meta name="date" content="2019-02-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -101,6 +101,10 @@
 <li class="chapter" data-level="2.14" data-path="modelos-lineales.html"><a href="modelos-lineales.html#modelos-de-datos-continuos"><i class="fa fa-check"></i><b>2.14</b> Modelos de datos continuos</a></li>
 <li class="chapter" data-level="2.15" data-path="modelos-lineales.html"><a href="modelos-lineales.html#modelos-de-datoa-discretos"><i class="fa fa-check"></i><b>2.15</b> Modelos de datoa discretos</a></li>
 <li class="chapter" data-level="2.16" data-path="modelos-lineales.html"><a href="modelos-lineales.html#parametro-de-dispersion"><i class="fa fa-check"></i><b>2.16</b> Parámetro de dispersión</a></li>
+<li class="chapter" data-level="2.17" data-path="modelos-lineales.html"><a href="modelos-lineales.html#sobredispersion"><i class="fa fa-check"></i><b>2.17</b> Sobredispersión</a></li>
+<li class="chapter" data-level="2.18" data-path="modelos-lineales.html"><a href="modelos-lineales.html#maxima-verosimilitud"><i class="fa fa-check"></i><b>2.18</b> Máxima Verosimilitud</a></li>
+<li class="chapter" data-level="2.19" data-path="modelos-lineales.html"><a href="modelos-lineales.html#metodo-de-scoring-fisher"><i class="fa fa-check"></i><b>2.19</b> Método de Scoring Fisher</a></li>
+<li class="chapter" data-level="2.20" data-path="modelos-lineales.html"><a href="modelos-lineales.html#estimacion-del-parametro-de-dispersion"><i class="fa fa-check"></i><b>2.20</b> Estimación del Parámetro de Dispersión</a></li>
 </ul></li>
 <li class="appendix"><span><b>Apéndice</b></span></li>
 <li class="chapter" data-level="A" data-path="software-tools.html"><a href="software-tools.html"><i class="fa fa-check"></i><b>A</b> Software Tools</a><ul>
@@ -408,6 +412,42 @@
 <li>Si las variables dependientes expresan promedios <span class="math inline">\(w_i= n_i\)</span></li>
 <li>Si son la suma de <span class="math inline">\(n_i\)</span> variables individuales <span class="math inline">\(w_i=\dfrac{1}{n_i}\)</span></li>
 </ul>
+</div>
+<div id="sobredispersion" class="section level2">
+<h2><span class="header-section-number">2.17</span> Sobredispersión</h2>
+<p>Este fenómeno ocurre principal con distribuciones de varianza poco dúcti, como la binomial o poisson.</p>
+<p>Añadiendo un parámetro de dispersión <span class="math inline">\(\phi\)</span> se modifica la varianza</p>
+<p><span class="math display">\[V[y]= a(\phi)\dfrac{d^2b(\theta)}{d\theta^2}\]</span> para simplificar la notación renombraremos <span class="math inline">\(\dfrac{d^2b(\theta)}{d\theta^2}= b&#39;&#39;(\theta)\)</span> asi la ecuacion anterior queda de la siguiente manera:</p>
+<p><span class="math display">\[V[y]= a(\phi)b&#39;&#39;(\theta)\]</span></p>
+<p>Puede representar una heteregeneidad no observada o una correlación positiva entre respuestas individuales. Otra forma de llamarla es extravarianza.</p>
+</div>
+<div id="maxima-verosimilitud" class="section level2">
+<h2><span class="header-section-number">2.18</span> Máxima Verosimilitud</h2>
+<p>Definimos el logaritmo de la verosimilitud de <span class="math inline">\(\theta\)</span> para las observaciones <span class="math inline">\(y\)</span> como sigue:</p>
+<p><span class="math display">\[l(\theta | y) = \sum_{i=1}^{n} \dfrac{y_i \theta_i - b(\theta_i)}{a_i(\phi)} + c(y_i, \phi)\]</span></p>
+<p>El principal objetivo es la estimación de <span class="math inline">\(\beta\)</span>. El estimador de máxima verosimilitud de cada <span class="math inline">\(\beta_j\)</span> anula la derivada de <span class="math inline">\(l\)</span></p>
+<p><span class="math display">\[\dfrac{\partial l}{\partial \beta _j}= \sum_{i=1}^{n} \dfrac{(y_i-\mu_i)x_{ij}}{V[y_i]g&#39;(\mu_i)}\]</span></p>
+<p>En general estas ecuaciones no se pueden resolver de manera directa, lo que se hace es una aproximación por procedimientos iterativos, utilizando la esperanza matemática de la segunda derivada parcial de <span class="math inline">\(l\)</span></p>
+<p><span class="math display">\[E\left[\dfrac{\partial^2l}{\partial \beta_j \partial \beta_k}\right]= \sum_{i=1}^{n} \dfrac{x_{ij}x_{ik}}{V[y_i]g&#39;(\mu_i)^2}\]</span></p>
+</div>
+<div id="metodo-de-scoring-fisher" class="section level2">
+<h2><span class="header-section-number">2.19</span> Método de Scoring Fisher</h2>
+<p>Primero recordemos el <strong>algorítmo de Newton-Raphson</strong>:</p>
+<p>Es un procedimiento iterativo a partir de una estimación inicial <span class="math inline">\(\beta^0\)</span></p>
+<p><span class="math display">\[\beta^{\gamma +1 } = \beta^\gamma - [D^2_\beta l(\beta^\gamma)]^{-1} D_\beta (\beta^\gamma)\]</span></p>
+<p>Donde <span class="math inline">\(D_\beta (\beta^\gamma)\)</span> es el vector de las primeras dervadas de <span class="math inline">\(l\)</span> y <span class="math inline">\(D^2_\beta l(\beta^\gamma)\)</span> es la matriz de las segundas derivadas evaluadas en <span class="math inline">\(\beta^\gamma\)</span>.</p>
+<p><strong>Método Scoring Fisher</strong></p>
+<p>Consiste en sustituir <span class="math inline">\(D^2_\beta l(\beta^\gamma)\)</span> por su esperanza matemática</p>
+<p><span class="math display">\[E\left[\dfrac{\partial^2l}{\partial \beta_j \partial \beta_k}\right]= \sum_{i=1}^{n} \dfrac{x_{ij}x_{ik}}{V[y_i]g&#39;(\mu_i)^2}\]</span></p>
+<p>Es equivalente a resolver un proble de mínimos cuadrados ponderados. La sucesión <span class="math inline">\(\{ \beta^\gamma \}\)</span> converge al estimador de máxima verosimilitud de <span class="math inline">\(\beta\)</span></p>
+</div>
+<div id="estimacion-del-parametro-de-dispersion" class="section level2">
+<h2><span class="header-section-number">2.20</span> Estimación del Parámetro de Dispersión</h2>
+<p>Si el parámetro <span class="math inline">\(\phi\)</span> es desconocido se procede a utilizar una estimacion para realizar el cálculo de <span class="math inline">\(V[y_i]\)</span> de la ecuacion anterior</p>
+<p>Cuando <span class="math inline">\(a_i(\phi)= \dfrac{\phi}{w_i}\)</span>, la expresión de la varianza</p>
+<p><span class="math display">\[V[y_i]=a_i(\phi)b&#39;&#39;(\theta)\]</span></p>
+<p>otorga un estimador consistente de <span class="math inline">\(\phi\)</span> apartir de una estimación de <span class="math inline">\(\beta\)</span></p>
+<p><span class="math display">\[\hat \phi= \dfrac{1}{n-p-1} \sum_{i=1}^{n} \dfrac{w_i(y_i-\hat \mu_i)^2}{b&#39;&#39;(\hat \theta_i)}\]</span></p>
 
 </div>
 </div>
