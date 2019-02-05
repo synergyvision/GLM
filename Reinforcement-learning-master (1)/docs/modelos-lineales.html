@@ -25,7 +25,7 @@
 <meta name="author" content="Synergy Vision">
 
 
-<meta name="date" content="2019-02-04">
+<meta name="date" content="2019-02-05">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -105,6 +105,8 @@
 <li class="chapter" data-level="2.18" data-path="modelos-lineales.html"><a href="modelos-lineales.html#maxima-verosimilitud"><i class="fa fa-check"></i><b>2.18</b> Máxima Verosimilitud</a></li>
 <li class="chapter" data-level="2.19" data-path="modelos-lineales.html"><a href="modelos-lineales.html#metodo-de-scoring-fisher"><i class="fa fa-check"></i><b>2.19</b> Método de Scoring Fisher</a></li>
 <li class="chapter" data-level="2.20" data-path="modelos-lineales.html"><a href="modelos-lineales.html#estimacion-del-parametro-de-dispersion"><i class="fa fa-check"></i><b>2.20</b> Estimación del Parámetro de Dispersión</a></li>
+<li class="chapter" data-level="2.21" data-path="modelos-lineales.html"><a href="modelos-lineales.html#desviacion"><i class="fa fa-check"></i><b>2.21</b> Desviación</a></li>
+<li class="chapter" data-level="2.22" data-path="modelos-lineales.html"><a href="modelos-lineales.html#analisis-de-residuos"><i class="fa fa-check"></i><b>2.22</b> Análisis de Residuos</a></li>
 </ul></li>
 <li class="appendix"><span><b>Apéndice</b></span></li>
 <li class="chapter" data-level="A" data-path="software-tools.html"><a href="software-tools.html"><i class="fa fa-check"></i><b>A</b> Software Tools</a><ul>
@@ -448,6 +450,34 @@
 <p><span class="math display">\[V[y_i]=a_i(\phi)b&#39;&#39;(\theta)\]</span></p>
 <p>otorga un estimador consistente de <span class="math inline">\(\phi\)</span> apartir de una estimación de <span class="math inline">\(\beta\)</span></p>
 <p><span class="math display">\[\hat \phi= \dfrac{1}{n-p-1} \sum_{i=1}^{n} \dfrac{w_i(y_i-\hat \mu_i)^2}{b&#39;&#39;(\hat \theta_i)}\]</span></p>
+</div>
+<div id="desviacion" class="section level2">
+<h2><span class="header-section-number">2.21</span> Desviación</h2>
+<p>Determinaremos el potencial del modelo comparandolo con el modelo saturado.</p>
+<p><strong>Modelo saturado:</strong> tiene la misma forma que el ajustado, pero con tantos parámetros como observaciones.</p>
+<p><strong>Desviación escalada:</strong> se obtiene con el estadístico cociente de las verosimilitudes</p>
+<p><span class="math display">\[S= 2[l(\hat \beta | y, \phi)- l(\tilde \beta |y, \phi)]\]</span></p>
+<p>Donde <span class="math inline">\(\tilde \beta\)</span> es el estimador de máxima verosimilitud del modelo saturado.</p>
+<p>En términos del parámetro naturales</p>
+<p><span class="math display">\[S= 2\sum^{n}_{i=1} \dfrac{y_i(\tilde \theta_i-\hat \theta_i)- b(\tilde \theta_i)+ b(\hat \theta_i)}{a_i(\phi)}\]</span></p>
+<p>Cuando <span class="math inline">\(\phi\)</span> es conocido, la desviación escalada mide cuánto de desvía el modelo de los datos.</p>
+<p><strong>Distribución Aproximada:</strong> Si el modelo se ajusta bien a los datos</p>
+<p><span class="math display">\[S ∼ \chi^2 (n-p-1)\]</span></p>
+<p><strong>Desviación no escalada:</strong> se define de la siguiente manera</p>
+<p><span class="math display">\[D(y, \hat \mu)= \phi S\]</span></p>
+<p>si <span class="math inline">\(a_i(\phi)=\dfrac{\phi}{w_i}\)</span> es equivalente a</p>
+<p><span class="math display">\[D(y,\hat \mu)= 2 \sum^{n}_{i=1} w_i [y_i(\tilde \theta_i-\hat \theta_i)- b(\tilde \theta_i)+ b(\hat \theta_i)]\]</span></p>
+<p><strong>Descomposición de la desviación:</strong> la desviación es la suma de las discrepancias para cada uno de los datos</p>
+<p><span class="math display">\[D(y,\hat \mu)= \sum^{n}_{i=1} d_i(y_i,\hat \mu _i)\]</span></p>
+<p><strong>Estimación de <span class="math inline">\(\phi\)</span>:</strong> la desviación de un modelo de <span class="math inline">\(q\)</span> parámetros permite estimar <span class="math inline">\(\phi\)</span> de la siguiente manera</p>
+<p><span class="math display">\[\hat \phi = \dfrac{D}{n-q},\]</span> ya que la esperanza matemática aproximada de <span class="math inline">\(S\)</span> es <span class="math inline">\((n-q)\)</span>, los grados de libertad de la distribución <span class="math inline">\(\chi^2\)</span>.</p>
+</div>
+<div id="analisis-de-residuos" class="section level2">
+<h2><span class="header-section-number">2.22</span> Análisis de Residuos</h2>
+<p><strong>Residuos de Pearson:</strong> se definen como</p>
+<p><span class="math display">\[r^p_i=\dfrac{y_i- \hat \mu_i}{\sqrt{\hat V[y_i]} }\]</span></p>
+<p><strong>Residuos de desviación:</strong> es la contribución de esa de esa observación a la desviación escalada y se define por</p>
+<p><span class="math display">\[r^d_i= signo(y_i-\hat \mu_i)\sqrt{d_i}\]</span></p>
 
 </div>
 </div>

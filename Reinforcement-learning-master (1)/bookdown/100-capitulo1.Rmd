@@ -475,5 +475,62 @@ otorga un estimador consistente de $\phi$ apartir de una estimación de $\beta$
 
 $$\hat \phi= \dfrac{1}{n-p-1} \sum_{i=1}^{n} \dfrac{w_i(y_i-\hat \mu_i)^2}{b''(\hat \theta_i)}$$
 
+## Desviación
+
+Determinaremos el potencial del modelo comparandolo con el modelo saturado.
+
+**Modelo saturado:** tiene la misma forma que el ajustado, pero con tantos parámetros como observaciones.
+
+
+**Desviación escalada:** se obtiene con el estadístico cociente de las verosimilitudes
+
+$$S= 2[l(\hat \beta | y, \phi)- l(\tilde \beta |y, \phi)]$$
+
+Donde $\tilde \beta$ es el estimador de máxima verosimilitud del modelo saturado.
+
+
+En términos del parámetro naturales
+
+$$S= 2\sum^{n}_{i=1} \dfrac{y_i(\tilde \theta_i-\hat \theta_i)- b(\tilde \theta_i)+ b(\hat \theta_i)}{a_i(\phi)}$$
+
+Cuando $\phi$ es conocido, la desviación escalada mide cuánto de desvía el modelo de los datos.
+
+**Distribución Aproximada:** Si el modelo se ajusta bien a los datos
+
+$$S ∼ \chi^2 (n-p-1)$$
+
+**Desviación no escalada:** se define de la siguiente manera
+
+$$D(y, \hat \mu)= \phi S$$
+
+si $a_i(\phi)=\dfrac{\phi}{w_i}$ es equivalente a 
+
+$$D(y,\hat \mu)= 2 \sum^{n}_{i=1} w_i [y_i(\tilde \theta_i-\hat \theta_i)- b(\tilde \theta_i)+ b(\hat \theta_i)]$$
+
+**Descomposición de la desviación:** la desviación es la suma de las discrepancias para cada uno de los datos 
+
+$$D(y,\hat \mu)= \sum^{n}_{i=1} d_i(y_i,\hat \mu _i)$$
+
+**Estimación de $\phi$:** la desviación de un modelo de $q$ parámetros permite estimar $\phi$ de la siguiente manera
+
+$$\hat \phi = \dfrac{D}{n-q},$$
+ya que la esperanza matemática aproximada de $S$ es $(n-q)$, los grados de libertad de la distribución $\chi^2$.
+
+
+## Análisis de Residuos
+
+**Residuos de Pearson:** se definen como 
+
+$$r^p_i=\dfrac{y_i- \hat \mu_i}{\sqrt{\hat V[y_i]} }$$
+
+**Residuos de desviación:** es la contribución de esa de esa observación a la desviación escalada y se define por 
+
+$$r^d_i= signo(y_i-\hat \mu_i)\sqrt{d_i}$$
+
+
+
+
+
+
 
 
