@@ -49,17 +49,24 @@ Nuestra cuenta de Twitter es (https://twitter.com/bysynergyvision) y nuestros re
 
 <!--chapter:end:000-author.Rmd-->
 
+\mainmatter
 
 # Introducción 
 
-Placeholder
 
 
-## Reinforcement Learning
-## Ejemplos
-## Elementos del Reinforcement Learning
-## Limitaciones y alcance
-## Un ejemplo clásico: tres en linea.     
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!--chapter:end:010-introduction.Rmd-->
 
@@ -452,7 +459,7 @@ La elección del link dependera de la familia de distribuciones, del tipo de res
 - $b(\theta)= - log(-\theta)$
 - Otras funciones links: identidad, logarítmo.
 
-## Modelos de datoa discretos
+## Modelos de datos discretos
 
 **Binomial**
 
