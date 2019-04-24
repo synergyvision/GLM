@@ -1,0 +1,13 @@
+name: Lineal_Models
+title: Lineal_Models
+username:
+account: arturocarreno
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 625693
+bundleId: 1793517
+url: https://arturocarreno.shinyapps.io/Lineal_Models/
+when: 1546453677.67705
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: reporte1.Rmd|reporte2.Rmd
